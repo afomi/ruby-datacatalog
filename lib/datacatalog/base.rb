@@ -1,20 +1,16 @@
 module DataCatalog
-    
+
   class Base
   
     include HTTParty
     format :json
     
-    def initialize
-      DataCatalog.base_uri = 'api.nationaldatacatalog.com'  if DataCatalog.base_uri.blank?
-    end
-    
     def self.set_base_uri
-      default_options[:base_uri] = HTTParty.normalize_base_uri(DataCatalog.base_uri)
+      default_options[:base_uri] = HTTParty.normalize_base_uri(DataCatalog.base_uri || 'api.nationaldatacatalog.com')
     end
     
     def self.set_default_params
-      default_options[:default_params] ||= {}
+      default_options[:default_params] = {} if default_options[:default_params].nil?
       if DataCatalog.api_key.blank?
         raise "Failed to provide API Key!"
       else
@@ -29,10 +25,9 @@ module DataCatalog
     
     def self.about
       set_base_uri
-      get '/sources'
+      get '/'
     end
     
   end # class Base
-  
-  
+
 end # module DataCatalog
