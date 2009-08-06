@@ -2,7 +2,7 @@ require File.dirname(__FILE__) + '/spec_helper'
 
 describe DataCatalog do
 
-  context "module accessors" do
+  describe "module accessors" do
 
     it "should access the API Key" do
       DataCatalog.api_key = 'flurfeneugen'
@@ -14,7 +14,7 @@ describe DataCatalog do
       DataCatalog.base_uri.should == 'somehost.com'
     end
   
-  end # context "accessors"
+  end # describe "accessors"
 
 end
 
@@ -25,7 +25,7 @@ describe DataCatalog::Base do
     DataCatalog.base_uri = 'somehost.com'
   end
 
-  context "#set_base_uri" do
+  describe "#set_base_uri" do
 
     it "should set and normalize the base URI" do
       DataCatalog.base_uri = 'notherhost.com'
@@ -39,9 +39,9 @@ describe DataCatalog::Base do
       DataCatalog::Base.default_options[:base_uri].should == 'http://api.nationaldatacatalog.com'
     end
   
-  end # context "#set_base_uri"
+  end # describe "#set_base_uri"
   
-  context "#set_default_params" do
+  describe "#set_default_params" do
 
     it "should set the API key" do
       DataCatalog::Base.set_default_params
@@ -53,9 +53,9 @@ describe DataCatalog::Base do
       executing { DataCatalog::Base.set_default_params }.should raise_error("Failed to provide API Key!")
     end
     
-  end # context "#set_default_params"
+  end # describe "#set_default_params"
 
-  context "#set_up!" do
+  describe "#set_up!" do
     
     it "should set both the base URI and API key" do
       DataCatalog::Base.set_up!
@@ -63,15 +63,15 @@ describe DataCatalog::Base do
       DataCatalog::Base.default_options[:default_params].should include(:api_key => 'flurfeneugen')
     end
     
-  end # context "#set_up!"
+  end # describe "#set_up!"
 
-  context "#about" do
+  describe "#about" do
     
     it "should return information about the API" do
       mock(DataCatalog::Base).get("/") { {:name => "National Data Catalog API"} }
       DataCatalog::Base.about.should include(:name => "National Data Catalog API")
     end
     
-  end # context "#about"
+  end # describe "#about"
 
 end
