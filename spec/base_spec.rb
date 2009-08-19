@@ -41,16 +41,16 @@ describe DataCatalog::Base do
   
   end # describe "#set_base_uri"
   
-  describe "#set_default_params" do
+  describe "#set_api_key" do
 
     it "should set the API key" do
-      DataCatalog::Base.set_default_params
+      DataCatalog::Base.set_api_key
       DataCatalog::Base.default_options[:default_params].should include(:api_key => 'flurfeneugen')
     end
 
     it "should raise exception when attempting to set the API key but none is set" do
       DataCatalog.api_key = nil
-      executing { DataCatalog::Base.set_default_params }.should raise_error("Failed to provide API Key!")
+      executing { DataCatalog::Base.set_api_key }.should raise_error(DataCatalog::ApiKeyUndefined)
     end
     
   end # describe "#set_default_params"
@@ -64,14 +64,36 @@ describe DataCatalog::Base do
     end
     
   end # describe "#set_up!"
-
-  describe "#about" do
+  
+  describe "#build_object" do
     
-    it "should return information about the API" do
-      mock(DataCatalog::Base).get("/") { {:name => "National Data Catalog API"} }
-      DataCatalog::Base.about.should include(:name => "National Data Catalog API")
+    it "should create an object when a filled hash is passed in" do
+      base_object = DataCatalog::Base.build_object(:name => "John Smith", :email => "john@email.com")
+      base_object.should be_an_instance_of(DataCatalog::Base)
+      base_object.email.should eql("john@email.com")
     end
     
+    it "should return nil when an empty hash is passed in" do
+      base_object = DataCatalog::Base.build_object({})
+      base_object.should be_nil
+    end
+    
+    it "should return nil when nil is passed in" do
+      base_object = DataCatalog::Base.build_object(nil)
+      base_object.should be_nil
+    end
+    
+  end # describe "#build_object!"
+
+  describe "#about" do
+
+    it "should return information about the API" do
+      mock(DataCatalog::Base).get("/") { mock_response_for(:get, '/') }
+      base_object = DataCatalog::Base.about
+      base_object.should be_an_instance_of(DataCatalog::Base)
+      base_object.name.should eql("National Data Catalog API")      
+    end
+
   end # describe "#about"
 
 end
