@@ -24,10 +24,12 @@ module DataCatalog
     end
 
     def self.check_status_code(response)
-      raise BadRequest          if response.code == 400
-      raise RequestUnauthorized if response.code == 401
-      raise ResourceNotFound    if response.code == 404
-      raise InternalServerError if response.code == 500
+      case response.code
+      when 400: raise BadRequest
+      when 401: raise RequestUnauthorized
+      when 404: raise ResourceNotFound
+      when 500: raise InternalServerError
+      end
     end
 
     def self.response_for
