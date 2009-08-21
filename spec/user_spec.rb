@@ -23,9 +23,9 @@ describe DataCatalog::User do
       user.email.should eql("ndc@sunlightlabs.com")
     end
     
-    it "should raise ResourceNotFound out if no user exists" do
+    it "should raise NotFound out if no user exists" do
       mock(DataCatalog::User).get("/users/badid") { mock_response_for(:get, '/users/badid', 404) }
-      executing { DataCatalog::User.find('badid') }.should raise_error(DataCatalog::ResourceNotFound)
+      executing { DataCatalog::User.find('badid') }.should raise_error(DataCatalog::NotFound)
     end
     
   end # describe "#find"

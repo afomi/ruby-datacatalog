@@ -26,8 +26,8 @@ module DataCatalog
     def self.check_status_code(response)
       case response.code
       when 400: raise BadRequest
-      when 401: raise RequestUnauthorized
-      when 404: raise ResourceNotFound
+      when 401: raise Unauthorized
+      when 404: raise NotFound
       when 500: raise InternalServerError
       end
     end
