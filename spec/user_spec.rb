@@ -33,10 +33,12 @@ describe DataCatalog::User do
   describe "#create" do
     
     it "should create a new user when valid params are passed in" do
-      valid_params = {:name => "John Smith", :email => "john@email.com", :purpose => "To be awesome."}
+      valid_params = {:name => "National Data Catalog", :email => "ndc@sunlightlabs.com", :purpose => "To be awesome."}
       mock(DataCatalog::User).post("/users", :query => valid_params) { mock_response_for(:post, '/users') }
       user = DataCatalog::User.create(valid_params)
-      user.purpose.should eql("To be awesome.")
+      valid_params.each do |key, value|
+        user.send(key).should eql(value)
+      end
     end
 
     it "should raise BadRequest when invalid params are passed in" do
