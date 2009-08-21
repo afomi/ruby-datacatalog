@@ -2,7 +2,7 @@ require File.dirname(__FILE__) + '/spec_helper'
 
 describe DataCatalog::User do
 
-  describe "#all" do
+  describe "::all" do
     
     it "should return an array of users" do
       mock(DataCatalog::User).get("/users") { mock_response_for(:get, '/users') }
@@ -14,7 +14,7 @@ describe DataCatalog::User do
     
   end # describe "#all"
   
-  describe "#find" do
+  describe "::find" do
     
     it "should return a user" do
       mock(DataCatalog::User).get("/users/someid") { mock_response_for(:get, '/users/someid') }
@@ -30,7 +30,7 @@ describe DataCatalog::User do
     
   end # describe "#find"
   
-  describe "#create" do
+  describe "::create" do
     
     it "should create a new user when valid params are passed in" do
       valid_params = {:name => "National Data Catalog", :email => "ndc@sunlightlabs.com", :purpose => "To be awesome."}
