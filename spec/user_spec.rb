@@ -49,4 +49,53 @@ describe DataCatalog::User do
     
   end # describe "#create"
   
+  describe "::update" do
+    
+    it "should update a user when valid params are passed in" do
+      user_id = "4b9630f54a8eb69c00000001"
+      valid_params = { :name => "Mr. Updated" }
+      mock(DataCatalog::User).put("/users/#{user_id}", :query => valid_params) do 
+        parsed_body = {
+          "admin"              => true,
+          "created_at"         => "2009/08/17 16:07:17 +0000",
+          "creator_api_key"    => nil,
+          "email"              => "ndc@sunlightlabs.com",
+          "id"                 => "4b9630f54a8eb69c00000001",
+          "name"               => "Mr. Updated",
+          "primary_api_key"    => "6bc4fd27816d05b2e39886a9e6c5472b8264c8de",
+          "purpose"            => nil,
+          "secondary_api_keys" => [], 
+          "updated_at"         => "2009/08/17 16:07:17 +0000",
+        }
+        HTTParty::Response.new(parsed_body, parsed_body.to_json, 200, "OK", {})
+      end
+      user = DataCatalog::User.update(user_id, valid_params)
+      user.name.should eql("Mr. Updated")
+    end
+
+    it "should raise BadRequest when invalid params are passed in" do
+      user_id = "4b9630f54a8eb69c00000001"
+      invalid_params = { :name => "Mr. Updated" }
+      mock(DataCatalog::User).put("/users/#{user_id}", :query => invalid_params ) do 
+        parsed_body = {
+          "admin"              => true,
+          "created_at"         => "2009/08/17 16:07:17 +0000",
+          "creator_api_key"    => nil,
+          "email"              => "ndc@sunlightlabs.com",
+          "id"                 => "4b9630f54a8eb69c00000001",
+          "name"               => "Mr. Updated",
+          "primary_api_key"    => "6bc4fd27816d05b2e39886a9e6c5472b8264c8de",
+          "purpose"            => nil,
+          "secondary_api_keys" => [], 
+          "updated_at"         => "2009/08/17 16:07:17 +0000",
+        }
+        HTTParty::Response.new(parsed_body, parsed_body.to_json, 400, "Bad Request", {})
+      end
+      executing do
+        DataCatalog::User.update(user_id, invalid_params)
+      end.should raise_error(DataCatalog::BadRequest)
+    end
+  
+  end
+  
 end

@@ -21,6 +21,11 @@ module DataCatalog
       set_up!
       build_object(response_for { post("/users", :query => params) })
     end
+
+    def self.update(user_id, params)
+      set_up!
+      build_object(response_for { put("/users/#{user_id}", :query => params) })
+    end
     
   end # class User
 
