@@ -6,6 +6,10 @@ end
 
 alias :executing :lambda
 
+def setup_api
+  DataCatalog.api_key = 'flurfeneugen'
+  DataCatalog.base_uri = 'somehost.com'
+end
 
 # The hashes (and arrays of hashes) we would get back from httparty
 def mock_response_for(method, resource, code=200, body='', headers={}, message='')

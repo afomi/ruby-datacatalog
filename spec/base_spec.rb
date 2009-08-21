@@ -20,10 +20,7 @@ end
 
 describe DataCatalog::Base do
 
-  before(:each) do
-    DataCatalog.api_key = 'flurfeneugen'
-    DataCatalog.base_uri = 'somehost.com'
-  end
+  before(:each) { setup_api }
 
   describe "::set_base_uri" do
 

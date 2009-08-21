@@ -1,6 +1,8 @@
 require File.dirname(__FILE__) + '/spec_helper'
 
 describe DataCatalog::User do
+  
+  before(:each) { setup_api }
 
   describe "::all" do
     
