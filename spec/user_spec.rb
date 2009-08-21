@@ -98,4 +98,36 @@ describe DataCatalog::User do
   
   end
   
+  describe "::destroy" do
+    
+    it "should destroy an existing user" do
+      user_id = "4b9630f54a8eb69c00000001"
+      mock(DataCatalog::User).delete("/users/#{user_id}") do 
+        parsed_body = { "id" => user_id }
+        HTTParty::Response.new(parsed_body, parsed_body.to_json, 200, "OK", {})
+      end
+      result = DataCatalog::User.destroy(user_id)
+      result.should be_true
+    end
+    
+    it "should raise NotFound when non-existing user" do
+      user_id = "000000000000000000000000"
+      mock(DataCatalog::User).delete("/users/#{user_id}") do 
+        parsed_body = {}
+        HTTParty::Response.new(parsed_body, parsed_body.to_json, 404, "Not Found", {})
+      end
+      executing { DataCatalog::User.destroy(user_id) }.should raise_error(DataCatalog::NotFound)
+    end
+
+    it "should raise Error upon unexpected status code" do
+      user_id = "000000000000000000000000"
+      mock(DataCatalog::User).delete("/users/#{user_id}") do 
+        parsed_body = {}
+        HTTParty::Response.new(parsed_body, parsed_body.to_json, 503, "Service Unavailable", {})
+      end
+      executing { DataCatalog::User.destroy(user_id) }.should raise_error(DataCatalog::Error)
+    end
+    
+  end # describe "::destroy"
+  
 end
