@@ -91,7 +91,7 @@ describe DataCatalog::Base do
       mock(DataCatalog::Base).get("/") { mock_response_for(:get, '/') }
       base_object = DataCatalog::Base.about
       base_object.should be_an_instance_of(DataCatalog::Base)
-      base_object.name.should eql("National Data Catalog API")      
+      base_object.name.should eql("National Data Catalog API")
     end
 
   end # describe "::about"

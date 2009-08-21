@@ -14,12 +14,12 @@ module DataCatalog
     
     def self.find(id)
       set_up!
-      build_object(response_for{get("/users/#{id}")})
+      build_object(response_for { get("/users/#{id}") })
     end
     
     def self.create(params)
       set_up!
-      build_object(response_for{post("/users",:query => params)})
+      build_object(response_for { post("/users", :query => params) })
     end
     
   end # class User
