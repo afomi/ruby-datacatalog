@@ -50,6 +50,10 @@ module DataCatalog
       set_base_uri
       build_object(response_for{get('/')})
     end
+    
+    def id
+      instance_values["table"][:id]
+    end
 
   end # class Base
 

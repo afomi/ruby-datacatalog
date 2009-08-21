@@ -95,5 +95,14 @@ describe DataCatalog::Base do
     end
 
   end # describe "::about"
+  
+  describe "#id" do
+    
+    it "should return the proper id (not object_id)" do
+      base_object = DataCatalog::Base.new(:id => "4b9630f54a8eb69c00000001")
+      base_object.id.should eql("4b9630f54a8eb69c00000001")
+    end
+    
+  end # describe "#id"
 
 end
