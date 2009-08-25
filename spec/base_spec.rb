@@ -47,7 +47,7 @@ describe DataCatalog::Base do
 
     it "should raise exception when attempting to set the API key but none is set" do
       DataCatalog.api_key = nil
-      executing { DataCatalog::Base.set_api_key }.should raise_error(DataCatalog::ApiKeyUndefined)
+      executing { DataCatalog::Base.set_api_key }.should raise_error(DataCatalog::ApiKeyNotConfigured)
     end
     
   end # describe "::set_default_params"
