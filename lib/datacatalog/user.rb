@@ -20,7 +20,7 @@ module DataCatalog
       build_object(response_for { get("/users/#{id}") })
     end
     
-    def self.create(params)
+    def self.create(params={})
       set_up!
       build_object(response_for { post("/users", :query => params) })
     end
