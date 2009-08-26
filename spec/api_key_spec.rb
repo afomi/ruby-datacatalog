@@ -117,8 +117,8 @@ describe "" do
   #   executing { user.delete_api_key(key.api_key) }.should raise_error(CannotDeletePrimaryApiKey)
   # end
   
-  it "#delete_api_key should raise ApiKeyDoesNotExist if there is no API key" do
-    pending
-  end
+  # it "#delete_api_key should raise ApiKeyDoesNotExist if there is no API key" do
+  #   pending
+  # end
 
 end

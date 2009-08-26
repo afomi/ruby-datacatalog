@@ -24,11 +24,26 @@ module DataCatalog
 
     def self.check_status_code(response)
       case response.code
-      when 400: raise BadRequest
-      when 401: raise Unauthorized
-      when 404: raise NotFound
-      when 500: raise InternalServerError
+      when 400: raise BadRequest, error_message(response)
+      when 401: raise Unauthorized, error_message(response)
+      when 404: raise NotFound, error_message(response)
+      when 500: raise InternalServerError, error_message(response)
       end
+    end
+    
+    def self.error_message(response)
+      parsed_body = JSON.parse(response.body)
+      
+      if parsed_body.empty?
+        return "Response was empty"
+      elsif parsed_body["errors"]
+        return parsed_body["errors"].inspect
+      else
+        return response.body
+      end
+      
+      rescue JSON::ParserError
+        return "Unable to parse: #{response.body.inspect}"
     end
 
     def self.response_for
