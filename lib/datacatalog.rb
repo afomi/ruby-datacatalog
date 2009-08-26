@@ -12,7 +12,6 @@ module DataCatalog
   class InternalServerError       < Error; end # 500
 
   class ApiKeyNotConfigured       < Error; end
-  class UserHasNoApiKeys          < Error; end
   class CannotDeletePrimaryApiKey < Error; end
 end
 

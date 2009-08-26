@@ -47,11 +47,6 @@ module DataCatalog
       @api_keys ||= []
       @api_keys << response
     end
-    
-    def primary_api_key
-      raise UserHasNoApiKeys if @api_keys.nil? || @api_keys.empty?
-      @api_keys.first
-    end
 
     def secondary_api_keys
       raise UserHasNoApiKeys if @api_keys.nil? || @api_keys.empty?

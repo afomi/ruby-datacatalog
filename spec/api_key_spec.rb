@@ -36,22 +36,6 @@ describe "" do
     user.api_keys[0][:purpose].should eql("Civic hacking with my awesome app")
   end
   
-  it "primary_api_key should raise ApiKeyDoesNotExist if there is no API key" do
-    user_id = "4b9630f54a8eb69c00000001"
-    user = DataCatalog::User.new(:name => "John Doe", :id => user_id)
-  
-    executing { user.primary_api_key }.should raise_error(DataCatalog::UserHasNoApiKeys)
-  end
-  
-  it "primary_api_key should return first API key" do
-    
-    user = setup_user_with_api_keys(3)
-
-    api_key_object = user.primary_api_key
-    api_key_object.should be_an_instance_of(DataCatalog::ApiKey)
-    api_key_object.purpose.should eql("Civic hacking with my 0th awesome app")
-  end
-  
   it "api_keys= should fail" do
     user_id = "4b9630f54a8eb69c00000001"
     user = DataCatalog::User.new(:name => "John Doe", :id => user_id)
@@ -73,26 +57,22 @@ describe "" do
     end
   end
   
-  it "secondary_api_keys should return all secondary API keys" do
-    user = setup_user_with_api_keys(3)
-    secondary_keys = user.secondary_api_keys
-          
-    secondary_keys.each_with_index do |api_key, i|
-      api_key.should be_an_instance_of(DataCatalog::ApiKey)
-      api_key.purpose.should eql("Civic hacking with my #{i + 1}th awesome app")
-    end
-  end
+  # it "secondary_api_keys should return all secondary API keys" do
+  #   user = setup_user_with_api_keys(3)
+  #   secondary_keys = user.secondary_api_keys
+  #         
+  #   secondary_keys.each_with_index do |api_key, i|
+  #     api_key.should be_an_instance_of(DataCatalog::ApiKey)
+  #     api_key.purpose.should eql("Civic hacking with my #{i + 1}th awesome app")
+  #   end
+  # end
+  # 
+  # it "secondary_api_keys should return an empty array if no secondary keys exist" do
+  #   user = setup_user_with_api_keys(1)
+  #   secondary_keys = user.secondary_api_keys
+  #   secondary_keys.should be_empty
+  # end
   
-  it "secondary_api_keys should return an empty array if no secondary keys exist" do
-    user = setup_user_with_api_keys(1)
-    secondary_keys = user.secondary_api_keys
-    secondary_keys.should be_empty
-  end
-  
-  it "secondary_api_keys should raise ApiKeyDoesNotExist if there are no API keys" do
-    user = setup_user_with_api_keys(0)
-    executing { user.secondary_api_keys }.should raise_error(DataCatalog::UserHasNoApiKeys)
-  end
   
   it "#delete_api_key should delete the given API key" do
     n = 4
