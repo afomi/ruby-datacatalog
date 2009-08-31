@@ -1,6 +1,7 @@
 require 'rubygems'
 require 'httparty'
 require 'activesupport'
+require 'mash'
 
 module DataCatalog
   mattr_accessor :api_key, :base_uri

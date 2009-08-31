@@ -1,6 +1,6 @@
 module DataCatalog
 
-  class Base < OpenStruct
+  class Base < Mash
   
     include HTTParty
     format :json
@@ -11,7 +11,7 @@ module DataCatalog
     
     def self.set_api_key
       if DataCatalog.api_key.blank?
-        raise ApiKeyNotConfigured, "Use DataCatalog.api_key = '...'."
+        raise ApiKeyNotConfigured, "Use DataCatalog.api_key = '...'"
       end
       default_options[:default_params] = {} if default_options[:default_params].nil?
       default_options[:default_params].merge!({:api_key => DataCatalog.api_key})
@@ -61,11 +61,7 @@ module DataCatalog
       set_base_uri
       build_object(response_for{get('/')})
     end
-    
-    def id
-      instance_values["table"][:id]
-    end
-    
+
   end # class Base
 
 end # module DataCatalog
