@@ -4,7 +4,7 @@ describe DataCatalog::User do
   
   before(:each) { setup_api }
 
-  describe "::all" do
+  describe ".all" do
     
     it "should return an array of users" do
       mock(DataCatalog::User).get("/users") { mock_response_for(:get, '/users') }
@@ -14,12 +14,14 @@ describe DataCatalog::User do
       users.first.email.should eql("ndc@sunlightlabs.com")
     end
     
-  end # describe "#all"
+  end # describe ".all"
   
-  describe "::find" do
+  describe ".find" do
     
     it "should return a user" do
       mock(DataCatalog::User).get("/users/someid") { mock_response_for(:get, '/users/someid') }
+      mock(DataCatalog::User).get("/users/someid/keys") { mock_response_for(:get, '/users/someid/keys') }
+      
       user = DataCatalog::User.find('someid')
       user.should be_an_instance_of(DataCatalog::User)
       user.email.should eql("ndc@sunlightlabs.com")
@@ -30,13 +32,15 @@ describe DataCatalog::User do
       executing { DataCatalog::User.find('badid') }.should raise_error(DataCatalog::NotFound)
     end
     
-  end # describe "#find"
+  end # describe ".find"
   
-  describe "::create" do
+  describe ".create" do
     
     it "should create a new user when valid params are passed in" do
-      valid_params = {:name => "National Data Catalog", :email => "ndc@sunlightlabs.com", :purpose => "To be awesome."}
+      valid_params = {:name => "National Data Catalog", :email => "ndc@sunlightlabs.com"}
       mock(DataCatalog::User).post("/users", :query => valid_params) { mock_response_for(:post, '/users') }
+      mock(DataCatalog::User).get("/users/someid/keys") { mock_response_for(:get, '/users/someid/keys') }
+      
       user = DataCatalog::User.create(valid_params)
       valid_params.each do |key, value|
         user.send(key).should eql(value)
@@ -49,9 +53,9 @@ describe DataCatalog::User do
       executing { DataCatalog::User.create(invalid_params) }.should raise_error(DataCatalog::BadRequest)
     end
     
-  end # describe "#create"
+  end # describe ".create"
   
-  describe "::update" do
+  describe ".update" do
     
     it "should update a user when valid params are passed in" do
       user_id = "4b9630f54a8eb69c00000001"
@@ -97,10 +101,10 @@ describe DataCatalog::User do
         DataCatalog::User.update(user_id, invalid_params)
       end.should raise_error(DataCatalog::BadRequest)
     end
+
+  end # describe ".update"
   
-  end
-  
-  describe "::destroy" do
+  describe ".destroy" do
     
     it "should destroy an existing user" do
       user_id = "4b9630f54a8eb69c00000001"
@@ -130,6 +134,6 @@ describe DataCatalog::User do
       executing { DataCatalog::User.destroy(user_id) }.should raise_error(DataCatalog::Error)
     end
     
-  end # describe "::destroy"
+  end # describe ".destroy"
   
 end

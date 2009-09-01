@@ -1,12 +1,6 @@
 module DataCatalog
 
   class User < DataCatalog::Base
-  
-    include HTTParty
-    format :json
-
-    attr_reader :api_keys
-    def api_keys=(value) raise NoMethodError end
     
     def self.all
       set_up!

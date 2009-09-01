@@ -16,13 +16,13 @@ describe DataCatalog do
   
   end # describe "accessors"
 
-end
+end # describe DataCatalog
 
 describe DataCatalog::Base do
 
   before(:each) { setup_api }
 
-  describe "::set_base_uri" do
+  describe ".set_base_uri" do
 
     it "should set and normalize the base URI" do
       DataCatalog.base_uri = 'notherhost.com'
@@ -36,9 +36,9 @@ describe DataCatalog::Base do
       DataCatalog::Base.default_options[:base_uri].should == 'http://api.nationaldatacatalog.com'
     end
   
-  end # describe "::set_base_uri"
+  end # describe ".set_base_uri"
   
-  describe "::set_api_key" do
+  describe ".set_api_key" do
 
     it "should set the API key" do
       DataCatalog::Base.set_api_key
@@ -50,9 +50,9 @@ describe DataCatalog::Base do
       executing { DataCatalog::Base.set_api_key }.should raise_error(DataCatalog::ApiKeyNotConfigured)
     end
     
-  end # describe "::set_default_params"
+  end # describe ".set_default_params"
 
-  describe "::set_up!" do
+  describe ".set_up!" do
     
     it "should set both the base URI and API key" do
       DataCatalog::Base.set_up!
@@ -60,9 +60,9 @@ describe DataCatalog::Base do
       DataCatalog::Base.default_options[:default_params].should include(:api_key => 'flurfeneugen')
     end
     
-  end # describe "::set_up!"
+  end # describe ".set_up!"
   
-  describe "::build_object" do
+  describe ".build_object" do
     
     it "should create an object when a filled hash is passed in" do
       base_object = DataCatalog::Base.build_object(:name => "John Smith", :email => "john@email.com")
@@ -80,9 +80,9 @@ describe DataCatalog::Base do
       base_object.should be_nil
     end
     
-  end # describe "::build_object!"
+  end # describe ".build_object!"
 
-  describe "::about" do
+  describe ".about" do
 
     it "should return information about the API" do
       mock(DataCatalog::Base).get("/") { mock_response_for(:get, '/') }
@@ -91,18 +91,9 @@ describe DataCatalog::Base do
       base_object.name.should eql("National Data Catalog API")
     end
 
-  end # describe "::about"
+  end # describe ".about"
   
-  describe "#id" do
-    
-    it "should return the proper id (not object_id)" do
-      base_object = DataCatalog::Base.new(:id => "4b9630f54a8eb69c00000001")
-      base_object.id.should eql("4b9630f54a8eb69c00000001")
-    end
-    
-  end # describe "#id"
-  
-  describe "#check_status_code" do
+  describe ".check_status_code" do
     
     it "should return nil on 200 OK" do
       response = HTTParty::Response.new(nil,'{"foo":"bar"}',200,'OK',{})
@@ -129,9 +120,9 @@ describe DataCatalog::Base do
       executing { DataCatalog::Base.check_status_code(response) }.should raise_error(DataCatalog::InternalServerError)
     end
         
-  end # describe "#check_status_code"
+  end # describe ".check_status_code"
   
-  describe "#error_message" do
+  describe ".error_message" do
     
     it "should return an 'Unable to parse:' message when body is blank" do
       response = HTTParty::Response.new(nil,'',404,'Not Found',{})
@@ -160,7 +151,6 @@ describe DataCatalog::Base do
       DataCatalog::Base.error_message(response).should eql('{"foo":["bar"]}')
     end
 
-  end # describe "#error_message"
-  
+  end # describe ".error_message"
 
-end
+end # describe DataCatalog::Base
