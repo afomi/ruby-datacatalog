@@ -135,5 +135,66 @@ describe DataCatalog::User do
     end
     
   end # describe ".destroy"
+
+  describe "#generate_api_key!" do
+  
+    it "should generate a new key for the user" do
+      valid_user_params = {:name => "National Data Catalog", :email => "ndc@sunlightlabs.com"}
+      mock(DataCatalog::User).post("/users", :query => valid_user_params) { mock_response_for(:post, '/users') }
+      mock(DataCatalog::User).get("/users/someid/keys") { mock_response_for(:get, '/users/someid/keys') }
+    
+      user = DataCatalog::User.create(valid_user_params)  
+      valid_params = { :purpose => "Civic hacking with my awesome app", :key_type => "application" }
+      mock(DataCatalog::User).post("/users/#{user.id}/keys", :query => valid_params) do 
+        parsed_body = {
+          :api_key     => "123456789",
+          :purpose     => "Civic hacking with my awesome app",
+          :application => "application",
+          :created_at  => Time.now.to_s
+        }
+        HTTParty::Response.new(parsed_body, parsed_body.to_json, 200, "OK", {})
+      end
+      mock(DataCatalog::User).get("/users/someid/keys") { mock_response_for(:get, '/users/someid2/keys') }
+    
+      user.generate_api_key!(valid_params).should be_true
+      user.api_keys.length.should eql(2)
+      user.api_keys[1][:purpose].should eql("Civic hacking with my awesome app")
+    end
+    
+  end # describe "#generate_api_key!"
+  
+  describe "#update_api_key!" do
+  
+    it "should update a key for the user" do
+      valid_user_params = {:name => "National Data Catalog", :email => "ndc@sunlightlabs.com"}
+      mock(DataCatalog::User).post("/users", :query => valid_user_params) { mock_response_for(:post, '/users') }
+      mock(DataCatalog::User).get("/users/someid/keys") { mock_response_for(:get, '/users/someid2/keys') }
+      user = DataCatalog::User.create(valid_user_params)
+    
+      key_params = { :key_type => "valet", :purpose => "To be more awesome" }
+      mock(DataCatalog::User).put("/users/someid/keys/keyid", :query => key_params) { mock_response_for(:put, '/users/someid/keys/keyid') }
+      mock(DataCatalog::User).get("/users/someid/keys") { mock_response_for(:get, '/users/someid-valet/keys') }
+
+      user.update_api_key!("keyid", key_params).should be_true
+      user.api_keys.length.should eql(2)
+      user.api_keys[1].purpose.should eql("To be more awesome")
+    end
+  
+  end # describe "#update_api_key!"
+
+  describe "#delete_api_key!" do
+    
+    it "should delete a key for the user" do
+      valid_user_params = {:name => "National Data Catalog", :email => "ndc@sunlightlabs.com"}
+      mock(DataCatalog::User).post("/users", :query => valid_user_params) { mock_response_for(:post, '/users') }
+      mock(DataCatalog::User).get("/users/someid/keys").times(2) { mock_response_for(:get, '/users/someid/keys') }
+      user = DataCatalog::User.create(valid_user_params)  
+    
+      mock(DataCatalog::User).delete("/users/someid/keys/keyid") { mock_response_for(:delete, "/users/someid/keys/keyid") }
+      user.delete_api_key!("keyid").should be_true
+      user.api_keys.length.should eql(1)
+    end
+    
+  end # describe "#delete_api_key!"
   
 end

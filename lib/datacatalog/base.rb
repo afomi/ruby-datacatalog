@@ -26,6 +26,7 @@ module DataCatalog
       case response.code
       when 400: raise BadRequest, error_message(response)
       when 401: raise Unauthorized, error_message(response)
+      when 403: raise Forbidden, error_message(response)
       when 404: raise NotFound, error_message(response)
       when 500: raise InternalServerError, error_message(response)
       end

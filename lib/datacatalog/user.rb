@@ -41,7 +41,7 @@ module DataCatalog
     
     def generate_api_key!(params)
       self.class.set_up!
-    
+      
       response = self.class.response_for do
         self.class.post("/users/#{self.id}/keys", :query => params )
       end
@@ -49,17 +49,37 @@ module DataCatalog
       self.api_keys = self.class.response_for { self.class.get("/users/#{self.id}/keys") }.map do |key|
         DataCatalog::ApiKey.build_object(key)
       end
+      
       true
     end
     
-    # def delete_api_key(api_key_id)
-    #   self.class.set_up!
-    #   response = self.class.response_for do
-    #     self.class.delete("/users/#{self.id}/api_keys/#{api_key}")
-    #   end
-    #   @api_keys.delete_if { |key| key.api_key == api_key }
-    #   true
-    # end
+    def delete_api_key!(api_key_id)
+      self.class.set_up!
+      
+      response = self.class.response_for do
+        self.class.delete("/users/#{self.id}/keys/#{api_key_id}")
+      end
+      
+      self.api_keys = self.class.response_for { self.class.get("/users/#{self.id}/keys") }.map do |key|
+        DataCatalog::ApiKey.build_object(key)
+      end
+      
+      true
+    end
+    
+    def update_api_key!(api_key_id, params)
+      self.class.set_up!
+      
+      response = self.class.response_for do
+        self.class.put("/users/#{self.id}/keys/#{api_key_id}", :query => params)
+      end
+      
+      self.api_keys = self.class.response_for { self.class.get("/users/#{self.id}/keys") }.map do |key|
+        DataCatalog::ApiKey.build_object(key)
+      end
+      
+      true
+    end
     
   end # class User
 

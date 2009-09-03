@@ -117,11 +117,38 @@ def mock_response_for(method, resource, code=200, body='', headers={}, message='
         ],
         body, code, message, headers)
       end
+  when '/users/someid-valet/keys'
+    case method
+      when :get
+        HTTParty::Response.new(
+        [
+          { "purpose"    => nil, 
+            "api_key"    => "79f2bbc9b58132539df9deef83df1132ab4dec53",
+            "id"         => "9ed7d5c84a9c410e0000010a",
+            "key_type"   => "primary",
+            "created_at" => "2009/08/31 21:30:54 +0000" },
+          { "purpose"    => "To be more awesome", 
+            "api_key"    => "79f2bbc9b58132539df9deef83df1132ab4dec55",
+            "id"         => "9ed7d5c84a9c410e0000010a",
+            "key_type"   => "valet",
+            "created_at" => "2009/08/31 21:30:54 +0000" }          
+        ],
+        body, code, message, headers)
+      end
       
   when '/users/badid'
     case method
     when :get
       HTTParty::Response.new([], body, code, message, headers)
     end
-  end
-end
+  
+  when '/users/someid/keys/keyid'
+    case method
+    when :delete
+      HTTParty::Response.new({"id" => "keyid"}, body, code, message, headers)    
+    when :put
+      HTTParty::Response.new({"id" => "keyid"}, body, code, message, headers)
+    end
+    
+  end # case resource
+end # def mock_response_for
