@@ -56,15 +56,17 @@ describe DataCatalog::User do
     
     it "should update a user when valid params are passed in" do
       valid_params = { :name => "Jane Smith" }
-      new_user = DataCatalog::User.create(:name => "Jan Smith", :email => "jane@email.com")
+      new_user = DataCatalog::User.create(:name => "Joan Smith", :email => "jane@email.com")
+      
       user = DataCatalog::User.update(new_user.id, valid_params)
       user.name.should eql("Jane Smith")
     end
 
     it "should raise BadRequest when invalid params are passed in" do
       invalid_params = { :garbage => "junk" }
-      u = DataCatalog::User.create(:name => "Ted Smith", :email => "ted@email.com")
-      executing { DataCatalog::User.update(u.id, invalid_params) }.should raise_error(DataCatalog::BadRequest)
+      
+      user = DataCatalog::User.create(:name => "Ted Smith", :email => "ted@email.com")
+      executing { DataCatalog::User.update(user.id, invalid_params) }.should raise_error(DataCatalog::BadRequest)
     end
 
   end # describe ".update"
@@ -117,8 +119,8 @@ describe DataCatalog::User do
     
     it "should delete a key for the user" do
       user = DataCatalog::User.create(:name => "Sally", :email => "sally@email.com")
-      key_params1 = { :purpose => "Civic hacking with my awesome app", :key_type => "application" }
-      user.generate_api_key!(key_params1).should be_true
+      key_params = { :purpose => "Civic hacking with my awesome app", :key_type => "application" }
+      user.generate_api_key!(key_params).should be_true
     
       user.delete_api_key!(user.api_keys[1].id).should be_true
       user.api_keys.length.should eql(1)
