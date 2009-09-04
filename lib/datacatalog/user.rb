@@ -45,11 +45,7 @@ module DataCatalog
       response = self.class.response_for do
         self.class.post("/users/#{self.id}/keys", :query => params )
       end
-      
-      self.api_keys = self.class.response_for { self.class.get("/users/#{self.id}/keys") }.map do |key|
-        DataCatalog::ApiKey.build_object(key)
-      end
-      
+      update_api_keys
       true
     end
     
@@ -59,11 +55,7 @@ module DataCatalog
       response = self.class.response_for do
         self.class.delete("/users/#{self.id}/keys/#{api_key_id}")
       end
-      
-      self.api_keys = self.class.response_for { self.class.get("/users/#{self.id}/keys") }.map do |key|
-        DataCatalog::ApiKey.build_object(key)
-      end
-      
+      update_api_keys
       true
     end
     
@@ -73,12 +65,19 @@ module DataCatalog
       response = self.class.response_for do
         self.class.put("/users/#{self.id}/keys/#{api_key_id}", :query => params)
       end
-      
+      update_api_keys
+      true
+    end
+    
+    private
+    
+    def update_api_keys
       self.api_keys = self.class.response_for { self.class.get("/users/#{self.id}/keys") }.map do |key|
         DataCatalog::ApiKey.build_object(key)
       end
-      
-      true
+      updated_user = DataCatalog::User.find(self.id)
+      self.application_api_keys = updated_user.application_api_keys
+      self.valet_api_keys = updated_user.valet_api_keys
     end
     
   end # class User

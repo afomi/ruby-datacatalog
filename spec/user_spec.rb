@@ -96,6 +96,15 @@ describe DataCatalog::User do
       user.generate_api_key!(valid_params).should be_true
       user.api_keys.length.should eql(2)
       user.api_keys[1][:purpose].should eql("Civic hacking with my awesome app")
+      
+      user.application_api_keys.length.should eql(1)
+    end
+    
+    it "should raise BadRequest when attempting to create a primary key" do
+      user = DataCatalog::User.create(:name => "Sally", :email => "sally@email.com")
+
+      invalid_params = { :purpose => "Civic hacking with my awesome app", :key_type => "primary" }
+      executing { user.generate_api_key!(invalid_params)}.should raise_error(DataCatalog::BadRequest)
     end
     
   end # describe "#generate_api_key!"
@@ -112,6 +121,16 @@ describe DataCatalog::User do
       user.api_keys.length.should eql(2)
       user.api_keys[1].purpose.should eql("To be more awesome")
     end
+    
+    it "should raise NotFound if updating a key that doesn't exist" do
+      user = DataCatalog::User.create(:name => "Sally", :email => "sally@email.com")    
+      executing { user.update_api_key!('asdjldjkf', {}) }.should raise_error(DataCatalog::NotFound)
+    end
+
+    # it "should raise Forbidden if primary key's type is changed" do
+    #   user = DataCatalog::User.create(:name => "Sally", :email => "sally@email.com")    
+    #   executing { user.update_api_key!(user.api_keys[0].id, {:key_type => "valet"}) }.should raise_error(DataCatalog::NotFound)
+    # end
   
   end # describe "#update_api_key!"
 
@@ -124,6 +143,11 @@ describe DataCatalog::User do
     
       user.delete_api_key!(user.api_keys[1].id).should be_true
       user.api_keys.length.should eql(1)
+    end
+    
+    it "should raise Forbidden if deleting the primary key" do
+      user = DataCatalog::User.create(:name => "Sally", :email => "sally@email.com")    
+      executing { user.delete_api_key!(user.api_keys[0].id) }.should raise_error(DataCatalog::Forbidden)
     end
     
   end # describe "#delete_api_key!"
