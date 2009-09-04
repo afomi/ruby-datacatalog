@@ -59,6 +59,7 @@ module DataCatalog
     end
 
     def self.about
+      default_options[:default_params] = {}
       set_base_uri
       build_object(response_for{get('/')})
     end

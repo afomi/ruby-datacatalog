@@ -41,6 +41,7 @@ describe DataCatalog::Base do
   describe ".set_api_key" do
 
     it "should set the API key" do
+      DataCatalog.api_key = 'flurfeneugen'
       DataCatalog::Base.set_api_key
       DataCatalog::Base.default_options[:default_params].should include(:api_key => 'flurfeneugen')
     end
@@ -55,6 +56,8 @@ describe DataCatalog::Base do
   describe ".set_up!" do
     
     it "should set both the base URI and API key" do
+      DataCatalog.base_uri = 'somehost.com'
+      DataCatalog.api_key = 'flurfeneugen'
       DataCatalog::Base.set_up!
       DataCatalog::Base.default_options[:base_uri].should == 'http://somehost.com'
       DataCatalog::Base.default_options[:default_params].should include(:api_key => 'flurfeneugen')
@@ -85,7 +88,6 @@ describe DataCatalog::Base do
   describe ".about" do
 
     it "should return information about the API" do
-      mock(DataCatalog::Base).get("/") { mock_response_for(:get, '/') }
       base_object = DataCatalog::Base.about
       base_object.should be_an_instance_of(DataCatalog::Base)
       base_object.name.should eql("National Data Catalog API")
