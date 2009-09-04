@@ -1,4 +1,5 @@
 require File.dirname(__FILE__) + '/../lib/datacatalog'
+require 'yaml'
 
 Spec::Runner.configure do |config|
   config.mock_with :rr
@@ -7,8 +8,9 @@ end
 alias :executing :lambda
 
 def setup_api
-  DataCatalog.api_key = 'flurfeneugen'
-  DataCatalog.base_uri = 'somehost.com'
+  config = YAML.load_file(File.dirname(__FILE__) + '/sandbox_api.yml')
+  DataCatalog.api_key = config['api_key']
+  DataCatalog.base_uri = config['base_uri']
 end
 
 # The hashes (and arrays of hashes) we would get back from httparty
