@@ -16,6 +16,22 @@ describe DataCatalog do
   
   end # describe "accessors"
 
+  describe ".with_key" do
+    
+    it "should set the API key within the block" do
+      DataCatalog.api_key = 'flurfeneugen'
+      temp_value = 'not_temp_key'
+      
+      DataCatalog.with_key('temp_key') do
+        temp_value = DataCatalog.api_key
+      end
+      
+      temp_value.should eql('temp_key')
+      DataCatalog.api_key.should eql('flurfeneugen')
+    end
+    
+  end # describe ".with_key"
+  
 end # describe DataCatalog
 
 describe DataCatalog::Base do
