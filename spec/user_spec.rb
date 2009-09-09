@@ -51,6 +51,18 @@ describe DataCatalog::User do
     end
     
   end # describe ".find"
+  
+  describe ".find_by_api_key" do
+    
+    it "should return a user" do
+      new_user = DataCatalog::User.create(:email => "johann@email.com")
+      
+      user = DataCatalog::User.find_by_api_key(new_user.primary_api_key)
+      user.should be_an_instance_of(DataCatalog::User)
+      user.email.should eql("johann@email.com")
+    end
+
+  end # describe ".find_by_api_key"
     
   describe ".update" do
     
