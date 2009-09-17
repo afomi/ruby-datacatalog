@@ -139,10 +139,10 @@ describe DataCatalog::User do
       executing { user.update_api_key!('asdjldjkf', {}) }.should raise_error(DataCatalog::NotFound)
     end
 
-    # it "should raise Forbidden if primary key's type is changed" do
-    #   user = DataCatalog::User.create(:name => "Sally", :email => "sally@email.com")    
-    #   executing { user.update_api_key!(user.api_keys[0].id, {:key_type => "valet"}) }.should raise_error(DataCatalog::NotFound)
-    # end
+    it "should raise BadRequest if primary key's type is changed" do
+      user = DataCatalog::User.create(:name => "Sally", :email => "sally@email.com")    
+      executing { user.update_api_key!(user.api_keys[0].id, {:key_type => "valet"}) }.should raise_error(DataCatalog::BadRequest)
+    end
   
   end # describe "#update_api_key!"
 
