@@ -20,7 +20,7 @@ describe DataCatalog::Source do
   describe ".create" do
     
     it "should create a new source when valid params are passed in" do
-      source = DataCatalog::Source.create({:url => "http://fcc.gov/somedata.csv"})
+      source = DataCatalog::Source.create({:title => "Some FCC Data", :url => "http://fcc.gov/somedata.csv"})
       source.should be_an_instance_of(DataCatalog::Source)
       source.url.should eql("http://fcc.gov/somedata.csv")
     end
@@ -30,7 +30,7 @@ describe DataCatalog::Source do
   describe ".update" do
     
     it "should update an existing source when valid params are passed in" do
-      new_source = DataCatalog::Source.create(:url => "http://fcc.gov/somedata.csv")
+      new_source = DataCatalog::Source.create(:title => "Some FCC Data", :url => "http://fcc.gov/somedata.csv")
       
       source = DataCatalog::Source.update(new_source.id, {:url => "http://fec.gov/newdata.csv"})
       source.should be_an_instance_of(DataCatalog::Source)
@@ -42,7 +42,7 @@ describe DataCatalog::Source do
   describe ".destroy" do
     
     it "should destroy an existing source" do
-      source = DataCatalog::Source.create(:url => "http://fcc.gov/somedata.csv")
+      source = DataCatalog::Source.create(:title => "Some FCC Data", :url => "http://fcc.gov/somedata.csv")
 
       result = DataCatalog::Source.destroy(source.id)
       result.should be_true
