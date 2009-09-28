@@ -157,10 +157,10 @@ describe DataCatalog::User do
       user.api_keys.length.should eql(1)
     end
     
-    it "should raise Forbidden if deleting the primary key" do
-      user = DataCatalog::User.create(:name => "Sally", :email => "sally@email.com")    
-      executing { user.delete_api_key!(user.api_keys[0].id) }.should raise_error(DataCatalog::Forbidden)
-    end
+    # it "should raise Forbidden if deleting the primary key" do
+    #   user = DataCatalog::User.create(:name => "Sally", :email => "sally@email.com")    
+    #   executing { user.delete_api_key!(user.api_keys[0].id) }.should raise_error(DataCatalog::Forbidden)
+    # end
     
   end # describe "#delete_api_key!"
   
