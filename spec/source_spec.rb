@@ -8,13 +8,25 @@ describe DataCatalog::Source do
   end
 
   describe ".all" do
+    before do
+      %w(FCC NASA DOE).each do |name|
+        DataCatalog::Source.create({
+          :title => "#{name} Data",
+          :url   => "http://#{name.downcase}.gov/data.xml"
+        })
+      end
+      @sources = DataCatalog::Source.all
+    end
     
     it "should return an enumeration of sources" do
-      sources = DataCatalog::Source.all
-      puts sources.inspect
-      sources.each do |source|
+      @sources.each do |source|
         source.should be_an_instance_of(DataCatalog::Source)
       end
+    end
+    
+    it "should return correct titles" do
+      expected = ["FCC Data", "NASA Data", "DOE Data"]
+      @sources.map(&:title).sort.should == expected.sort
     end
     
   end # describe ".all"
