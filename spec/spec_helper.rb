@@ -22,15 +22,27 @@ def clean_slate
   end
 end
 
-# Converts a valid ID into a almost-but-not-quite valid one.
-# Here is an example of what it does:
-# From ... 4ac2520b25b7e7056600034e
-# To   ... a42c25b0527b7e50660030e4
-def mangle(string)
-  array = string.chars.to_a
-  sliced = []
-  array.each_slice(2) { |s| sliced << s.reverse }
-  result = sliced.flatten.join
-  raise "mangle failed" if result == string
-  result
+if RUBY_VERSION >= "1.8.7"
+  # Converts a valid ID into a almost-but-not-quite valid one.
+  # Here is an example of what it does:
+  # From ... 4ac2520b25b7e7056600034e
+  # To   ... a42c25b0527b7e50660030e4
+  def mangle(string)
+    array = string.chars.to_a
+    sliced = []
+    array.each_slice(2) { |s| sliced << s.reverse }
+    result = sliced.flatten.join
+    raise "mangle failed" if result == string
+    result
+  end
+else
+  # Converts a valid ID into a almost-but-not-quite valid one.
+  # Here is an example of what it does:
+  # From ... 4ac2520b25b7e7056600034e
+  # To   ... e4300066507e7b52b0252ca4
+  def mangle(string)
+    result = string.reverse
+    raise "mangle failed" if result == string
+    result
+  end
 end
