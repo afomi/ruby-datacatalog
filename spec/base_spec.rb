@@ -64,7 +64,9 @@ describe DataCatalog::Base do
 
     it "should raise exception when attempting to set the API key but none is set" do
       DataCatalog.api_key = nil
-      executing { DataCatalog::Base.set_api_key }.should raise_error(DataCatalog::ApiKeyNotConfigured)
+      executing do
+        DataCatalog::Base.set_api_key
+      end.should raise_error(DataCatalog::ApiKeyNotConfigured)
     end
     
   end # describe ".set_default_params"
@@ -114,28 +116,36 @@ describe DataCatalog::Base do
   describe ".check_status_code" do
     
     it "should return nil on 200 OK" do
-      response = HTTParty::Response.new(nil,'{"foo":"bar"}',200,'OK',{})
+      response = HTTParty::Response.new(nil, '{"foo":"bar"}', 200, 'OK', {})
       DataCatalog::Base.check_status_code(response).should be_nil
     end
     
     it "should raise BadRequest on 400 Bad Request" do
-      response = HTTParty::Response.new(nil,'[]',400,'Bad Request',{})
-      executing { DataCatalog::Base.check_status_code(response) }.should raise_error(DataCatalog::BadRequest)
+      response = HTTParty::Response.new(nil, '[]', 400, 'Bad Request', {})
+      executing do
+        DataCatalog::Base.check_status_code(response)
+      end.should raise_error(DataCatalog::BadRequest)
     end
 
     it "should raise Unauthorized on 401 Unauthorized" do
-      response = HTTParty::Response.new(nil,'',401,'Unauthorized',{})
-      executing { DataCatalog::Base.check_status_code(response) }.should raise_error(DataCatalog::Unauthorized)
+      response = HTTParty::Response.new(nil, '', 401, 'Unauthorized', {})
+      executing do
+        DataCatalog::Base.check_status_code(response)
+      end.should raise_error(DataCatalog::Unauthorized)
     end
 
     it "should raise NotFound on 404 Not Found" do
-      response = HTTParty::Response.new(nil,'[]',404,'Not Found',{})
-      executing { DataCatalog::Base.check_status_code(response) }.should raise_error(DataCatalog::NotFound)
+      response = HTTParty::Response.new(nil, '[]', 404, 'Not Found', {})
+      executing do
+        DataCatalog::Base.check_status_code(response)
+      end.should raise_error(DataCatalog::NotFound)
     end
     
     it "should raise InternalServerError on 500 Internal Server Error" do
-      response = HTTParty::Response.new(nil,'',500,'Internal Server Error',{})
-      executing { DataCatalog::Base.check_status_code(response) }.should raise_error(DataCatalog::InternalServerError)
+      response = HTTParty::Response.new(nil, '', 500, 'Internal Server Error', {})
+      executing do
+        DataCatalog::Base.check_status_code(response)
+      end.should raise_error(DataCatalog::InternalServerError)
     end
         
   end # describe ".check_status_code"
@@ -143,29 +153,29 @@ describe DataCatalog::Base do
   describe ".error_message" do
     
     it "should return an 'Unable to parse:' message when body is blank" do
-      response = HTTParty::Response.new(nil,'',404,'Not Found',{})
+      response = HTTParty::Response.new(nil, '', 404, 'Not Found', {})
       DataCatalog::Base.error_message(response).should eql("Unable to parse: \"\"")
     end
     
     it "should return 'Response was empty' when body is an empty JSON object" do
-      response = HTTParty::Response.new(nil,'{}',404,'Not Found',{})
+      response = HTTParty::Response.new(nil, '{}', 404, 'Not Found', {})
       DataCatalog::Base.error_message(response).should eql("Response was empty")
     end
     
     it "should return 'Response was empty' when body is an empty array" do
-      response = HTTParty::Response.new(nil,'[]',404,'Not Found',{})
+      response = HTTParty::Response.new(nil, '[]', 404, 'Not Found', {})
       DataCatalog::Base.error_message(response).should eql("Response was empty")
     end
     
     it "should return the contents of the errors hash when it exists" do
       errors = '{"errors":["bad_error"]}'
-      response = HTTParty::Response.new(nil,errors,400,'Bad Request',{})
+      response = HTTParty::Response.new(nil, errors, 400, 'Bad Request', {})
       DataCatalog::Base.error_message(response).should eql('["bad_error"]')
     end
     
     it "should return the contents of the response body when no errors hash exists" do
       errors = '{"foo":["bar"]}'
-      response = HTTParty::Response.new(nil,errors,400,'Bad Request',{})
+      response = HTTParty::Response.new(nil, errors, 400, 'Bad Request', {})
       DataCatalog::Base.error_message(response).should eql('{"foo":["bar"]}')
     end
 

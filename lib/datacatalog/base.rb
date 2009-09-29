@@ -14,7 +14,7 @@ module DataCatalog
         raise ApiKeyNotConfigured, "Use DataCatalog.api_key = '...'"
       end
       default_options[:default_params] = {} if default_options[:default_params].nil?
-      default_options[:default_params].merge!({:api_key => DataCatalog.api_key})
+      default_options[:default_params].merge!({ :api_key => DataCatalog.api_key })
     end
 
     def self.set_up!
@@ -62,7 +62,7 @@ module DataCatalog
     def self.about
       default_options[:default_params] = {}
       set_base_uri
-      build_object(response_for{get('/')})
+      build_object(response_for { get('/') })
     end
 
   end # class Base
