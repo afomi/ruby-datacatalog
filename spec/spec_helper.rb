@@ -21,3 +21,16 @@ def clean_slate
     DataCatalog::Source.destroy(s.id)
   end
 end
+
+# Converts a valid ID into a almost-but-not-quite valid one.
+# Here is an example of what it does:
+# From ... 4ac2520b25b7e7056600034e
+# To   ... a42c25b0527b7e50660030e4
+def mangle(string)
+  array = string.chars.to_a
+  sliced = []
+  array.each_slice(2) { |s| sliced << s.reverse }
+  result = sliced.flatten.join
+  raise "mangle failed" if result == string
+  result
+end
