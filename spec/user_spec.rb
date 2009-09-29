@@ -9,11 +9,18 @@ describe DataCatalog::User do
 
   describe ".all" do
     
+    before(:each) do
+      @users = DataCatalog::User.all
+    end
+    
     it "should return an array of users" do
-      users = DataCatalog::User.all
-      users.should be_an_instance_of(Array)
-      users.first.should be_an_instance_of(DataCatalog::User)
-      users.first.email.should eql("ndc@sunlightlabs.com")
+      @users.each do |u|
+        u.should be_an_instance_of(DataCatalog::User)
+      end
+    end
+    
+    it "should include the 'Primary Admin'" do
+      @users.map(&:name).should include("Primary Admin")
     end
     
   end # describe ".all"
