@@ -13,7 +13,7 @@ describe DataCatalog::User do
       @users = DataCatalog::User.all
     end
     
-    it "should return an array of users" do
+    it "should return an enumeration of users" do
       @users.each do |u|
         u.should be_an_instance_of(DataCatalog::User)
       end

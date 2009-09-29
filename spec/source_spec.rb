@@ -9,10 +9,11 @@ describe DataCatalog::Source do
 
   describe ".all" do
     
-    it "should return an array of sources" do
+    it "should return an enumeration of sources" do
       sources = DataCatalog::Source.all
-      sources.should be_an_instance_of(Array)
-      #sources.first.should be_an_instance_of(DataCatalog::Source)
+      sources.each do |source|
+        source.should be_an_instance_of(DataCatalog::Source)
+      end
     end
     
   end # describe ".all"
