@@ -15,6 +15,6 @@ end
 
 def clean_slate
   DataCatalog::User.all.each do |u|
-    DataCatalog::User.destroy(u.id) unless u.email == "ndc@sunlightlabs.com"
+    DataCatalog::User.destroy(u.id) unless u.name == "Primary Admin"
   end
 end
