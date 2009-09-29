@@ -39,7 +39,7 @@ describe DataCatalog::Source do
         :url   => "http://fcc.gov/somedata.csv"
       })
       source.should be_an_instance_of(DataCatalog::Source)
-      source.url.should eql("http://fcc.gov/somedata.csv")
+      source.url.should == "http://fcc.gov/somedata.csv"
     end
     
   end # describe ".all"
@@ -55,7 +55,7 @@ describe DataCatalog::Source do
         :url => "http://fec.gov/newdata.csv"
       })
       source.should be_an_instance_of(DataCatalog::Source)
-      source.url.should eql("http://fec.gov/newdata.csv")
+      source.url.should == "http://fec.gov/newdata.csv"
     end
     
   end # describe ".all"  

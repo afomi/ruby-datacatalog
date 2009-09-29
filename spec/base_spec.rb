@@ -26,8 +26,8 @@ describe DataCatalog do
         temp_value = DataCatalog.api_key
       end
       
-      temp_value.should eql('temp_key')
-      DataCatalog.api_key.should eql('flurfeneugen')
+      temp_value.should == 'temp_key'
+      DataCatalog.api_key.should == 'flurfeneugen'
     end
     
   end # describe ".with_key"
@@ -88,7 +88,7 @@ describe DataCatalog::Base do
     it "should create an object when a filled hash is passed in" do
       base_object = DataCatalog::Base.build_object(:name => "John Smith", :email => "john@email.com")
       base_object.should be_an_instance_of(DataCatalog::Base)
-      base_object.email.should eql("john@email.com")
+      base_object.email.should == "john@email.com"
     end
     
     it "should return nil when an empty hash is passed in" do
@@ -108,7 +108,7 @@ describe DataCatalog::Base do
     it "should return information about the API" do
       base_object = DataCatalog::Base.about
       base_object.should be_an_instance_of(DataCatalog::Base)
-      base_object.name.should eql("National Data Catalog API")
+      base_object.name.should == "National Data Catalog API"
     end
 
   end # describe ".about"
@@ -154,29 +154,29 @@ describe DataCatalog::Base do
     
     it "should return an 'Unable to parse:' message when body is blank" do
       response = HTTParty::Response.new(nil, '', 404, 'Not Found', {})
-      DataCatalog::Base.error_message(response).should eql("Unable to parse: \"\"")
+      DataCatalog::Base.error_message(response).should == %(Unable to parse: "")
     end
     
     it "should return 'Response was empty' when body is an empty JSON object" do
       response = HTTParty::Response.new(nil, '{}', 404, 'Not Found', {})
-      DataCatalog::Base.error_message(response).should eql("Response was empty")
+      DataCatalog::Base.error_message(response).should == "Response was empty"
     end
     
     it "should return 'Response was empty' when body is an empty array" do
       response = HTTParty::Response.new(nil, '[]', 404, 'Not Found', {})
-      DataCatalog::Base.error_message(response).should eql("Response was empty")
+      DataCatalog::Base.error_message(response).should == "Response was empty"
     end
     
     it "should return the contents of the errors hash when it exists" do
       errors = '{"errors":["bad_error"]}'
       response = HTTParty::Response.new(nil, errors, 400, 'Bad Request', {})
-      DataCatalog::Base.error_message(response).should eql('["bad_error"]')
+      DataCatalog::Base.error_message(response).should == '["bad_error"]'
     end
     
     it "should return the contents of the response body when no errors hash exists" do
       errors = '{"foo":["bar"]}'
       response = HTTParty::Response.new(nil, errors, 400, 'Bad Request', {})
-      DataCatalog::Base.error_message(response).should eql('{"foo":["bar"]}')
+      DataCatalog::Base.error_message(response).should == '{"foo":["bar"]}'
     end
 
   end # describe ".error_message"
