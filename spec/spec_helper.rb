@@ -17,4 +17,7 @@ def clean_slate
   DataCatalog::User.all.each do |u|
     DataCatalog::User.destroy(u.id) unless u.name == "Primary Admin"
   end
+  DataCatalog::Source.all.each do |s|
+    DataCatalog::Source.destroy(s.id)
+  end
 end
