@@ -2,11 +2,12 @@ require File.dirname(__FILE__) + '/spec_helper'
 
 describe DataCatalog::Source do
 
-    def create_source
-    DataCatalog::Source.create({
+  def create_source(params={})
+    valid_params = {
       :title => "Some FCC Data",
       :url   => "http://fcc.gov/somedata.csv"
-    })
+    }
+    DataCatalog::Source.create(valid_params.merge(params))
   end
   
   before(:each) do
@@ -38,13 +39,31 @@ describe DataCatalog::Source do
   end # describe ".all"
   
   describe ".create" do
-    it "should create a new source when valid params are passed in" do
-      source = DataCatalog::Source.create({
-        :title => "Some FCC Data",
-        :url   => "http://fcc.gov/somedata.csv"
-      })
+    it "should create a new source from basic params" do
+      source = create_source
       source.should be_an_instance_of(DataCatalog::Source)
       source.url.should == "http://fcc.gov/somedata.csv"
+    end
+    
+    it "should create a new source from custom params" do
+      source = create_source({ :custom => {
+        "0" => {
+          :label       => "License",
+          :description => "License",
+          :type        => "string",
+          :value       => "Public Domain"
+        }
+      }})
+      source.should be_an_instance_of(DataCatalog::Source)
+      source.url.should == "http://fcc.gov/somedata.csv"
+      source.custom.should == {
+        "0" => {
+          "label"       => "License",
+          "description" => "License",
+          "type"        => "string",
+          "value"       => "Public Domain"
+        }
+      }
     end
   end # describe ".all"
 
@@ -53,7 +72,7 @@ describe DataCatalog::Source do
       @source = create_source
     end
 
-    it "should update an existing source when valid params are passed in" do
+    it "should update an existing source from valid params" do
       source = DataCatalog::Source.update(@source.id, {
         :url => "http://fec.gov/newdata.csv"
       })
