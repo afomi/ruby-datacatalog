@@ -35,17 +35,15 @@ module DataCatalog
     
     def self.error_message(response)
       parsed_body = JSON.parse(response.body)
-      
       if parsed_body.empty?
-        return "Response was empty"
+        "Response was empty"
       elsif parsed_body["errors"]
-        return parsed_body["errors"].inspect
+        parsed_body["errors"].inspect
       else
-        return response.body
+        response.body
       end
-      
-      rescue JSON::ParserError
-        return "Unable to parse: #{response.body.inspect}"
+    rescue JSON::ParserError
+      "Unable to parse: #{response.body.inspect}"
     end
 
     def self.response_for
