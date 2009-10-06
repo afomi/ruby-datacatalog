@@ -10,8 +10,8 @@ For now, the gem will not be packaged. Instead, install it manually:
     $ cd ruby-datacatalog
     $ rake check_dependencies
     $ rake build
-    $ rake install
-    # Or, instead of the line above (which uses sudo):
+    $ rake install # uses sudo
+    # Or, instead of the line above:
     $ gem install pkg/datacatalog-0.1.0.gem
 
 ## Usage
