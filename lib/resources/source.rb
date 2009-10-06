@@ -20,7 +20,7 @@ module DataCatalog
 
     def self.destroy(source_id)
       set_up!
-      response = response_for { delete("/sources/#{source_id}") }
+      response_for { delete("/sources/#{source_id}") }
       true
     end
 

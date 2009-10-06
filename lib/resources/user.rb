@@ -20,7 +20,7 @@ module DataCatalog
 
     def self.destroy(user_id)
       set_up!
-      response = response_for { delete("/users/#{user_id}") }
+      response_for { delete("/users/#{user_id}") }
       true
     end
     
@@ -52,7 +52,7 @@ module DataCatalog
 
     def delete_api_key!(api_key_id)
       self.class.set_up!
-      response = self.class.response_for do
+      self.class.response_for do
         self.class.delete("/users/#{self.id}/keys/#{api_key_id}")
       end
       update_api_keys
@@ -61,7 +61,7 @@ module DataCatalog
     
     def generate_api_key!(params)
       self.class.set_up!
-      response = self.class.response_for do
+      self.class.response_for do
         self.class.post("/users/#{self.id}/keys", :query => params )
       end
       update_api_keys
@@ -70,7 +70,7 @@ module DataCatalog
     
     def update_api_key!(api_key_id, params)
       self.class.set_up!
-      response = self.class.response_for do
+      self.class.response_for do
         self.class.put("/users/#{self.id}/keys/#{api_key_id}", :query => params)
       end
       update_api_keys
