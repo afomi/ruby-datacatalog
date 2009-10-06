@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Luigi Montanez", "David James"]
-  s.date = %q{2009-10-05}
+  s.date = %q{2009-10-06}
   s.description = %q{Ruby library that wraps the National Data Catalog API}
   s.email = %q{luigi@sunlightfoundation.com}
   s.extra_rdoc_files = [
@@ -27,11 +27,12 @@ Gem::Specification.new do |s|
      "doc/api_key_spec_for_rest_api.txt",
      "doc/api_key_spec_for_ruby_api.rb",
      "doc/mocking_options.md",
+     "lib/base.rb",
      "lib/datacatalog.rb",
-     "lib/datacatalog/api_key.rb",
-     "lib/datacatalog/base.rb",
-     "lib/datacatalog/source.rb",
-     "lib/datacatalog/user.rb",
+     "lib/require_helpers.rb",
+     "lib/resources/api_key.rb",
+     "lib/resources/source.rb",
+     "lib/resources/user.rb",
      "sandbox_api.yml.example",
      "spec/api_key_spec.rb",
      "spec/base_spec.rb",
@@ -58,11 +59,23 @@ Gem::Specification.new do |s|
     s.specification_version = 3
 
     if Gem::Version.new(Gem::RubyGemsVersion) >= Gem::Version.new('1.2.0') then
-      s.add_development_dependency(%q<rspec>, [">= 0"])
+      s.add_runtime_dependency(%q<activesupport>, [">= 2.3.4"])
+      s.add_runtime_dependency(%q<httparty>, [">= 0.4.5"])
+      s.add_runtime_dependency(%q<mash>, [">= 0.0.3"])
+      s.add_development_dependency(%q<jeweler>, [">= 1.2.1"])
+      s.add_development_dependency(%q<rspec>, [">= 1.2.8"])
     else
-      s.add_dependency(%q<rspec>, [">= 0"])
+      s.add_dependency(%q<activesupport>, [">= 2.3.4"])
+      s.add_dependency(%q<httparty>, [">= 0.4.5"])
+      s.add_dependency(%q<mash>, [">= 0.0.3"])
+      s.add_dependency(%q<jeweler>, [">= 1.2.1"])
+      s.add_dependency(%q<rspec>, [">= 1.2.8"])
     end
   else
-    s.add_dependency(%q<rspec>, [">= 0"])
+    s.add_dependency(%q<activesupport>, [">= 2.3.4"])
+    s.add_dependency(%q<httparty>, [">= 0.4.5"])
+    s.add_dependency(%q<mash>, [">= 0.0.3"])
+    s.add_dependency(%q<jeweler>, [">= 1.2.1"])
+    s.add_dependency(%q<rspec>, [">= 1.2.8"])
   end
 end
