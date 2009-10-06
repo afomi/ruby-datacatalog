@@ -19,6 +19,11 @@ module DataCatalog
       response = response_for { delete("/sources/#{source_id}") }
       true
     end
+
+    def self.find(id)
+      set_up!
+      build_object(response_for { get("/sources/#{id}") })
+    end
     
     def self.update(source_id, params={})
       set_up!
