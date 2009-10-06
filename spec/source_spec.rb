@@ -10,6 +10,15 @@ describe DataCatalog::Source do
     DataCatalog::Source.create(valid_params.merge(params))
   end
   
+  def create_3_sources
+    %w(FCC NASA DOE).each do |name|
+      DataCatalog::Source.create({
+        :title => "#{name} Data",
+        :url   => "http://#{name.downcase}.gov/data.xml"
+      })
+    end
+  end
+  
   before(:each) do
     setup_api
     clean_slate
@@ -17,12 +26,7 @@ describe DataCatalog::Source do
 
   describe ".all" do
     before do
-      %w(FCC NASA DOE).each do |name|
-        DataCatalog::Source.create({
-          :title => "#{name} Data",
-          :url   => "http://#{name.downcase}.gov/data.xml"
-        })
-      end
+      create_3_sources
       @sources = DataCatalog::Source.all
     end
     
@@ -38,6 +42,24 @@ describe DataCatalog::Source do
     end
   end # describe ".all"
   
+  describe ".all with conditions" do
+    before do
+      create_3_sources
+      @sources = DataCatalog::Source.all(:title => "NASA Data")
+    end
+    
+    it "should return an enumeration of sources" do
+      @sources.each do |source|
+        source.should be_an_instance_of(DataCatalog::Source)
+      end
+    end
+    
+    it "should return correct titles" do
+      expected = ["NASA Data"]
+      @sources.map(&:title).sort.should == expected.sort
+    end
+  end # describe ".all"  
+
   describe ".create" do
     it "should create a new source from basic params" do
       source = create_source
@@ -67,6 +89,24 @@ describe DataCatalog::Source do
     end
   end # describe ".create"
 
+  describe ".first" do
+    before do
+      create_3_sources
+      @sources = DataCatalog::Source
+    end
+
+    it "should return a source" do  
+      source = DataCatalog::Source.first(:title => "NASA Data")
+      source.should be_an_instance_of(DataCatalog::Source)
+      source.title.should == "NASA Data"
+    end
+    
+    it "should return nil if nothing found" do
+      source = DataCatalog::Source.first(:title => "UFO Data")
+      source.should be_nil
+    end
+  end # describe ".first"
+
   describe ".get" do
     before do
       @source = create_source
@@ -78,7 +118,7 @@ describe DataCatalog::Source do
       source.title.should == "Some FCC Data"
     end
     
-    it "should raise NotFound out if no user exists" do
+    it "should raise NotFound out if no source exists" do
       executing do
         DataCatalog::Source.get(mangle(@source.id))
       end.should raise_error(DataCatalog::NotFound)

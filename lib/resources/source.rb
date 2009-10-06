@@ -6,9 +6,9 @@ module DataCatalog
       alias_method :_get, :get
     end
       
-    def self.all
+    def self.all(conditions={})
       set_up!
-      response_for{ _get("/sources") }.map do |source|
+      response_for{ _get("/sources", :query => conditions) }.map do |source|
         build_object(source)
       end
     end
@@ -22,6 +22,12 @@ module DataCatalog
       set_up!
       response_for { delete("/sources/#{source_id}") }
       true
+    end
+    
+    def self.first(conditions={})
+      set_up!
+      response = response_for { _get("/sources", :query => conditions) }
+      build_object(response[0])
     end
 
     def self.get(id)
