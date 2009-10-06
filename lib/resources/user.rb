@@ -2,9 +2,13 @@ module DataCatalog
 
   class User < DataCatalog::Base
     
+    class << self
+      alias_method :_get, :get
+    end
+    
     def self.all
       set_up!
-      response_for{ get("/users") }.map do |user|
+      response_for{ _get("/users") }.map do |user|
         build_object(user)
       end
     end
@@ -12,7 +16,7 @@ module DataCatalog
     def self.create(params={})
       set_up!
       user = build_object(response_for { post("/users", :query => params) })
-      user.api_keys = response_for { get("/users/#{user.id}/keys") }.map do |key|
+      user.api_keys = response_for { _get("/users/#{user.id}/keys") }.map do |key|
         DataCatalog::ApiKey.build_object(key)
       end if user
       user
@@ -24,10 +28,10 @@ module DataCatalog
       true
     end
     
-    def self.find(id)
+    def self.get(id)
       set_up!
-      user = build_object(response_for { get("/users/#{id}") })
-      user.api_keys = response_for { get("/users/#{id}/keys") }.map do |key|
+      user = build_object(response_for { _get("/users/#{id}") })
+      user.api_keys = response_for { _get("/users/#{id}/keys") }.map do |key|
         DataCatalog::ApiKey.build_object(key)
       end if user
       user
@@ -37,8 +41,8 @@ module DataCatalog
       user = nil
       DataCatalog.with_key(api_key) do
         set_up!
-        checkup = build_object(response_for { get("/checkup") })
-        user = find(checkup.user.id)
+        checkup = build_object(response_for { _get("/checkup") })
+        user = get(checkup.user.id)
       end
       user
     end
@@ -80,10 +84,10 @@ module DataCatalog
     private
     
     def update_api_keys
-      self.api_keys = self.class.response_for { self.class.get("/users/#{self.id}/keys") }.map do |key|
+      self.api_keys = self.class.response_for { self.class._get("/users/#{self.id}/keys") }.map do |key|
         DataCatalog::ApiKey.build_object(key)
       end
-      updated_user = DataCatalog::User.find(self.id)
+      updated_user = DataCatalog::User.get(self.id)
       self.application_api_keys = updated_user.application_api_keys
       self.valet_api_keys = updated_user.valet_api_keys
     end

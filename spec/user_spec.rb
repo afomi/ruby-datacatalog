@@ -74,14 +74,14 @@ describe DataCatalog::User do
     end
 
     it "should return a user" do  
-      user = DataCatalog::User.find(@user.id)
+      user = DataCatalog::User.get(@user.id)
       user.should be_an_instance_of(DataCatalog::User)
       user.email.should == "ted@email.com"
     end
     
     it "should raise NotFound out if no user exists" do
       executing do
-        DataCatalog::User.find(mangle(@user.id))
+        DataCatalog::User.get(mangle(@user.id))
       end.should raise_error(DataCatalog::NotFound)
     end
   end # describe ".find"
