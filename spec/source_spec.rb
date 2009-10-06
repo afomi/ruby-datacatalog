@@ -65,7 +65,7 @@ describe DataCatalog::Source do
         }
       }
     end
-  end # describe ".all"
+  end # describe ".create"
 
   describe ".get" do
     before do
