@@ -4,22 +4,16 @@ module DataCatalog
   
     include HTTParty
     format :json
-    
-    def self.set_base_uri
-      default_options[:base_uri] = HTTParty.normalize_base_uri(DataCatalog.base_uri || 'api.nationaldatacatalog.com')
-    end
-    
-    def self.set_api_key
-      if DataCatalog.api_key.blank?
-        raise ApiKeyNotConfigured, "Use DataCatalog.api_key = '...'"
-      end
-      default_options[:default_params] = {} if default_options[:default_params].nil?
-      default_options[:default_params].merge!({ :api_key => DataCatalog.api_key })
+
+    def self.about
+      default_options[:default_params] = {}
+      set_base_uri
+      build_object(response_for { get('/') })
     end
 
-    def self.set_up!
-      set_base_uri
-      set_api_key
+    def self.build_object(response)
+      return nil if response.nil? || response.empty?
+      new(response)
     end
 
     def self.check_status_code(response)
@@ -52,15 +46,21 @@ module DataCatalog
       response
     end
 
-    def self.build_object(response)
-      return nil if response.nil? || response.empty?
-      new(response)
+    def self.set_api_key
+      if DataCatalog.api_key.blank?
+        raise ApiKeyNotConfigured, "Use DataCatalog.api_key = '...'"
+      end
+      default_options[:default_params] = {} if default_options[:default_params].nil?
+      default_options[:default_params].merge!({ :api_key => DataCatalog.api_key })
     end
 
-    def self.about
-      default_options[:default_params] = {}
+    def self.set_base_uri
+      default_options[:base_uri] = HTTParty.normalize_base_uri(DataCatalog.base_uri || 'api.nationaldatacatalog.com')
+    end
+
+    def self.set_up!
       set_base_uri
-      build_object(response_for { get('/') })
+      set_api_key
     end
 
   end # class Base

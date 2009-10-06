@@ -8,6 +8,21 @@ module DataCatalog
         build_object(user)
       end
     end
+
+    def self.create(params={})
+      set_up!
+      user = build_object(response_for { post("/users", :query => params) })
+      user.api_keys = response_for { get("/users/#{user.id}/keys") }.map do |key|
+        DataCatalog::ApiKey.build_object(key)
+      end if user
+      user
+    end
+
+    def self.destroy(user_id)
+      set_up!
+      response = response_for { delete("/users/#{user_id}") }
+      true
+    end
     
     def self.find(id)
       set_up!
@@ -28,39 +43,15 @@ module DataCatalog
       user
     end
     
-    def self.create(params={})
-      set_up!
-      user = build_object(response_for { post("/users", :query => params) })
-      user.api_keys = response_for { get("/users/#{user.id}/keys") }.map do |key|
-        DataCatalog::ApiKey.build_object(key)
-      end if user
-      user
-    end
-
     def self.update(user_id, params)
       set_up!
       build_object(response_for { put("/users/#{user_id}", :query => params) })
     end
     
-    def self.destroy(user_id)
-      set_up!
-      response = response_for { delete("/users/#{user_id}") }
-      true
-    end
-    
-    def generate_api_key!(params)
-      self.class.set_up!
-      
-      response = self.class.response_for do
-        self.class.post("/users/#{self.id}/keys", :query => params )
-      end
-      update_api_keys
-      true
-    end
-    
+    # ===== Instance Methods =====
+
     def delete_api_key!(api_key_id)
       self.class.set_up!
-      
       response = self.class.response_for do
         self.class.delete("/users/#{self.id}/keys/#{api_key_id}")
       end
@@ -68,9 +59,17 @@ module DataCatalog
       true
     end
     
+    def generate_api_key!(params)
+      self.class.set_up!
+      response = self.class.response_for do
+        self.class.post("/users/#{self.id}/keys", :query => params )
+      end
+      update_api_keys
+      true
+    end
+    
     def update_api_key!(api_key_id, params)
       self.class.set_up!
-      
       response = self.class.response_for do
         self.class.put("/users/#{self.id}/keys/#{api_key_id}", :query => params)
       end
