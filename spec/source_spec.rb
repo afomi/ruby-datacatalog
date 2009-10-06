@@ -67,23 +67,23 @@ describe DataCatalog::Source do
     end
   end # describe ".all"
 
-  describe ".find" do
+  describe ".get" do
     before do
       @source = create_source
     end
 
     it "should return a source" do  
-      source = DataCatalog::Source.find(@source.id)
+      source = DataCatalog::Source.get(@source.id)
       source.should be_an_instance_of(DataCatalog::Source)
       source.title.should == "Some FCC Data"
     end
     
     it "should raise NotFound out if no user exists" do
       executing do
-        DataCatalog::Source.find(mangle(@source.id))
+        DataCatalog::Source.get(mangle(@source.id))
       end.should raise_error(DataCatalog::NotFound)
     end
-  end # describe ".find"
+  end # describe ".get"
 
   describe ".update" do
     before do

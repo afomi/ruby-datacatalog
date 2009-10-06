@@ -1,10 +1,14 @@
 module DataCatalog
 
   class Source < DataCatalog::Base
-
+    
+    class << self
+      alias_method :_get, :get
+    end
+      
     def self.all
       set_up!
-      response_for{ get("/sources") }.map do |source|
+      response_for{ _get("/sources") }.map do |source|
         build_object(source)
       end
     end
@@ -20,16 +24,16 @@ module DataCatalog
       true
     end
 
-    def self.find(id)
+    def self.get(id)
       set_up!
-      build_object(response_for { get("/sources/#{id}") })
+      build_object(response_for { _get("/sources/#{id}") })
     end
     
     def self.update(source_id, params={})
       set_up!
       build_object(response_for { put("/sources/#{source_id}", :query => params) })
     end
-    
+
   end
   
 end
