@@ -38,7 +38,7 @@ module DataCatalog
       DataCatalog.with_key(api_key) do
         set_up!
         checkup = build_object(response_for { get("/checkup") })
-        user = find(checkup.user_id)
+        user = find(checkup.user.id)
       end
       user
     end
