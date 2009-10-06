@@ -8,8 +8,11 @@ For now, the gem will not be packaged. Instead, install it manually:
 
     $ git clone git clone git://github.com/sunlightlabs/ruby-datacatalog.git 
     $ cd ruby-datacatalog
-    $ gem build datacatalog.gemspec
-    $ gem install datacatalog-0.1.0.gem
+    $ rake check_dependencies
+    $ rake build
+    $ rake install
+    # Or, instead of the line above (which uses sudo):
+    $ gem install pkg/datacatalog-0.1.0.gem
 
 ## Usage
 
