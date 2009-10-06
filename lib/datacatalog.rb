@@ -27,4 +27,4 @@ end
 
 require 'require_helpers'
 require_file 'base'
-require_dir 'datacatalog'
+require_dir 'resources'
