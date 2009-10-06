@@ -25,6 +25,6 @@ module DataCatalog
   
 end
 
-require 'require_helpers'
+require File.dirname(__FILE__) + '/require_helpers'
 require_file 'base'
 require_dir 'resources'
