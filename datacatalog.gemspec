@@ -29,6 +29,7 @@ Gem::Specification.new do |s|
      "lib/main.rb",
      "lib/require_helpers.rb",
      "lib/resources/about.rb",
+     "lib/resources/api_key.rb",
      "lib/resources/source.rb",
      "lib/resources/user.rb",
      "sandbox_api.yml.example",
