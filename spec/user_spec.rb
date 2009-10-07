@@ -76,18 +76,6 @@ describe User do
     end
   end
   
-  describe ".find_by_api_key" do
-    before do
-      @user = create_user
-    end
-    
-    it "should return a user" do
-      user = User.find_by_api_key(@user.primary_api_key)
-      user.should be_an_instance_of(User)
-      user.email.should == "ted@email.com"
-    end
-  end
-  
   describe ".first" do
     before do
       create_3_users
@@ -102,6 +90,18 @@ describe User do
     it "should return nil if nothing found" do
       user = User.first(:name => "Elvis")
       user.should be_nil
+    end
+  end
+  
+  describe ".get_by_api_key" do
+    before do
+      @user = create_user
+    end
+    
+    it "should return a user" do
+      user = User.get_by_api_key(@user.primary_api_key)
+      user.should be_an_instance_of(User)
+      user.email.should == "ted@email.com"
     end
   end
 

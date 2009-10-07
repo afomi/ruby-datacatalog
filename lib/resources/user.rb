@@ -14,7 +14,7 @@ module DataCatalog
       one(http_delete("/users/#{user_id}"))
     end
 
-    def self.find_by_api_key(api_key)
+    def self.get_by_api_key(api_key)
       DataCatalog.with_key(api_key) do
         # TODO: create checkup.rb (a standalone resource)
         user_id = one(http_get("/checkup")).user.id
