@@ -15,13 +15,11 @@ module DataCatalog
     end
 
     def self.find_by_api_key(api_key)
-      user = nil
       DataCatalog.with_key(api_key) do
         # TODO: create checkup.rb (a standalone resource)
         user_id = one(http_get("/checkup")).user.id
-        user = one(http_get("/users/#{user_id}"))
+        one(http_get("/users/#{user_id}"))
       end
-      user
     end
 
     def self.first(conditions={})
