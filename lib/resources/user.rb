@@ -44,9 +44,7 @@ module DataCatalog
     # == Helpers
     
     def self.with_api_keys(user)
-      if user
-        user.api_keys = many(http_get("/users/#{user.id}/keys"))
-      end
+      user.api_keys = ApiKey.all(user.id) if user
       user
     end
     

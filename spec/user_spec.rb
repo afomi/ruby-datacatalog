@@ -122,8 +122,11 @@ describe User do
       end
 
       it "should include 2 api_keys" do
-        types = @u.api_keys.map { |key| key.key_type }
-        types.should == %w(primary application)
+        keys = @u.api_keys
+        keys.map(&:key_type).should == %w(primary application)
+        keys.each do |key|
+          key.should be_an_instance_of(ApiKey)
+        end
       end
     end
     
@@ -151,8 +154,11 @@ describe User do
       end
 
       it "should include 2 api_keys" do
-        types = @u.api_keys.map { |key| key.key_type }
-        types.should == %w(primary application)
+        keys = @u.api_keys
+        keys.map(&:key_type).should == %w(primary application)
+        keys.each do |key|
+          key.should be_an_instance_of(ApiKey)
+        end
       end
     end
 
