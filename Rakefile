@@ -5,6 +5,7 @@ begin
   require 'jeweler'
   Jeweler::Tasks.new do |gem|
     gem.name = "datacatalog"
+    gem.rubyforge_project = "datacatalog"
     gem.summary = %Q{Wrapper for the National Data Catalog API}
     gem.description = %Q{Ruby library that wraps the National Data Catalog API}
     gem.email = "luigi@sunlightfoundation.com"

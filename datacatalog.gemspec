@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Luigi Montanez", "David James"]
-  s.date = %q{2009-10-06}
+  s.date = %q{2009-10-07}
   s.description = %q{Ruby library that wraps the National Data Catalog API}
   s.email = %q{luigi@sunlightfoundation.com}
   s.extra_rdoc_files = [
@@ -44,6 +44,7 @@ Gem::Specification.new do |s|
   s.homepage = %q{http://github.com/sunlightlabs/datacatalog}
   s.rdoc_options = ["--charset=UTF-8"]
   s.require_paths = ["lib"]
+  s.rubyforge_project = %q{datacatalog}
   s.rubygems_version = %q{1.3.5}
   s.summary = %q{Wrapper for the National Data Catalog API}
   s.test_files = [
