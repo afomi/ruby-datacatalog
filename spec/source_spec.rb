@@ -1,25 +1,29 @@
 require File.dirname(__FILE__) + '/spec_helper'
+include DataCatalog
 
-describe DataCatalog::Source do
-
+module SourceHelpers
   def create_source(params={})
     valid_params = {
       :title => "Some FCC Data",
       :url   => "http://fcc.gov/somedata.csv"
     }
-    DataCatalog::Source.create(valid_params.merge(params))
+    Source.create(valid_params.merge(params))
   end
-  
+
   def create_3_sources
     %w(FCC NASA DOE).each do |name|
-      DataCatalog::Source.create({
+      Source.create({
         :title => "#{name} Data",
         :url   => "http://#{name.downcase}.gov/data.xml"
       })
     end
   end
-  
-  before(:each) do
+end
+
+describe Source do
+  include SourceHelpers
+
+  before do
     setup_api
     clean_slate
   end
@@ -27,30 +31,30 @@ describe DataCatalog::Source do
   describe ".all" do
     before do
       create_3_sources
-      @sources = DataCatalog::Source.all
+      @sources = Source.all
     end
-    
+  
     it "should return an enumeration of sources" do
       @sources.each do |source|
-        source.should be_an_instance_of(DataCatalog::Source)
+        source.should be_an_instance_of(Source)
       end
     end
-    
+  
     it "should return correct titles" do
       expected = ["FCC Data", "NASA Data", "DOE Data"]
       @sources.map(&:title).sort.should == expected.sort
     end
-  end # describe ".all"
-  
+  end
+
   describe ".all with conditions" do
     before do
       create_3_sources
-      @sources = DataCatalog::Source.all(:title => "NASA Data")
+      @sources = Source.all(:title => "NASA Data")
     end
     
     it "should return an enumeration of sources" do
       @sources.each do |source|
-        source.should be_an_instance_of(DataCatalog::Source)
+        source.should be_an_instance_of(Source)
       end
     end
     
@@ -58,12 +62,12 @@ describe DataCatalog::Source do
       expected = ["NASA Data"]
       @sources.map(&:title).sort.should == expected.sort
     end
-  end # describe ".all"  
+  end
 
   describe ".create" do
     it "should create a new source from basic params" do
       source = create_source
-      source.should be_an_instance_of(DataCatalog::Source)
+      source.should be_an_instance_of(Source)
       source.url.should == "http://fcc.gov/somedata.csv"
     end
     
@@ -76,7 +80,7 @@ describe DataCatalog::Source do
           :value       => "Public Domain"
         }
       }})
-      source.should be_an_instance_of(DataCatalog::Source)
+      source.should be_an_instance_of(Source)
       source.url.should == "http://fcc.gov/somedata.csv"
       source.custom.should == {
         "0" => {
@@ -87,73 +91,72 @@ describe DataCatalog::Source do
         }
       }
     end
-  end # describe ".create"
-
+  end
+  
   describe ".first" do
     before do
       create_3_sources
-      @sources = DataCatalog::Source
     end
-
+  
     it "should return a source" do  
-      source = DataCatalog::Source.first(:title => "NASA Data")
-      source.should be_an_instance_of(DataCatalog::Source)
+      source = Source.first(:title => "NASA Data")
+      source.should be_an_instance_of(Source)
       source.title.should == "NASA Data"
     end
     
     it "should return nil if nothing found" do
-      source = DataCatalog::Source.first(:title => "UFO Data")
+      source = Source.first(:title => "UFO Data")
       source.should be_nil
     end
-  end # describe ".first"
-
+  end
+  
   describe ".get" do
     before do
       @source = create_source
     end
-
+  
     it "should return a source" do  
-      source = DataCatalog::Source.get(@source.id)
-      source.should be_an_instance_of(DataCatalog::Source)
+      source = Source.get(@source.id)
+      source.should be_an_instance_of(Source)
       source.title.should == "Some FCC Data"
     end
     
     it "should raise NotFound out if no source exists" do
       executing do
-        DataCatalog::Source.get(mangle(@source.id))
-      end.should raise_error(DataCatalog::NotFound)
+        Source.get(mangle(@source.id))
+      end.should raise_error(NotFound)
     end
-  end # describe ".get"
-
+  end
+  
   describe ".update" do
     before do
       @source = create_source
     end
-
+  
     it "should update an existing source from valid params" do
-      source = DataCatalog::Source.update(@source.id, {
+      source = Source.update(@source.id, {
         :url => "http://fec.gov/newdata.csv"
       })
-      source.should be_an_instance_of(DataCatalog::Source)
+      source.should be_an_instance_of(Source)
       source.url.should == "http://fec.gov/newdata.csv"
     end
-  end # describe ".all"  
+  end
   
   describe ".destroy" do
     before do
       @source = create_source
     end
-
+  
     it "should destroy an existing source" do
-      result = DataCatalog::Source.destroy(@source.id)
+      result = Source.destroy(@source.id)
       result.should be_true
     end
     
     it "should raise NotFound when attempting to destroy non-existing source" do
       executing do
-        DataCatalog::Source.destroy(mangle(@source.id))
-      end.should raise_error(DataCatalog::NotFound)
+        Source.destroy(mangle(@source.id))
+      end.should raise_error(NotFound)
     end
-  end # describe ".destroy"
-  
+  end
+
 end

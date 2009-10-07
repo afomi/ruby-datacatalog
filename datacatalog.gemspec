@@ -26,13 +26,17 @@ Gem::Specification.new do |s|
      "datacatalog.gemspec",
      "lib/base.rb",
      "lib/datacatalog.rb",
+     "lib/main.rb",
      "lib/require_helpers.rb",
+     "lib/resources/about.rb",
      "lib/resources/api_key.rb",
      "lib/resources/source.rb",
      "lib/resources/user.rb",
      "sandbox_api.yml.example",
+     "spec/about_spec.rb",
      "spec/api_key_spec.rb",
      "spec/base_spec.rb",
+     "spec/datacatalog_spec.rb",
      "spec/source_spec.rb",
      "spec/spec.opts",
      "spec/spec_helper.rb",
@@ -45,8 +49,10 @@ Gem::Specification.new do |s|
   s.rubygems_version = %q{1.3.5}
   s.summary = %q{Wrapper for the National Data Catalog API}
   s.test_files = [
-    "spec/api_key_spec.rb",
+    "spec/about_spec.rb",
+     "spec/api_key_spec.rb",
      "spec/base_spec.rb",
+     "spec/datacatalog_spec.rb",
      "spec/source_spec.rb",
      "spec/spec_helper.rb",
      "spec/user_spec.rb"

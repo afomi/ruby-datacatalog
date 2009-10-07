@@ -1,7 +1,7 @@
 module DataCatalog
 
-  class ApiKey < DataCatalog::Base
+  class ApiKey < Base
     
-  end # class ApiKey
+  end
   
-end # module DataCatalog
+end

@@ -1,97 +1,75 @@
 module DataCatalog
 
-  class User < DataCatalog::Base
+  class User < Base
     
-    class << self
-      alias_method :_get, :get
-    end
-    
-    def self.all
-      set_up!
-      response_for{ _get("/users") }.map do |user|
-        build_object(user)
-      end
+    def self.all(conditions={})
+      many(http_get("/users", :query => conditions))
     end
 
     def self.create(params={})
-      set_up!
-      user = build_object(response_for { post("/users", :query => params) })
-      user.api_keys = response_for { _get("/users/#{user.id}/keys") }.map do |key|
-        DataCatalog::ApiKey.build_object(key)
-      end if user
-      user
+      with_api_keys(one(http_post("/users", :query => params)))
     end
 
     def self.destroy(user_id)
-      set_up!
-      response_for { delete("/users/#{user_id}") }
-      true
+      one(http_delete("/users/#{user_id}"))
     end
-    
-    def self.get(id)
-      set_up!
-      user = build_object(response_for { _get("/users/#{id}") })
-      user.api_keys = response_for { _get("/users/#{id}/keys") }.map do |key|
-        DataCatalog::ApiKey.build_object(key)
-      end if user
-      user
-    end
-    
+
     def self.find_by_api_key(api_key)
       user = nil
       DataCatalog.with_key(api_key) do
-        set_up!
-        checkup = build_object(response_for { _get("/checkup") })
-        user = get(checkup.user.id)
+        # TODO: create checkup.rb (a standalone resource)
+        user_id = one(http_get("/checkup")).user.id
+        user = one(http_get("/users/#{user_id}"))
       end
       user
     end
+
+    def self.first(conditions={})
+      one(http_get("/users", :query => conditions).first)
+    end
+    
+    def self.get(id)
+      with_api_keys(one(http_get("/users/#{id}")))
+    end
     
     def self.update(user_id, params)
-      set_up!
-      build_object(response_for { put("/users/#{user_id}", :query => params) })
+      one(http_put("/users/#{user_id}", :query => params))
+    end
+
+    # == Helpers
+    
+    def self.with_api_keys(user)
+      user.api_keys = http_get("/users/#{user.id}/keys") if user
+      user
     end
     
-    # ===== Instance Methods =====
+    # == Instance Methods
 
     def delete_api_key!(api_key_id)
-      self.class.set_up!
-      self.class.response_for do
-        self.class.delete("/users/#{self.id}/keys/#{api_key_id}")
-      end
+      self.class.http_delete("/users/#{self.id}/keys/#{api_key_id}")
       update_api_keys
-      true
     end
-    
+
     def generate_api_key!(params)
-      self.class.set_up!
-      self.class.response_for do
-        self.class.post("/users/#{self.id}/keys", :query => params )
-      end
+      self.class.http_post("/users/#{self.id}/keys", :query => params)
       update_api_keys
-      true
     end
-    
+
     def update_api_key!(api_key_id, params)
-      self.class.set_up!
-      self.class.response_for do
-        self.class.put("/users/#{self.id}/keys/#{api_key_id}", :query => params)
-      end
+      self.class.http_put("/users/#{self.id}/keys/#{api_key_id}", :query => params)
       update_api_keys
-      true
     end
     
-    private
+    protected
     
     def update_api_keys
-      self.api_keys = self.class.response_for { self.class._get("/users/#{self.id}/keys") }.map do |key|
-        DataCatalog::ApiKey.build_object(key)
-      end
-      updated_user = DataCatalog::User.get(self.id)
-      self.application_api_keys = updated_user.application_api_keys
-      self.valet_api_keys = updated_user.valet_api_keys
+      self.api_keys = self.class.many(self.class.http_get("/users/#{self.id}/keys"))
+      user = User.get(id)
+      self.application_api_keys = user.application_api_keys
+      self.valet_api_keys = user.valet_api_keys
+      true
     end
     
-  end # class User
+  end
 
-end # module DataCatalog
+end

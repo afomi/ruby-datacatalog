@@ -1,33 +1,57 @@
 module DataCatalog
 
   class Base < Mash
-  
+    
+    DEFAULT_BASE_URI = 'http://api.nationaldatacatalog.com'
+
     include HTTParty
+
     format :json
-
-    def self.about
-      default_options[:default_params] = {}
-      set_base_uri
-      build_object(response_for { get('/') })
-    end
-
-    def self.build_object(response)
-      return nil if response.nil? || response.empty?
-      new(response)
-    end
-
-    def self.check_status_code(response)
-      case response.code
-      when 400: raise BadRequest, error_message(response)
-      when 401: raise Unauthorized, error_message(response)
-      when 403: raise Forbidden, error_message(response)
-      when 404: raise NotFound, error_message(response)
-      when 409: raise Conflict, error_message(response)
-      when 500: raise InternalServerError, error_message(response)
-      end
+    base_uri DEFAULT_BASE_URI
+    
+    class << self
+      alias_method :_delete, :delete
+      alias_method :_get,    :get
+      alias_method :_post,   :post
+      alias_method :_put,    :put
+      
+      undef_method :delete
+      undef_method :get
+      undef_method :post
+      undef_method :put
     end
     
-    def self.error_message(response)
+    def self.http_delete(path, options={})
+      check_status(_delete(path, options))
+    end
+    
+    def self.http_get(path, options={})
+      check_status(_get(path, options))
+    end
+
+    def self.http_post(path, options={})
+      check_status(_post(path, options))
+    end
+
+    def self.http_put(path, options={})
+      check_status(_put(path, options))
+    end
+
+    # == protected
+    
+    def self.check_status(response)
+      case response.code
+      when 400: raise BadRequest,          error(response)
+      when 401: raise Unauthorized,        error(response)
+      when 403: raise Forbidden,           error(response)
+      when 404: raise NotFound,            error(response)
+      when 409: raise Conflict,            error(response)
+      when 500: raise InternalServerError, error(response)
+      end
+      response
+    end
+    
+    def self.error(response)
       parsed_body = JSON.parse(response.body)
       if parsed_body.empty?
         "Response was empty"
@@ -39,31 +63,15 @@ module DataCatalog
     rescue JSON::ParserError
       "Unable to parse: #{response.body.inspect}"
     end
-
-    def self.response_for
-      response = yield
-      check_status_code(response)
-      response
+    
+    def self.many(response)
+      response.map { |item| new(item) }
     end
 
-    def self.set_api_key
-      if DataCatalog.api_key.blank?
-        raise ApiKeyNotConfigured, "Use DataCatalog.api_key = '...'"
-      end
-      default_options[:default_params] = {} if default_options[:default_params].nil?
-      default_options[:default_params].merge!({ :api_key => DataCatalog.api_key })
+    def self.one(response)
+      response.blank? ? nil : new(response)
     end
 
-    def self.set_base_uri
-      uri = DataCatalog.base_uri || 'api.nationaldatacatalog.com'
-      default_options[:base_uri] = HTTParty.normalize_base_uri(uri)
-    end
+  end
 
-    def self.set_up!
-      set_base_uri
-      set_api_key
-    end
-
-  end # class Base
-
-end # module DataCatalog
+end
