@@ -5,12 +5,12 @@
 
 Gem::Specification.new do |s|
   s.name = %q{datacatalog}
-  s.version = "0.2.3"
+  s.version = "0.2.4"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Luigi Montanez", "David James"]
-  s.date = %q{2009-10-09}
-  s.description = %q{Ruby library that wraps the National Data Catalog API}
+  s.date = %q{2009-10-10}
+  s.description = %q{A Ruby client library for the National Data Catalog API}
   s.email = %q{luigi@sunlightfoundation.com}
   s.extra_rdoc_files = [
     "LICENSE.md",
@@ -36,22 +36,27 @@ Gem::Specification.new do |s|
      "spec/api_key_spec.rb",
      "spec/base_spec.rb",
      "spec/datacatalog_spec.rb",
+     "spec/setup_api.rb",
      "spec/source_spec.rb",
      "spec/spec.opts",
      "spec/spec_helper.rb",
-     "spec/user_spec.rb"
+     "spec/user_spec.rb",
+     "tasks/rdoc.rake",
+     "tasks/spec.rake",
+     "tasks/test_api.rake"
   ]
   s.homepage = %q{http://github.com/sunlightlabs/datacatalog}
   s.rdoc_options = ["--charset=UTF-8"]
   s.require_paths = ["lib"]
   s.rubyforge_project = %q{datacatalog}
   s.rubygems_version = %q{1.3.5}
-  s.summary = %q{Wrapper for the National Data Catalog API}
+  s.summary = %q{Client for the National Data Catalog API}
   s.test_files = [
     "spec/about_spec.rb",
      "spec/api_key_spec.rb",
      "spec/base_spec.rb",
      "spec/datacatalog_spec.rb",
+     "spec/setup_api.rb",
      "spec/source_spec.rb",
      "spec/spec_helper.rb",
      "spec/user_spec.rb"
@@ -65,12 +70,14 @@ Gem::Specification.new do |s|
       s.add_runtime_dependency(%q<activesupport>, [">= 2.3.4"])
       s.add_runtime_dependency(%q<httparty>, [">= 0.4.5"])
       s.add_runtime_dependency(%q<mash>, [">= 0.0.3"])
+      s.add_runtime_dependency(%q<version_string>, [">= 0.1.0"])
       s.add_development_dependency(%q<jeweler>, [">= 1.2.1"])
       s.add_development_dependency(%q<rspec>, [">= 1.2.8"])
     else
       s.add_dependency(%q<activesupport>, [">= 2.3.4"])
       s.add_dependency(%q<httparty>, [">= 0.4.5"])
       s.add_dependency(%q<mash>, [">= 0.0.3"])
+      s.add_dependency(%q<version_string>, [">= 0.1.0"])
       s.add_dependency(%q<jeweler>, [">= 1.2.1"])
       s.add_dependency(%q<rspec>, [">= 1.2.8"])
     end
@@ -78,6 +85,7 @@ Gem::Specification.new do |s|
     s.add_dependency(%q<activesupport>, [">= 2.3.4"])
     s.add_dependency(%q<httparty>, [">= 0.4.5"])
     s.add_dependency(%q<mash>, [">= 0.0.3"])
+    s.add_dependency(%q<version_string>, [">= 0.1.0"])
     s.add_dependency(%q<jeweler>, [">= 1.2.1"])
     s.add_dependency(%q<rspec>, [">= 1.2.8"])
   end
