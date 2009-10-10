@@ -7,4 +7,4 @@ Spec::Rake::SpecTask.new(:spec) do |spec|
   spec.rcov_opts = ['--exclude', '^spec,/gems/']
 end
 
-task :spec => :check_dependencies
+task :spec => [:check_dependencies, "spec:test_api"]
