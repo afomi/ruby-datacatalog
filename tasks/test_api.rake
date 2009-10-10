@@ -7,7 +7,7 @@ namespace :spec do
     require File.dirname(__FILE__) + '/../spec/setup_api'
     setup_api
     if DataCatalog::About.version_at_least?(MIN_VERSION)
-      puts "API tested successfully."
+      puts "API connection looks good."
     else
       version = DataCatalog::About.get.version
       puts "API connection worked but reports version #{version}."
