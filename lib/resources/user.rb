@@ -7,7 +7,7 @@ module DataCatalog
     end
 
     def self.create(params={})
-      with_api_keys(one(http_post("/users", :query => params)))
+      with_api_keys(one(http_post("/users", :body => params)))
     end
 
     def self.destroy(user_id)
@@ -31,7 +31,7 @@ module DataCatalog
     end
     
     def self.update(user_id, params)
-      one(http_put("/users/#{user_id}", :query => params))
+      one(http_put("/users/#{user_id}", :body => params))
     end
 
     # == Helpers
