@@ -7,7 +7,7 @@ module DataCatalog
     end
 
     def self.create(params={})
-      one(http_post("/sources", :query => params))
+      one(http_post("/sources", :body => params))
     end
 
     def self.destroy(source_id)
@@ -23,7 +23,7 @@ module DataCatalog
     end
     
     def self.update(source_id, params={})
-      one(http_put("/sources/#{source_id}", :query => params))
+      one(http_put("/sources/#{source_id}", :body => params))
     end
 
   end
