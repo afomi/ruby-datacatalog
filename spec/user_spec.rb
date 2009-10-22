@@ -67,6 +67,7 @@ describe User do
       @user.should be_an_instance_of(User)
       @user.name.should == "Ted Smith"
       @user.email.should == "ted@email.com"
+      @user.created_at.should be_an_instance_of(Time)
     end
 
     it "should raise BadRequest when invalid params are passed in" do

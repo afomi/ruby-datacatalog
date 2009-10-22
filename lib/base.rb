@@ -71,6 +71,14 @@ module DataCatalog
     def self.one(response)
       response.blank? ? nil : new(response)
     end
+    
+    def method_missing(method_name, *args)
+      if method_name.to_s.match(/.*_(on|at)\z/)
+        return Time.parse(super)
+      else
+        super
+      end
+    end
 
   end
 
