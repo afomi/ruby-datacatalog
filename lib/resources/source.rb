@@ -2,8 +2,8 @@ module DataCatalog
 
   class Source < Base
     
-    def self.all(conditions={})
-      many(http_get("/sources", :query => conditions))
+    def self.all(conditions={})      
+      many(http_get("/sources", :query => query_hash(conditions)))
     end
 
     def self.create(params={})
@@ -15,7 +15,7 @@ module DataCatalog
     end
     
     def self.first(conditions={})
-      one(http_get("/sources", :query => conditions).first)
+     one(http_get("/sources", :query => query_hash(conditions)).first)
     end
 
     def self.get(id)
