@@ -125,5 +125,12 @@ describe Base do
       hash.should be_nil
     end
   end
+  
+  describe ".filterize" do
+    it "should create a properly formatted filter string" do
+      s = Base.filterize(:name => "John", :zip => "20036")
+      s.should == 'name:"John" zip:"20036"'
+    end    
+  end
 
 end

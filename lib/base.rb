@@ -69,7 +69,28 @@ module DataCatalog
     end
 
     def self.one(response)
+      return true if response && response.respond_to?(:code) && response.code == 204
       response.blank? ? nil : new(response)
+    end
+    
+    def self.query_hash(conditions)
+      if conditions.empty?
+        query_hash = {}
+      else
+        query_hash = {:filter => filterize(conditions)}
+      end
+    end
+    
+    def self.filterize(conditions)
+      filter_string = ""
+      new_conditions = {}
+      conditions.each do |k,v|
+        new_conditions[k.to_s] = v
+      end
+      new_conditions.sort.each do |k,v|
+        filter_string += "#{k.to_s}:\"#{v}\" "
+      end
+      filter_string.strip!
     end
     
     def method_missing(method_name, *args)
