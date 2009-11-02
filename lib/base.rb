@@ -74,11 +74,7 @@ module DataCatalog
     end
     
     def self.query_hash(conditions)
-      if conditions.empty?
-        query_hash = {}
-      else
-        query_hash = { :filter => filterize(conditions) }
-      end
+      conditions == {} ? {} : { :filter => filterize(conditions) }
     end
     
     def self.filterize(conditions)
