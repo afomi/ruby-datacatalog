@@ -14,8 +14,8 @@ module DataCatalog
       one(http_delete("/sources/#{source_id}"))
     end
     
-    def self.first(conditions={})
-     one(http_get("/sources", :query => query_hash(conditions)).first)
+    def self.first(conditions= {})
+      one(http_get("/sources", :query => query_hash(conditions)).first)
     end
 
     def self.get(id)

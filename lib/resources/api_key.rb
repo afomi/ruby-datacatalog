@@ -28,7 +28,7 @@ module DataCatalog
     
     # == Helpers
     
-    def self.uri(user_id, id = nil)
+    def self.uri(user_id, id=nil)
       raise Error, "user_id cannot be blank" if user_id.blank?
       "/users/#{user_id}/keys/#{id}"
     end

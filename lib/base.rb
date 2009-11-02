@@ -77,7 +77,7 @@ module DataCatalog
       if conditions.empty?
         query_hash = {}
       else
-        query_hash = {:filter => filterize(conditions)}
+        query_hash = { :filter => filterize(conditions) }
       end
     end
     
