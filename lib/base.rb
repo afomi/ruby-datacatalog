@@ -78,15 +78,7 @@ module DataCatalog
     end
     
     def self.filterize(conditions)
-      filter_string = ""
-      new_conditions = {}
-      conditions.each do |k,v|
-        new_conditions[k.to_s] = v
-      end
-      new_conditions.sort.each do |k,v|
-        filter_string += "#{k.to_s}:\"#{v}\" "
-      end
-      filter_string.strip!
+      conditions.map { |k, v| %(#{k}:"#{v}") }.join(" ")
     end
     
     def method_missing(method_name, *args)
