@@ -18,7 +18,6 @@ Gem::Specification.new do |s|
   ]
   s.files = [
     ".gitignore",
-     "CHANGES.md",
      "LICENSE.md",
      "README.md",
      "Rakefile",
