@@ -3,7 +3,7 @@ module DataCatalog
   class User < Base
     
     def self.all(conditions={})
-      many(http_get("/users", :query => conditions))
+      many(http_get("/users", :query => query_hash(conditions)))
     end
 
     def self.create(params={})
@@ -15,7 +15,7 @@ module DataCatalog
     end
 
     def self.first(conditions={})
-      one(http_get("/users", :query => conditions).first)
+      one(http_get("/users", :query => query_hash(conditions)).first)
     end
     
     def self.get(id)

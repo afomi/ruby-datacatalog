@@ -3,7 +3,7 @@ module DataCatalog
   class ApiKey < Base
     
     def self.all(user_id, conditions={})
-      many(http_get(uri(user_id), :query => conditions))
+      many(http_get(uri(user_id), :query => query_hash(conditions)))
     end
 
     def self.create(user_id, params={})
@@ -15,7 +15,7 @@ module DataCatalog
     end
 
     def self.first(user_id, conditions={})
-      one(http_get(uri(user_id), :query => conditions).first)
+      one(http_get(uri(user_id), :query => query_hash(conditions)).first)
     end
 
     def self.get(user_id, id)
