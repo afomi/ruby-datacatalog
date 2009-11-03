@@ -4,8 +4,9 @@ include DataCatalog
 module SourceHelpers
   def create_source(params={})
     valid_params = {
-      :title => "Some FCC Data",
-      :url   => "http://fcc.gov/somedata.csv"
+      :title       => "Some FCC Data",
+      :url         => "http://fcc.gov/somedata.csv",
+      :source_type => "dataset"
     }
     Source.create(valid_params.merge(params))
   end
@@ -13,8 +14,9 @@ module SourceHelpers
   def create_3_sources
     %w(FCC NASA DOE).each do |name|
       Source.create({
-        :title => "#{name} Data",
-        :url   => "http://#{name.downcase}.gov/data.xml"
+        :title        => "#{name} Data",
+        :url          => "http://#{name.downcase}.gov/data.xml",
+        :source_type  => "dataset"
       })
     end
   end

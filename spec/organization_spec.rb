@@ -6,7 +6,7 @@ describe Organization do
   def create_3_organizations
     @organization_names = ["Federal Communications Commission", "Federal Election Commission", "Department of State"]
     @organization_names.each do |name|
-      Organization.create(:name => name)
+      Organization.create(:name => name, :org_type => "governmental")
     end
   end
 
@@ -56,7 +56,7 @@ describe Organization do
   describe ".get" do
 
     before do
-      @organization = Organization.create(:name => "Federal Election Commission")
+      @organization = Organization.create(:name => "Federal Election Commission", :org_type => "governmental")
     end
 
     it "should return an organization" do
@@ -76,14 +76,14 @@ describe Organization do
   describe ".create" do
     
     it "should create a new organization when valid params are passed in" do
-      @organization = Organization.create(:name => "Federal Communications Commission")
+      @organization = Organization.create(:name => "Federal Communications Commission", :org_type => "governmental")
       @organization.should be_an_instance_of(Organization)
       @organization.name.should == "Federal Communications Commission"
     end
     
     it "should raise BadRequest when a bad URL is passed in" do
       executing do 
-        Organization.create(:name => "Bad Org", :url => "htt:p//jlkj!3")
+        Organization.create(:name => "Bad Org", :url => "htt:p//jlkj!3", :org_type => "governmental")
       end.should raise_error(BadRequest)
     end
 
@@ -92,7 +92,7 @@ describe Organization do
   describe ".update" do
 
     before do
-      @organization = Organization.create(:name => "Federal Election Commission")
+      @organization = Organization.create(:name => "Federal Election Commission", :org_type => "governmental")
     end
   
     it "should update an existing organization from valid params" do
@@ -106,7 +106,7 @@ describe Organization do
   describe ".destroy" do
 
     before do
-      @organization = Organization.create(:name => "Federal Election Commission")
+      @organization = Organization.create(:name => "Federal Election Commission", :org_type => "governmental")
     end
   
     it "should destroy an existing organization" do
