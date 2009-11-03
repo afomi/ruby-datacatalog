@@ -3,27 +3,33 @@ module DataCatalog
   class Organization < Base
     
     def self.all(conditions={})
-      many(http_get("/organizations", :query => query_hash(conditions)))
+      many(http_get(uri, :query => query_hash(conditions)))
     end
 
     def self.create(params={})
-      one(http_post("/organizations", :body => params))
+      one(http_post(uri, :body => params))
     end
 
-    def self.destroy(organization_id)
-      one(http_delete("/organizations/#{organization_id}"))
+    def self.destroy(id)
+      one(http_delete(uri(id)))
     end
     
     def self.first(conditions={})
-      one(http_get("/organizations", :query => query_hash(conditions)).first)
+      one(http_get(uri, :query => query_hash(conditions)).first)
     end
 
     def self.get(id)
-      one(http_get("/organizations/#{id}"))
+      one(http_get(uri(id)))
     end
     
-    def self.update(organization_id, params={})
-      one(http_put("/organizations/#{organization_id}", :body => params))
+    def self.update(id, params={})
+      one(http_put(uri(id), :body => params))
+    end
+    
+    # == Helpers
+    
+    def self.uri(id=nil)
+      "/organizations/#{id}"
     end
 
   end

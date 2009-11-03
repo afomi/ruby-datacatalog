@@ -3,23 +3,23 @@ module DataCatalog
   class User < Base
     
     def self.all(conditions={})
-      many(http_get("/users", :query => query_hash(conditions)))
+      many(http_get(uri, :query => query_hash(conditions)))
     end
 
     def self.create(params={})
-      with_api_keys(one(http_post("/users", :body => params)))
+      with_api_keys(one(http_post(uri, :body => params)))
     end
 
-    def self.destroy(user_id)
-      one(http_delete("/users/#{user_id}"))
+    def self.destroy(id)
+      one(http_delete(uri(id)))
     end
 
     def self.first(conditions={})
-      one(http_get("/users", :query => query_hash(conditions)).first)
+      one(http_get(uri, :query => query_hash(conditions)).first)
     end
     
     def self.get(id)
-      with_api_keys(one(http_get("/users/#{id}")))
+      with_api_keys(one(http_get(uri(id))))
     end
 
     def self.get_by_api_key(api_key)
@@ -30,8 +30,8 @@ module DataCatalog
       end
     end
     
-    def self.update(user_id, params)
-      one(http_put("/users/#{user_id}", :body => params))
+    def self.update(id, params)
+      one(http_put(uri(id), :body => params))
     end
 
     # == Helpers
@@ -39,6 +39,10 @@ module DataCatalog
     def self.with_api_keys(user)
       user.api_keys = ApiKey.all(user.id) if user
       user
+    end
+    
+    def self.uri(id=nil)
+      "/users/#{id}"
     end
     
     # == Instance Methods
