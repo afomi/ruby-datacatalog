@@ -25,7 +25,7 @@ module DataCatalog
     def self.get_by_api_key(api_key)
       DataCatalog.with_key(api_key) do
         checkup = one(http_get("/checkup"))
-        raise NotFound unless checkup.valid_api_key
+        raise NotFound if checkup.api_key != "valid"
         get(checkup.user.id)
       end
     end
