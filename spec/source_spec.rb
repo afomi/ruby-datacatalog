@@ -65,6 +65,18 @@ describe Source do
       @sources.map(&:title).sort.should == expected.sort
     end
   end
+  
+  describe ".search" do
+    before do
+      create_3_sources
+    end
+    
+    it "should return correct search result" do
+      @sources = Source.search("FCC")
+      @sources.size.should == 1
+      @sources.first.title.should == "FCC Data"
+    end
+  end
 
   describe ".create" do
     it "should create a new source from basic params" do
