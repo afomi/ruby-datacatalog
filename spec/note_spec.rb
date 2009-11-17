@@ -60,7 +60,7 @@ describe Note do
   
   describe ".update" do
 
-    it "should update an existing rating with valid params" do
+    it "should update an existing note with valid params" do
       DataCatalog.with_key(@user.primary_api_key) do
         Note.update(@note.id, :text => "This is my updated note.")
       end
