@@ -7,12 +7,16 @@ describe Favorite do
     setup_api
     clean_slate
     
-    @user = User.create(:name  => "Ted Smith",
-                        :email => "ted@email.com")
+    @user = User.create(
+      :name  => "Ted Smith",
+      :email => "ted@email.com"
+    )
     
-    @source = Source.create(:title       => "Some FCC Data",
-                            :url         => "http://fcc.gov/somedata.csv",
-                            :source_type => "dataset")
+    @source = Source.create(
+      :title       => "Some FCC Data",
+      :url         => "http://fcc.gov/somedata.csv",
+      :source_type => "dataset"
+    )
     
     DataCatalog.with_key(@user.primary_api_key) do
       @favorite = Favorite.create(:source_id => @source.id)
@@ -22,7 +26,7 @@ describe Favorite do
   
   describe ".create" do
 
-    it "should create a favorite when valid params are passed in" do      
+    it "should create a favorite when valid params are passed in" do
       refreshed_user = User.get(@user.id)
       refreshed_user.favorites.first.title.should == "Some FCC Data"
     end

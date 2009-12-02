@@ -2,7 +2,7 @@ module DataCatalog
 
   class Favorite < Base
     
-    def self.all(conditions={})      
+    def self.all(conditions={})
       many(http_get(uri, :query => query_hash(conditions)))
     end
 
