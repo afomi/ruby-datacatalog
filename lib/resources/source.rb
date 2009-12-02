@@ -6,10 +6,6 @@ module DataCatalog
       many(http_get(uri, :query => query_hash(conditions)))
     end
 
-    def self.search(term)
-      many(http_get(uri, :query => { :search => term.downcase }))
-    end
-
     def self.create(params={})
       one(http_post(uri, :body => params))
     end
@@ -24,6 +20,10 @@ module DataCatalog
 
     def self.get(id)
       one(http_get(uri(id)))
+    end
+
+    def self.search(term)
+      many(http_get(uri, :query => { :search => term.downcase }))
     end
 
     def self.update(id, params={})
