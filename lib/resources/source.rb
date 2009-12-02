@@ -23,7 +23,7 @@ module DataCatalog
     end
 
     def self.search(term)
-      many(http_get(uri, :query => { :search => term.downcase }))
+      many(http_get(uri, :query => { :search => term }))
     end
 
     def self.update(id, params={})
