@@ -127,14 +127,18 @@ describe Base do
   end
   
   describe ".filterize" do
-    it "should work with 1 param" do
-      %(name:"John Doe").should == Base.filterize(:name => "John Doe")
+    it "should work with 1 string param" do
+      %(name="John Doe").should == Base.filterize(:name => "John Doe")
     end
 
-    it "should work with 2 params" do
+    it "should work with 1 regex param" do
+      %(name:"John Doe").should == Base.filterize(:name => /John Doe/)
+    end
+
+    it "should work with 2 string params" do
       [
-        %(zip:"20036" name:"John Doe"),
-        %(name:"John Doe" zip:"20036")
+        %(zip="20036" name="John Doe"),
+        %(name="John Doe" zip="20036")
       ].should include(Base.filterize(:name => "John Doe", :zip => "20036"))
     end
   end
