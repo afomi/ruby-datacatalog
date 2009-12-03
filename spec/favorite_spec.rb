@@ -46,12 +46,12 @@ describe Favorite do
   end # describe ".get"
   
   describe ".all" do
-  
-    it "should return a collection of all the user's favorites" do
+
+    it "should return an enumeration of favorites" do
       favorites = Favorite.all(:user_id => @user.id)
-  
-      favorites.should be_an_instance_of(Array)
-      favorites[0].should be_an_instance_of(Favorite)
+      favorites.each do |o|
+        o.should be_an_instance_of(Favorite)
+      end
     end
     
   end # describe ".all"

@@ -51,12 +51,12 @@ describe Note do
   end # describe ".get"
   
   describe ".all" do
-  
-    it "should return a collection of all the user's notes" do
+
+    it "should return an enumeration of notes" do
       notes = Note.all(:user_id => @user.id)
-  
-      notes.should be_an_instance_of(Array)
-      notes[0].should be_an_instance_of(Note)
+      notes.each do |o|
+        o.should be_an_instance_of(Note)
+      end
     end
     
   end # describe ".all"

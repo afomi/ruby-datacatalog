@@ -85,25 +85,6 @@ describe Base do
     end
   end
 
-  describe ".many" do
-    it "should create an object from a filled array" do
-      array = Base.many([
-        {
-          :name  => "Carl Malamud",
-          :email => "no-spam-carl@media.org"
-        },
-        {
-          :name  => "Ellen Miller",
-          :email => "no-spam-ellen@sunlightfoundation.com"
-        }
-      ])
-      array.map do |item|
-        item.should be_an_instance_of(Base)
-      end
-      array.map(&:name).should == ["Carl Malamud", "Ellen Miller"]
-    end    
-  end
-
   describe ".one" do
     it "should create an object from a filled hash" do
       hash = Base.one({

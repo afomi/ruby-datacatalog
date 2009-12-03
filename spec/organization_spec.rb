@@ -4,7 +4,11 @@ include DataCatalog
 describe Organization do
 
   def create_3_organizations
-    @organization_names = ["Federal Communications Commission", "Federal Election Commission", "Department of State"]
+    @organization_names = [
+      "Federal Communications Commission",
+      "Federal Election Commission",
+      "Department of State"
+    ]
     @organization_names.each do |name|
       Organization.create(:name => name, :org_type => "governmental")
     end
@@ -22,20 +26,18 @@ describe Organization do
     end
     
     it "should return an enumeration of Organizations" do
-      @organizations = Organization.all
-      @organizations.each do |o|
+      Organization.all.each do |o|
         o.should be_an_instance_of(Organization)
       end
     end
     
     it "should return an enumeration with organization name set" do
-      @organizations = Organization.all
-      @organizations.map(&:name).sort.should == @organization_names.sort
+      Organization.all.map(&:name).sort.should == @organization_names.sort
     end
     
     it "should return the matching organizations when options are passed in" do
-      @organizations = Organization.all(:name => "Federal Communications Commission")
-      @organizations.map(&:name).should == ["Federal Communications Commission"]
+      orgs = Organization.all(:name => "Federal Communications Commission")
+      orgs.map(&:name).should == ["Federal Communications Commission"]
     end
     
   end # describe ".all"
@@ -47,8 +49,8 @@ describe Organization do
     end
     
     it "should return the matching organization when options are passed in" do
-      @organization = Organization.first(:name => "Federal Communications Commission")
-      @organization.name.should == "Federal Communications Commission"
+      org = Organization.first(:name => "Federal Communications Commission")
+      org.name.should == "Federal Communications Commission"
     end
     
   end # describe ".first"
@@ -76,9 +78,9 @@ describe Organization do
   describe ".create" do
     
     it "should create a new organization when valid params are passed in" do
-      @organization = Organization.create(:name => "Federal Communications Commission", :org_type => "governmental")
-      @organization.should be_an_instance_of(Organization)
-      @organization.name.should == "Federal Communications Commission"
+      org = Organization.create(:name => "Federal Communications Commission", :org_type => "governmental")
+      org.should be_an_instance_of(Organization)
+      org.name.should == "Federal Communications Commission"
     end
     
     it "should raise BadRequest when a bad URL is passed in" do

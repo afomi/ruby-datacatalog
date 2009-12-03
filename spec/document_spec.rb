@@ -52,11 +52,11 @@ describe Document do
   
   describe ".all" do
   
-    it "should return a collection of all the source's documents" do
+    it "should return an enumeration of documents" do
       documents = Document.all(:source_id => @source.id)
-  
-      documents.should be_an_instance_of(Array)
-      documents[0].should be_an_instance_of(Document)
+      documents.each do |o|
+        o.should be_an_instance_of(Document)
+      end
     end
     
   end # describe ".all"

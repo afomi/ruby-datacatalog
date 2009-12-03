@@ -51,6 +51,10 @@ module DataCatalog
       response
     end
     
+    def self.cursor(response)
+      Cursor.new(:klass => self, :response => response)
+    end
+    
     def self.error(response)
       parsed_body = JSON.parse(response.body)
       if parsed_body.empty?
@@ -64,8 +68,9 @@ module DataCatalog
       "Unable to parse: #{response.body.inspect}"
     end
     
-    def self.many(response)
-      response.map { |item| new(item) }
+    def self._first(response)
+      item = response['members'][0]
+      item.blank? ? nil : new(item)
     end
 
     def self.one(response)

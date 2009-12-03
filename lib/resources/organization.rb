@@ -3,7 +3,7 @@ module DataCatalog
   class Organization < Base
     
     def self.all(conditions={})
-      many(http_get(uri, :query => query_hash(conditions)))
+      cursor(http_get(uri, :query => query_hash(conditions)))
     end
 
     def self.create(params={})
@@ -15,7 +15,7 @@ module DataCatalog
     end
 
     def self.first(conditions={})
-      one(http_get(uri, :query => query_hash(conditions)).first)
+      _first(http_get(uri, :query => query_hash(conditions)))
     end
 
     def self.get(id)
@@ -23,7 +23,7 @@ module DataCatalog
     end
 
     def self.search(term)
-      many(http_get(uri, :query => { :search => term }))
+      cursor(http_get(uri, :query => { :search => term }))
     end
 
     def self.update(id, params={})

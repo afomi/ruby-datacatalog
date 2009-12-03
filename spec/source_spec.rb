@@ -35,13 +35,17 @@ describe Source do
       create_3_sources
       @sources = Source.all
     end
+    
+    it "should return an Enumerable object" do
+      @sources.is_a?(Enumerable).should == true
+    end
   
     it "should return an enumeration of sources" do
       @sources.each do |source|
         source.should be_an_instance_of(Source)
       end
     end
-  
+    
     it "should return correct titles" do
       expected = ["FCC Data", "NASA Data", "DOE Data"]
       @sources.map(&:title).sort.should == expected.sort
@@ -77,7 +81,7 @@ describe Source do
       @sources.first.title.should == "FCC Data"
     end
   end
-
+  
   describe ".create" do
     it "should create a new source from basic params" do
       source = create_source

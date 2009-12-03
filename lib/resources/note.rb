@@ -3,7 +3,7 @@ module DataCatalog
   class Note < Base
     
     def self.all(conditions={})
-      many(http_get(uri, :query => query_hash(conditions)))
+      cursor(http_get(uri, :query => query_hash(conditions)))
     end
 
     def self.get(id)
