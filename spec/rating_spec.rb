@@ -6,18 +6,24 @@ describe Rating do
   before do
     setup_api
     clean_slate
-    
-    @user = User.create(:name  => "Ted Smith",
-                        :email => "ted@email.com")
-    @user2 = User.create(:name  => "Chad Johnson",
-                        :email => "chad@email.com")
-    
-    @source = Source.create(:title       => "Some FCC Data",
-                            :url         => "http://fcc.gov/somedata.csv",
-                            :source_type => "dataset")
-    
+    @user = User.create(
+      :name  => "Ted Smith",
+      :email => "ted@email.com"
+    )
+    @user2 = User.create(
+      :name  => "Chad Johnson",
+      :email => "chad@email.com"
+    )
+    @source = Source.create(
+      :title       => "Some FCC Data",
+      :url         => "http://fcc.gov/somedata.csv",
+      :source_type => "dataset"
+    )
     DataCatalog.with_key(@user.primary_api_key) do
-      @comment = Comment.create(:source_id => @source.id, :text => "This is a useful comment.")
+      @comment = Comment.create(
+        :source_id => @source.id,
+        :text      => "This is a useful comment."
+      )
     end
   end
   

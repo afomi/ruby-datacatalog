@@ -6,22 +6,18 @@ describe Favorite do
   before do
     setup_api
     clean_slate
-    
     @user = User.create(
       :name  => "Ted Smith",
       :email => "ted@email.com"
     )
-    
     @source = Source.create(
       :title       => "Some FCC Data",
       :url         => "http://fcc.gov/somedata.csv",
       :source_type => "dataset"
     )
-    
     DataCatalog.with_key(@user.primary_api_key) do
       @favorite = Favorite.create(:source_id => @source.id)
     end
-    
   end
   
   describe ".create" do

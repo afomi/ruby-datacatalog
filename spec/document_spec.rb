@@ -6,18 +6,21 @@ describe Document do
   before do
     setup_api
     clean_slate
-    
-    @user = User.create(:name  => "Ted Smith",
-                        :email => "ted@email.com")
-    
-    @source = Source.create(:title       => "Some FCC Data",
-                            :url         => "http://fcc.gov/somedata.csv",
-                            :source_type => "dataset")
-    
+    @user = User.create(
+      :name  => "Ted Smith",
+      :email => "ted@email.com"
+    )
+    @source = Source.create(
+      :title       => "Some FCC Data",
+      :url         => "http://fcc.gov/somedata.csv",
+      :source_type => "dataset"
+    )
     DataCatalog.with_key(@user.primary_api_key) do
-      @document = Document.create(:source_id => @source.id, :text => "This is community documentation.")
+      @document = Document.create(
+        :source_id => @source.id,
+        :text      => "This is community documentation."
+      )
     end
-    
   end
   
   describe ".create" do
