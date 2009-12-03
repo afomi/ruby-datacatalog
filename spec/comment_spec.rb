@@ -6,13 +6,15 @@ describe Comment do
   before do
     setup_api
     clean_slate
-    
-    @user = User.create(:name  => "Ted Smith",
-                        :email => "ted@email.com")
-    
-    @source = Source.create(:title       => "Some FCC Data",
-                            :url         => "http://fcc.gov/somedata.csv",
-                            :source_type => "dataset")
+    @user = User.create(
+      :name  => "Ted Smith",
+      :email => "ted@email.com"
+    )
+    @source = Source.create(
+      :title       => "Some FCC Data",
+      :url         => "http://fcc.gov/somedata.csv",
+      :source_type => "dataset"
+    )
   end
   
   describe ".create" do
