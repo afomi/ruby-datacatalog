@@ -3,7 +3,7 @@ module DataCatalog
   class ApiKey < Base
     
     def self.all(user_id, conditions={})
-      cursor(http_get(uri(user_id), :query => query_hash(conditions)))
+      cursor(uri(user_id), query_hash(conditions))
     end
 
     def self.create(user_id, params={})

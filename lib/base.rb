@@ -51,8 +51,13 @@ module DataCatalog
       response
     end
     
-    def self.cursor(response)
-      Cursor.new(:klass => self, :response => response)
+    def self.cursor(uri, query_hash)
+      Cursor.new({
+        :klass      => self,
+        :query_hash => query_hash,
+        :response   => http_get(uri, :query => query_hash),
+        :uri        => uri,
+      })
     end
     
     def self.error(response)
