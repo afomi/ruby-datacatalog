@@ -7,19 +7,18 @@ end
 
 alias :executing :lambda
 
-def clean_slate
+KLASSES = [
+  DataCatalog::Source,
+  DataCatalog::Organization
+]
 
+def clean_slate
   DataCatalog::User.all.each do |u|
     DataCatalog::User.destroy(u.id) unless u.name == "Primary Admin"
   end
-
-  classes = [DataCatalog::Source, DataCatalog::Organization]
-  classes.each do |class_constant|
-    class_constant.all.each do |instance|
-      class_constant.destroy(instance.id)
-    end
+  KLASSES.each do |klass|
+    klass.all.each { |instance| klass.destroy(instance.id) }
   end
-
 end
 
 def mangle(string)
