@@ -88,13 +88,14 @@ module DataCatalog
     end
     
     def self.filterize(conditions)
-      conditions.map do |k, v|
+      filtered_conditions = conditions.map do |k, v|
         "#{k}" + if v.is_a?(Regexp)
           %(:"#{v.source}")
         else
           %(="#{v}")
         end
-      end.join(" ")
+      end
+      filtered_conditions.join(" ")
     end
     
     def method_missing(method_name, *args)
