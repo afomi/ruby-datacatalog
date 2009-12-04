@@ -42,6 +42,18 @@ describe Organization do
     
   end # describe ".all"
 
+  describe ".search" do
+    before do
+      create_3_organizations
+    end
+    
+    it "should return correct search result" do
+      @organizations = Organization.search("Federal")
+      @organizations.size.should == 2
+      @organizations.first.name.should == "Federal Communications Commission"
+    end
+  end # describe organizations
+
   describe ".first" do
     
     before do
