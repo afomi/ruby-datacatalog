@@ -20,6 +20,16 @@ module SourceHelpers
       })
     end
   end
+  
+  def create_30_sources
+    (1..30).each do |n|
+      Source.create({
+        :title        => "Dataset #{n.to_s}",
+        :url          => "http://awesome.gov/dataset#{n.to_s}.xml",
+        :source_type  => "dataset"
+      })
+    end
+  end
 end
 
 describe Source do
@@ -49,6 +59,25 @@ describe Source do
     it "should return correct titles" do
       expected = ["FCC Data", "NASA Data", "DOE Data"]
       @sources.map(&:title).sort.should == expected.sort
+    end
+    
+    
+    describe "with cursor" do
+    
+      it "should raise an error on bad index" do
+        executing do
+          @sources.page(0)
+        end.should raise_error(RuntimeError)
+      end
+    
+      it "should return 20 objects when there are more than 20" do
+        create_30_sources
+        sources = Source.all
+        sources.size.should == 20
+        sources.page(1).size.should == 20
+        sources.page(2).size.should == 13
+      end
+      
     end
   end
 

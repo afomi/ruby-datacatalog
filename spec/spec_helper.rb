@@ -17,7 +17,9 @@ def clean_slate
     DataCatalog::User.destroy(u.id) unless u.name == "Primary Admin"
   end
   KLASSES.each do |klass|
-    klass.all.each { |instance| klass.destroy(instance.id) }
+    to_delete = []
+    klass.all.each { |instance| to_delete << instance.id }
+    to_delete.each { |id| klass.destroy(id) }
   end
 end
 

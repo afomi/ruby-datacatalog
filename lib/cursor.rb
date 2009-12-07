@@ -84,7 +84,7 @@ module DataCatalog
 
     def page_indices(page_number)
       min = (page_number - 1) * @page_size
-      max = min + @page_size - 1
+      max = [min + @page_size - 1,  @document_count - 1].min
       (min .. max)
     end
 
