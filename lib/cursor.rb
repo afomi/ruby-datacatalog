@@ -47,10 +47,6 @@ module DataCatalog
     def size
       @members.size
     end
-
-    def to_a
-      @document_count.map { |i| member_at(i) }
-    end
     
     protected
     
