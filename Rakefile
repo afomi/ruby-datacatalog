@@ -12,8 +12,8 @@ begin
     gem.email = "luigi@sunlightfoundation.com"
     gem.homepage = "http://github.com/sunlightlabs/datacatalog"
     gem.authors = ["Luigi Montanez", "David James"]
-    gem.add_dependency('activesupport', ">= 2.3.4")
-    gem.add_dependency('httparty', ">= 0.4.5")
+    gem.add_dependency('activesupport', ">= 2.3.5")
+    gem.add_dependency('luigi-httparty', ">= 0.5.0")
     gem.add_dependency('mash', ">= 0.0.3")
     gem.add_dependency('version_string', ">= 0.1.0")
     gem.add_development_dependency("jeweler", ">= 1.2.1")
