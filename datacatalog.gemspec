@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{datacatalog}
-  s.version = "0.4.3"
+  s.version = "0.4.4"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Luigi Montanez", "David James"]
-  s.date = %q{2009-12-09}
+  s.date = %q{2009-12-10}
   s.description = %q{A Ruby client library for the National Data Catalog API}
   s.email = %q{luigi@sunlightfoundation.com}
   s.extra_rdoc_files = [
@@ -30,6 +30,7 @@ Gem::Specification.new do |s|
      "lib/resources/api_key.rb",
      "lib/resources/comment.rb",
      "lib/resources/document.rb",
+     "lib/resources/download.rb",
      "lib/resources/favorite.rb",
      "lib/resources/note.rb",
      "lib/resources/organization.rb",
@@ -69,6 +70,7 @@ Gem::Specification.new do |s|
      "spec/comment_spec.rb",
      "spec/datacatalog_spec.rb",
      "spec/document_spec.rb",
+     "spec/download_spec.rb",
      "spec/favorite_spec.rb",
      "spec/note_spec.rb",
      "spec/organization_spec.rb",
