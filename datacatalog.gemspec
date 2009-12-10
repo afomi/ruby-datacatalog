@@ -44,6 +44,7 @@ Gem::Specification.new do |s|
      "spec/comment_spec.rb",
      "spec/datacatalog_spec.rb",
      "spec/document_spec.rb",
+     "spec/download_spec.rb",
      "spec/favorite_spec.rb",
      "spec/note_spec.rb",
      "spec/organization_spec.rb",
