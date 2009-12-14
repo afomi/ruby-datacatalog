@@ -87,7 +87,17 @@ module DataCatalog
       conditions == {} ? {} : { :filter => filterize(conditions) }
     end
     
-    def self.filterize(conditions)
+    def self.filterize(arg)
+      if arg.is_a?(Hash)
+        filterize_hash(arg)
+      elsif arg.is_a?(String)
+        arg
+      else
+        raise ArgumentError
+      end
+    end
+    
+    def self.filterize_hash(conditions)
       filtered_conditions = conditions.map do |k, v|
         "#{k}" + if v.is_a?(Regexp)
           %(:"#{v.source}")

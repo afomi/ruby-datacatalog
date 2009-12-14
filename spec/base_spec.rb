@@ -122,6 +122,18 @@ describe Base do
         %(name="John Doe" zip="20036")
       ].should include(Base.filterize(:name => "John Doe", :zip => "20036"))
     end
+    
+    it "should pass through strings" do
+      ["count > 0", "count >= 1"].each do |s|
+        Base.filterize(s).should == s
+      end
+    end
+    
+    it "should raise ArgumentError when appropriate" do
+      [nil, [1]].each do |arg|
+        executing { Base.filterize(arg) }.should raise_error(ArgumentError)
+      end
+    end
   end
 
 end
