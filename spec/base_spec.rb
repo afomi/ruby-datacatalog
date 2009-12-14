@@ -109,11 +109,11 @@ describe Base do
   
   describe ".filterize" do
     it "should work with 1 string param" do
-      %(name="John Doe").should == Base.filterize(:name => "John Doe")
+      Base.filterize(:name => "John Doe").should == %(name="John Doe")
     end
 
     it "should work with 1 regex param" do
-      %(name:"John Doe").should == Base.filterize(:name => /John Doe/)
+      Base.filterize(:name => /John Doe/).should == %(name:"John Doe")
     end
 
     it "should work with 2 string params" do
