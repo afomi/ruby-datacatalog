@@ -108,6 +108,10 @@ describe Base do
   end
   
   describe ".filterize" do
+    it "should work with 1 integer param" do
+      Base.filterize(:count => 7).should == %(count=7)
+    end
+
     it "should work with 1 string param" do
       Base.filterize(:name => "John Doe").should == %(name="John Doe")
     end
@@ -121,6 +125,10 @@ describe Base do
         %(zip="20036" name="John Doe"),
         %(name="John Doe" zip="20036")
       ].should include(Base.filterize(:name => "John Doe", :zip => "20036"))
+    end
+    
+    it "should work with periods" do
+      Base.filterize('released.year' => 2008).should == %(released.year=2008)
     end
     
     it "should pass through strings" do

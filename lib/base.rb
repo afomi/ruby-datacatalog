@@ -101,6 +101,8 @@ module DataCatalog
       filtered_conditions = conditions.map do |k, v|
         "#{k}" + if v.is_a?(Regexp)
           %(:"#{v.source}")
+        elsif v.is_a?(Integer)
+          %(=#{v})
         else
           %(="#{v}")
         end
