@@ -107,7 +107,7 @@ module DataCatalog
           %(="#{v}")
         end
       end
-      filtered_conditions.join(" ")
+      filtered_conditions.join(" and ")
     end
     
     def method_missing(method_name, *args)
