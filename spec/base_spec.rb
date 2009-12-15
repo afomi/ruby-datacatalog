@@ -122,8 +122,8 @@ describe Base do
 
     it "should work with 2 string params" do
       [
-        %(zip="20036" name="John Doe"),
-        %(name="John Doe" zip="20036")
+        %(zip="20036" and name="John Doe"),
+        %(name="John Doe" and zip="20036")
       ].should include(Base.filterize(:name => "John Doe", :zip => "20036"))
     end
     
