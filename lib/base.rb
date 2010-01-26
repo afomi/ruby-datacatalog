@@ -1,40 +1,31 @@
 module DataCatalog
 
-  class Base < Mash
-    
-    DEFAULT_BASE_URI = 'http://api.nationaldatacatalog.com'
-
+  module Connection
+    extend self
     include HTTParty
+
+    DEFAULT_BASE_URI = 'http://api.nationaldatacatalog.com'
 
     format :json
     base_uri DEFAULT_BASE_URI
-    
-    class << self
-      alias_method :_delete, :delete
-      alias_method :_get,    :get
-      alias_method :_post,   :post
-      alias_method :_put,    :put
-      
-      undef_method :delete
-      undef_method :get
-      undef_method :post
-      undef_method :put
-    end
-    
+    default_params :api_key => DataCatalog.api_key
+  end
+
+  class Base < Mash
     def self.http_delete(path, options={})
-      check_status(_delete(path, options))
+      check_status(Connection.delete(path, options))
     end
-    
+
     def self.http_get(path, options={})
-      check_status(_get(path, options))
+      check_status(Connection.get(path, options))
     end
 
     def self.http_post(path, options={})
-      check_status(_post(path, options))
+      check_status(Connection.post(path, options))
     end
 
     def self.http_put(path, options={})
-      check_status(_put(path, options))
+      check_status(Connection.put(path, options))
     end
 
     # == protected

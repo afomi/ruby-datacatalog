@@ -15,19 +15,20 @@ module DataCatalog
   # == Accessors
   
   def self.api_key
-    Base.default_params[:api_key]
+    Connection.default_params[:api_key]
   end
   
   def self.api_key=(key)
-    Base.default_params :api_key => key
+    Connection.default_params[:api_key] = key
   end
   
   def self.base_uri
-    Base.base_uri
+    Connection.base_uri
   end
   
   def self.base_uri=(uri)
-    Base.base_uri(uri.blank? ? Base::DEFAULT_BASE_URI : uri)
+    u = uri.blank? ? Connection::DEFAULT_BASE_URI : uri
+    Connection.base_uri(u)
   end
   
   def self.with_key(temp_key)

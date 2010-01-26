@@ -17,7 +17,7 @@ describe Base do
     it "should set the base URI to the default if it's not explicitly defined" do
       DataCatalog.base_uri = ''
       DataCatalog.base_uri.should == 'http://api.nationaldatacatalog.com'
-      Base.base_uri.should == 'http://api.nationaldatacatalog.com'
+      DataCatalog.base_uri.should == 'http://api.nationaldatacatalog.com'
     end
   end
 
