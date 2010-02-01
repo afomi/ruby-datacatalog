@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Luigi Montanez", "David James"]
-  s.date = %q{2009-12-15}
+  s.date = %q{2010-02-01}
   s.description = %q{A Ruby client library for the National Data Catalog API}
   s.email = %q{luigi@sunlightfoundation.com}
   s.extra_rdoc_files = [
@@ -23,6 +23,7 @@ Gem::Specification.new do |s|
      "Rakefile",
      "datacatalog.gemspec",
      "lib/base.rb",
+     "lib/connection.rb",
      "lib/cursor.rb",
      "lib/datacatalog.rb",
      "lib/main.rb",
