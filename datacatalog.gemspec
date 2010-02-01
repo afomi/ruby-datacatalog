@@ -5,7 +5,7 @@
 
 Gem::Specification.new do |s|
   s.name = %q{datacatalog}
-  s.version = "0.4.8"
+  s.version = "0.4.9"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Luigi Montanez", "David James"]
@@ -36,6 +36,7 @@ Gem::Specification.new do |s|
      "lib/resources/note.rb",
      "lib/resources/organization.rb",
      "lib/resources/rating.rb",
+     "lib/resources/report.rb",
      "lib/resources/source.rb",
      "lib/resources/user.rb",
      "sandbox_api.yml.example",
@@ -50,6 +51,7 @@ Gem::Specification.new do |s|
      "spec/note_spec.rb",
      "spec/organization_spec.rb",
      "spec/rating_spec.rb",
+     "spec/report_spec.rb",
      "spec/setup_api.rb",
      "spec/source_spec.rb",
      "spec/spec.opts",
@@ -77,6 +79,7 @@ Gem::Specification.new do |s|
      "spec/note_spec.rb",
      "spec/organization_spec.rb",
      "spec/rating_spec.rb",
+     "spec/report_spec.rb",
      "spec/setup_api.rb",
      "spec/source_spec.rb",
      "spec/spec_helper.rb",
