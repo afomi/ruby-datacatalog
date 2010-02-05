@@ -59,7 +59,10 @@ module DataCatalog
     end
 
     def self.one(response)
-      return true if response && response.respond_to?(:code) && response.code == 204
+      begin
+        return true if response && response.code == 204
+      rescue NoMethodError
+      end
       response.blank? ? nil : new(response)
     end
     

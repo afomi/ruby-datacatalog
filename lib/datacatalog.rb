@@ -1,6 +1,6 @@
 require 'rubygems'
 require 'active_support'
-gem 'luigi-httparty'
+gem 'httparty'
 require 'httparty'
 require 'mash'
 
