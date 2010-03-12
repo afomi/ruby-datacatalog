@@ -1,5 +1,6 @@
 require 'rubygems'
 require 'active_support'
+require 'json'
 gem 'httparty'
 require 'httparty'
 require 'mash'

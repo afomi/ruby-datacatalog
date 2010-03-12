@@ -137,6 +137,14 @@ describe Base do
       end
     end
     
+    it "should work with boolean true" do
+      Base.filterize('is_awesome' => true).should == %(is_awesome=true)
+    end
+
+    it "should work with boolean false" do
+      Base.filterize('is_suck' => false).should == %(is_suck=false)
+    end
+    
     it "should raise ArgumentError when appropriate" do
       [nil, [1]].each do |arg|
         executing { Base.filterize(arg) }.should raise_error(ArgumentError)
