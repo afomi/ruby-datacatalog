@@ -2,7 +2,12 @@ module DataCatalog
   
   # == Exceptions
   
-  class Error                     < RuntimeError; end
+  class Error < RuntimeError
+    attr_accessor :response_body        # String
+    attr_accessor :parsed_response_body # Hash
+    attr_accessor :errors               # Hash
+  end
+
   class BadRequest                < Error; end # 400
   class Unauthorized              < Error; end # 401
   class Forbidden                 < Error; end # 403

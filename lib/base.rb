@@ -21,12 +21,12 @@ module DataCatalog
     
     def self.check_status(response)
       case response.code
-      when 400: raise BadRequest,          error(response)
-      when 401: raise Unauthorized,        error(response)
-      when 403: raise Forbidden,           error(response)
-      when 404: raise NotFound,            error(response)
-      when 409: raise Conflict,            error(response)
-      when 500: raise InternalServerError, error(response)
+      when 400 then error(BadRequest,          response)
+      when 401 then error(Unauthorized,        response)
+      when 403 then error(Forbidden,           response)
+      when 404 then error(NotFound,            response)
+      when 409 then error(Conflict,            response)
+      when 500 then error(InternalServerError, response)
       end
       response
     end
@@ -40,17 +40,20 @@ module DataCatalog
       })
     end
     
-    def self.error(response)
-      parsed_body = JSON.parse(response.body)
-      if parsed_body.empty?
-        "Response was empty"
-      elsif parsed_body["errors"]
-        parsed_body["errors"].inspect
-      else
-        response.body
+    def self.error(exception_class, response)
+      e = exception_class.new
+      e.response_body = response.body
+      begin
+        parsed_response_body = JSON.parse(response.body)
+      rescue JSON::ParserError
       end
-    rescue JSON::ParserError
-      "Unable to parse: #{response.body.inspect}"
+      if !parsed_response_body.empty?
+        e.parsed_response_body = parsed_response_body
+        if parsed_response_body["errors"]
+          e.errors = parsed_response_body["errors"]
+        end
+      end
+      raise e
     end
     
     def self._first(response)
