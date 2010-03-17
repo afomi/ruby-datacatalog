@@ -43,9 +43,10 @@ module DataCatalog
     def self.error(exception_class, response)
       e = exception_class.new
       e.response_body = response.body
-      begin
-        parsed_response_body = JSON.parse(response.body)
+      parsed_response_body = begin
+        JSON.parse(response.body)
       rescue JSON::ParserError
+        nil
       end
       if !parsed_response_body.empty?
         e.parsed_response_body = parsed_response_body
