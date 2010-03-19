@@ -9,7 +9,8 @@ alias :executing :lambda
 
 KLASSES = [
   DataCatalog::Source,
-  DataCatalog::Organization
+  DataCatalog::Organization,
+  DataCatalog::SourceGroup,
 ]
 
 def clean_slate
