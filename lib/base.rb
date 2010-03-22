@@ -50,7 +50,7 @@ module DataCatalog
       end
       if parsed_response_body
         e.parsed_response_body = parsed_response_body
-        if parsed_response_body["errors"]
+        if parsed_response_body.is_a?(Hash) && parsed_response_body["errors"]
           e.errors = parsed_response_body["errors"]
         end
       end

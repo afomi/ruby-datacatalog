@@ -57,31 +57,61 @@ describe Base do
   end
 
   describe ".error" do
-    it "should return an 'Unable to parse:' message when body is blank" do
+    it "should ... when body is blank" do
       response = HTTParty::Response.new(nil, '', 404, 'Not Found', {})
-      Base.error(response).should == %(Unable to parse: "")
+      begin
+        e = Base.error(NotFound, response)
+      rescue NotFound => e
+        e.response_body.should == ''
+        e.parsed_response_body.should == nil
+        e.errors.should == nil
+      end
     end
     
-    it "should return 'Response was empty' when body is an empty JSON object" do
+    it "should be correct when body is an empty hash" do
       response = HTTParty::Response.new(nil, '{}', 404, 'Not Found', {})
-      Base.error(response).should == "Response was empty"
+      begin
+        e = Base.error(NotFound, response).should == "Response was empty"
+      rescue NotFound => e
+        e.response_body.should == '{}'
+        e.parsed_response_body.should == {}
+        e.errors.should == nil
+      end
     end
     
-    it "should return 'Response was empty' when body is an empty array" do
+    it "should be correct when body is an empty array" do
       response = HTTParty::Response.new(nil, '[]', 404, 'Not Found', {})
-      Base.error(response).should == "Response was empty"
+      begin
+        e = Base.error(NotFound, response)
+      rescue NotFound => e
+        e.response_body.should == '[]'
+        e.parsed_response_body.should == []
+        e.errors.should == nil
+      end
     end
     
-    it "should return the contents of the errors hash when it exists" do
+    it "should be correct when body has errors hash" do
       errors = '{"errors":["bad_error"]}'
       response = HTTParty::Response.new(nil, errors, 400, 'Bad Request', {})
-      Base.error(response).should == '["bad_error"]'
+      begin
+        e = Base.error(BadRequest, response)
+      rescue BadRequest => e
+        e.response_body.should == '{"errors":["bad_error"]}'
+        e.parsed_response_body.should == {"errors" => ["bad_error"]}
+        e.errors.should == ["bad_error"]
+      end
     end
     
-    it "should return the contents of the response body when no errors hash exists" do
+    it "should be correct when body has hash" do
       errors = '{"foo":["bar"]}'
       response = HTTParty::Response.new(nil, errors, 400, 'Bad Request', {})
-      Base.error(response).should == '{"foo":["bar"]}'
+      begin
+        e = Base.error(BadRequest, response)
+      rescue BadRequest => e
+        e.response_body.should == '{"foo":["bar"]}'
+        e.parsed_response_body.should == {"foo" => ["bar"]}
+        e.errors.should == nil
+      end
     end
   end
 
