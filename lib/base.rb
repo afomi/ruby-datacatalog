@@ -89,7 +89,9 @@ module DataCatalog
         "#{k}" + if v.is_a?(Regexp)
           %(:"#{v.source}")
         elsif v.is_a?(Integer) || v.is_a?(TrueClass) || v.is_a?(FalseClass)
-          %(=#{v})          
+          %(=#{v})
+        elsif v.is_a?(Array)
+          %(=#{v.join(',')})
         else
           %(="#{v}")
         end

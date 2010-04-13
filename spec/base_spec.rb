@@ -160,6 +160,10 @@ describe Base do
     it "should work with periods" do
       Base.filterize('released.year' => 2008).should == %(released.year=2008)
     end
+
+    it "should support 'or' by converting arrays to commas" do
+      Base.filterize('id' => [800, 801, 802]).should == %(id=800,801,802)
+    end
     
     it "should pass through strings" do
       ["count > 0", "count >= 1"].each do |s|
