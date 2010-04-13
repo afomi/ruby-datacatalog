@@ -31,6 +31,18 @@ describe DataCatalog do
         42
       end.should == 42
     end
+    
+    it "should still reset the API key when the block throws an exception" do
+      regular_key = '4159179f32ff8fefd2c6d48b7e675e7736bf1357'
+      DataCatalog.api_key = regular_key
+      temporary_key = '0000123400001234000012340000123400001234'
+      expect {
+        DataCatalog.with_key(temporary_key) do
+          raise Exception
+        end
+      }.to raise_error(Exception)
+      DataCatalog.api_key.should == regular_key 
+    end
   end
 
 end
