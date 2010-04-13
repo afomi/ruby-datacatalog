@@ -5,7 +5,7 @@ begin
   require 'jeweler'
   Jeweler::Tasks.new do |gem|
     gem.name = "datacatalog"
-    gem.version = '0.4.12'
+    gem.version = '0.4.13'
     gem.rubyforge_project = "datacatalog"
     gem.summary = %Q{Client for the National Data Catalog API}
     gem.description = %Q{A Ruby client library for the National Data Catalog API}
