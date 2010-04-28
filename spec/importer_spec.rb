@@ -17,7 +17,7 @@ describe Importer do
   end
 
   describe ".get" do
-    it "should return a importer as a basic user" do
+    it "should return an importer as a basic user" do
       importer = DataCatalog.with_key(@user.primary_api_key) do
         Importer.get(@importers[0].id)
       end

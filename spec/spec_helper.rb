@@ -11,6 +11,7 @@ KLASSES = [
   DataCatalog::Source,
   DataCatalog::Organization,
   DataCatalog::Importer,
+  DataCatalog::Import,
 ]
 
 def clean_slate
