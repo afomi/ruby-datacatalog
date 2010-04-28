@@ -8,17 +8,14 @@ describe Comment do
     clean_slate
     @user = User.create(
       :name  => "Ted Smith",
-      :email => "ted@email.com"
-    )
+      :email => "ted@email.com")
     @source = Source.create(
       :title       => "Some FCC Data",
       :url         => "http://fcc.gov/somedata.csv",
-      :source_type => "dataset"
-    )
+      :source_type => "dataset")
   end
   
   describe ".create" do
-
     it "should create a new comment when valid params are passed in" do
       DataCatalog.with_key(@user.primary_api_key) do
         @comment = Comment.create(:source_id => @source.id, :text => "The first comment.")
@@ -29,11 +26,9 @@ describe Comment do
       refreshed_source.comments.first.text.should == "The first comment."
       refreshed_source.comments.first.user.name.should == "Ted Smith"
     end
-
-  end # describe ".create"
+  end
 
   describe ".get" do
-
     before do
       DataCatalog.with_key(@user.primary_api_key) do
         @comment = Comment.create(:source_id => @source.id, :text => "The first comment.")
@@ -51,18 +46,17 @@ describe Comment do
         Comment.get(mangle(@comment.id))
       end.should raise_error(NotFound)
     end
-    
-  end # describe ".get"
+  end
 
   describe ".all" do
-
     before do
-      @john = User.create(:name  => "John Smith",
-                          :email => "john@email.com")
-      @data = Source.create(:title       => "Some FEC Data",
-                            :url         => "http://fec.gov/somedata.csv",
-                            :source_type => "dataset")
-                            
+      @john = User.create(
+        :name  => "John Smith",
+        :email => "john@email.com")
+      @data = Source.create(
+        :title       => "Some FEC Data",
+        :url         => "http://fec.gov/somedata.csv",
+        :source_type => "dataset")
       DataCatalog.with_key(@john.primary_api_key) do
         Comment.create(:source_id => @data.id, :text => "The first comment.")
         Comment.create(:source_id => @data.id, :text => "The second comment.")
@@ -76,11 +70,9 @@ describe Comment do
         comments[i].text.should == "The #{nth} comment."
       end
     end
-    
-  end # describe ".all"
+  end
 
   describe ".update" do
-
     before do
       DataCatalog.with_key(@user.primary_api_key) do
         @comment = Comment.create(:source_id => @source.id, :text => "The first comment.")
@@ -96,11 +88,9 @@ describe Comment do
       refreshed_source.comments.first.text.should == "The first comment, updated."
       refreshed_source.comments.first.user.name.should == "Ted Smith"
     end
-    
-  end # describe ".update" 
+  end
 
   describe ".destroy" do
-
     before do
       DataCatalog.with_key(@user.primary_api_key) do
         @comment = Comment.create(:source_id => @source.id, :text => "The first comment.")
@@ -122,7 +112,6 @@ describe Comment do
         Comment.destroy(mangle(@comment.id))
       end.should raise_error(NotFound)
     end
-    
-  end # describe ".destroy"
+  end
 
 end
