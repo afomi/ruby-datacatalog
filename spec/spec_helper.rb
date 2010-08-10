@@ -8,6 +8,7 @@ end
 alias :executing :lambda
 
 KLASSES = [
+  DataCatalog::BrokenLink,
   DataCatalog::Comment,
   DataCatalog::Document,
   DataCatalog::Download,

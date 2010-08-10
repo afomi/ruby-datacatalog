@@ -14,6 +14,10 @@ module DataCatalog
       one(http_delete(uri(id)))
     end
 
+    def self.first(conditions={})
+      _first(http_get(uri, :query => query_hash(conditions)))
+    end
+
     def self.get(id)
       one(http_get(uri(id)))
     end
