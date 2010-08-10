@@ -1,6 +1,6 @@
 namespace :spec do
 
-  MIN_VERSION = '0.4.4'
+  MIN_VERSION = '0.4.13'
 
   desc "Test API connection"
   task :test_api => [:check_dependencies] do
