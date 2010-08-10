@@ -29,19 +29,13 @@ describe Import do
     ]
   end
 
-  describe ".get" do
-    it "should return an import as a basic user" do
-      import = DataCatalog.with_key(@user.primary_api_key) do
-        Import.get(@imports[0].id)
+  describe ".all" do
+    it "should return an enumeration of 2 imports" do
+      imports = Import.all
+      imports.length.should == 2
+      imports.each do |o|
+        o.should be_an_instance_of(Import)
       end
-      import.should be_an_instance_of(Import)
-      import.id.should == @imports[0].id
-    end
-
-    it "should raise NotFound if no import exists" do
-      executing do
-        Import.get(mangle(@imports[0].id))
-      end.should raise_error(NotFound)
     end
   end
 
@@ -69,33 +63,6 @@ describe Import do
     end
   end
 
-  describe ".all" do
-    it "should return an enumeration of 2 imports" do
-      imports = Import.all
-      imports.length.should == 2
-      imports.each do |o|
-        o.should be_an_instance_of(Import)
-      end
-    end
-  end
-
-  describe ".update" do
-    it "a basic user should be unauthorized" do
-      executing do
-        DataCatalog.with_key(@user.primary_api_key) do
-          Import.update(@imports[0].id, :status => 'failure')
-        end
-      end.should raise_error(Unauthorized)
-    end
-
-    it "should update an existing import with valid params" do
-      @imports[0].status.should == 'success'
-      Import.update(@imports[0].id, :status => 'failure')
-      import = Import.get(@imports[0].id)
-      import.status.should == 'failure'
-    end
-  end
-
   describe ".destroy" do
     it "should destroy an existing import as an admin" do
       Import.destroy(@imports[0].id).should be_true
@@ -113,6 +80,39 @@ describe Import do
       executing do
         Import.destroy(mangle(@imports[0].id))
       end.should raise_error(NotFound)
+    end
+  end
+
+  describe ".get" do
+    it "should return an import as a basic user" do
+      import = DataCatalog.with_key(@user.primary_api_key) do
+        Import.get(@imports[0].id)
+      end
+      import.should be_an_instance_of(Import)
+      import.id.should == @imports[0].id
+    end
+
+    it "should raise NotFound if no import exists" do
+      executing do
+        Import.get(mangle(@imports[0].id))
+      end.should raise_error(NotFound)
+    end
+  end
+
+  describe ".update" do
+    it "a basic user should be unauthorized" do
+      executing do
+        DataCatalog.with_key(@user.primary_api_key) do
+          Import.update(@imports[0].id, :status => 'failure')
+        end
+      end.should raise_error(Unauthorized)
+    end
+
+    it "should update an existing import with valid params" do
+      @imports[0].status.should == 'success'
+      Import.update(@imports[0].id, :status => 'failure')
+      import = Import.get(@imports[0].id)
+      import.status.should == 'failure'
     end
   end
 
