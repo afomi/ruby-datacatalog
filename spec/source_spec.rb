@@ -96,18 +96,6 @@ describe Source do
     end
   end
 
-  describe ".search" do
-    before do
-      create_3_sources
-    end
-
-    it "should return correct search result" do
-      @sources = Source.search("FCC")
-      @sources.size.should == 1
-      @sources.first.title.should == "FCC Data"
-    end
-  end
-
   describe ".create" do
     it "should create a new source from basic params" do
       source = create_source
@@ -134,6 +122,23 @@ describe Source do
           "value"       => "Public Domain"
         }
       }
+    end
+  end
+
+  describe ".destroy" do
+    before do
+      @source = create_source
+    end
+
+    it "should destroy an existing source" do
+      result = Source.destroy(@source.id)
+      result.should be_true
+    end
+
+    it "should raise NotFound when attempting to destroy non-existing source" do
+      executing do
+        Source.destroy(mangle(@source.id))
+      end.should raise_error(NotFound)
     end
   end
 
@@ -172,6 +177,18 @@ describe Source do
     end
   end
 
+  describe ".search" do
+    before do
+      create_3_sources
+    end
+
+    it "should return correct search result" do
+      @sources = Source.search("FCC")
+      @sources.size.should == 1
+      @sources.first.title.should == "FCC Data"
+    end
+  end
+
   describe ".update" do
     before do
       @source = create_source
@@ -183,23 +200,6 @@ describe Source do
       })
       source.should be_an_instance_of(Source)
       source.url.should == "http://fec.gov/newdata.csv"
-    end
-  end
-
-  describe ".destroy" do
-    before do
-      @source = create_source
-    end
-
-    it "should destroy an existing source" do
-      result = Source.destroy(@source.id)
-      result.should be_true
-    end
-
-    it "should raise NotFound when attempting to destroy non-existing source" do
-      executing do
-        Source.destroy(mangle(@source.id))
-      end.should raise_error(NotFound)
     end
   end
 
