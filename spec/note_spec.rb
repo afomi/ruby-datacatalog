@@ -23,29 +23,6 @@ describe Note do
     end
   end
 
-  describe ".create" do
-    it "should create a note when valid params are passed in" do
-      DataCatalog.with_key(@user.primary_api_key) do
-        refreshed_source = Source.get(@source.id)
-        refreshed_source.notes.first.text.should == "This is my note."
-      end
-    end
-  end
-
-  describe ".get" do
-    it "should return a note" do
-      note = Note.get(@note.id)
-      note.should be_an_instance_of(Note)
-      note.user_id.should == @user.id
-    end
-
-    it "should raise NotFound if no note exists" do
-      executing do
-        Note.get(mangle(@note.id))
-      end.should raise_error(NotFound)
-    end
-  end
-
   describe ".all" do
     it "should return an enumeration of notes" do
       notes = Note.all(:user_id => @user.id)
@@ -55,14 +32,12 @@ describe Note do
     end
   end
 
-  describe ".update" do
-    it "should update an existing note with valid params" do
+  describe ".create" do
+    it "should create a note when valid params are passed in" do
       DataCatalog.with_key(@user.primary_api_key) do
-        Note.update(@note.id, :text => "This is my updated note.")
+        refreshed_source = Source.get(@source.id)
+        refreshed_source.notes.first.text.should == "This is my note."
       end
-
-      refreshed_note = Note.get(@note.id)
-      refreshed_note.text.should == "This is my updated note."
     end
   end
 
@@ -81,6 +56,31 @@ describe Note do
       executing do
         Note.destroy(mangle(@note.id))
       end.should raise_error(NotFound)
+    end
+  end
+
+  describe ".get" do
+    it "should return a note" do
+      note = Note.get(@note.id)
+      note.should be_an_instance_of(Note)
+      note.user_id.should == @user.id
+    end
+
+    it "should raise NotFound if no note exists" do
+      executing do
+        Note.get(mangle(@note.id))
+      end.should raise_error(NotFound)
+    end
+  end
+
+  describe ".update" do
+    it "should update an existing note with valid params" do
+      DataCatalog.with_key(@user.primary_api_key) do
+        Note.update(@note.id, :text => "This is my updated note.")
+      end
+
+      refreshed_note = Note.get(@note.id)
+      refreshed_note.text.should == "This is my updated note."
     end
   end
 
