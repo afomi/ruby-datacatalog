@@ -8,10 +8,17 @@ end
 alias :executing :lambda
 
 KLASSES = [
-  DataCatalog::Source,
-  DataCatalog::Organization,
-  DataCatalog::Importer,
+  DataCatalog::Comment,
+  DataCatalog::Document,
+  DataCatalog::Download,
+  DataCatalog::Favorite,
   DataCatalog::Import,
+  DataCatalog::Importer,
+  DataCatalog::Note,
+  DataCatalog::Organization,
+  DataCatalog::Rating,
+  DataCatalog::Report,
+  DataCatalog::Source,
 ]
 
 def clean_slate
