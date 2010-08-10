@@ -9,7 +9,7 @@ describe BrokenLink do
     @user = User.create(
       :name    => "Q. Rater",
       :email   => "q_rater@email.com",
-      :curator => "true"
+      :curator => true
     )
     @source = Source.create(
       :title       => "Some FCC Data",
