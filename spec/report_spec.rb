@@ -13,45 +13,6 @@ describe Report do
     )
   end
 
-  describe ".create" do
-    it "should create a new report when valid params are passed in" do
-      DataCatalog.with_key(@john.primary_api_key) do
-        @report = Report.create(
-          :text   => "Report 1 by John",
-          :status => "new"
-        )
-      end
-      @report.should be_an_instance_of(Report)
-      refreshed_report = Report.get(@report.id)
-      refreshed_report.text.should == "Report 1 by John"
-      refreshed_report.status.should == "new"
-      refreshed_report.user_id.should == @john.id
-    end
-  end
-
-  describe ".get" do
-    before do
-      DataCatalog.with_key(@john.primary_api_key) do
-        @report = Report.create(
-          :text   => "Report 1 by John",
-          :status => "new"
-        )
-      end
-    end
-
-    it "should return a report" do
-      report = Report.get(@report.id)
-      report.should be_an_instance_of(Report)
-      report.text.should == "Report 1 by John"
-    end
-
-    it "should raise NotFound if no report exists" do
-      executing do
-        Report.get(mangle(@report.id))
-      end.should raise_error(NotFound)
-    end
-  end
-
   describe ".all" do
     before do
       @jane = User.create(
@@ -74,23 +35,19 @@ describe Report do
     end
   end
 
-  describe ".update" do
-    before do
+  describe ".create" do
+    it "should create a new report when valid params are passed in" do
       DataCatalog.with_key(@john.primary_api_key) do
         @report = Report.create(
           :text   => "Report 1 by John",
           :status => "new"
         )
       end
-    end
-
-    it "should update an existing report with valid params" do
-      DataCatalog.with_key(@john.primary_api_key) do
-        Report.update(@report.id, :status => "open")
-      end
+      @report.should be_an_instance_of(Report)
       refreshed_report = Report.get(@report.id)
       refreshed_report.text.should == "Report 1 by John"
-      refreshed_report.status.should == "open"
+      refreshed_report.status.should == "new"
+      refreshed_report.user_id.should == @john.id
     end
   end
 
@@ -118,6 +75,49 @@ describe Report do
       executing do
         Report.destroy(mangle(@report.id))
       end.should raise_error(NotFound)
+    end
+  end
+
+  describe ".get" do
+    before do
+      DataCatalog.with_key(@john.primary_api_key) do
+        @report = Report.create(
+          :text   => "Report 1 by John",
+          :status => "new"
+        )
+      end
+    end
+
+    it "should return a report" do
+      report = Report.get(@report.id)
+      report.should be_an_instance_of(Report)
+      report.text.should == "Report 1 by John"
+    end
+
+    it "should raise NotFound if no report exists" do
+      executing do
+        Report.get(mangle(@report.id))
+      end.should raise_error(NotFound)
+    end
+  end
+
+  describe ".update" do
+    before do
+      DataCatalog.with_key(@john.primary_api_key) do
+        @report = Report.create(
+          :text   => "Report 1 by John",
+          :status => "new"
+        )
+      end
+    end
+
+    it "should update an existing report with valid params" do
+      DataCatalog.with_key(@john.primary_api_key) do
+        Report.update(@report.id, :status => "open")
+      end
+      refreshed_report = Report.get(@report.id)
+      refreshed_report.text.should == "Report 1 by John"
+      refreshed_report.status.should == "open"
     end
   end
 
