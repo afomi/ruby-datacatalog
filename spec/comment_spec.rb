@@ -15,39 +15,6 @@ describe Comment do
       :source_type => "dataset")
   end
 
-  describe ".create" do
-    it "should create a new comment when valid params are passed in" do
-      DataCatalog.with_key(@user.primary_api_key) do
-        @comment = Comment.create(:source_id => @source.id, :text => "The first comment.")
-      end
-      @comment.should be_an_instance_of(Comment)
-
-      refreshed_source = Source.get(@source.id)
-      refreshed_source.comments.first.text.should == "The first comment."
-      refreshed_source.comments.first.user.name.should == "Ted Smith"
-    end
-  end
-
-  describe ".get" do
-    before do
-      DataCatalog.with_key(@user.primary_api_key) do
-        @comment = Comment.create(:source_id => @source.id, :text => "The first comment.")
-      end
-    end
-
-    it "should return a comment" do
-      comment = Comment.get(@comment.id)
-      comment.should be_an_instance_of(Comment)
-      comment.text.should == "The first comment."
-    end
-
-    it "should raise NotFound if no comment exists" do
-      executing do
-        Comment.get(mangle(@comment.id))
-      end.should raise_error(NotFound)
-    end
-  end
-
   describe ".all" do
     before do
       @john = User.create(
@@ -72,20 +39,15 @@ describe Comment do
     end
   end
 
-  describe ".update" do
-    before do
+  describe ".create" do
+    it "should create a new comment when valid params are passed in" do
       DataCatalog.with_key(@user.primary_api_key) do
         @comment = Comment.create(:source_id => @source.id, :text => "The first comment.")
       end
-    end
-
-    it "should update an existing comment with valid params" do
-      DataCatalog.with_key(@user.primary_api_key) do
-        Comment.update(@comment.id, :text => "The first comment, updated.")
-      end
+      @comment.should be_an_instance_of(Comment)
 
       refreshed_source = Source.get(@source.id)
-      refreshed_source.comments.first.text.should == "The first comment, updated."
+      refreshed_source.comments.first.text.should == "The first comment."
       refreshed_source.comments.first.user.name.should == "Ted Smith"
     end
   end
@@ -111,6 +73,44 @@ describe Comment do
       executing do
         Comment.destroy(mangle(@comment.id))
       end.should raise_error(NotFound)
+    end
+  end
+
+  describe ".get" do
+    before do
+      DataCatalog.with_key(@user.primary_api_key) do
+        @comment = Comment.create(:source_id => @source.id, :text => "The first comment.")
+      end
+    end
+
+    it "should return a comment" do
+      comment = Comment.get(@comment.id)
+      comment.should be_an_instance_of(Comment)
+      comment.text.should == "The first comment."
+    end
+
+    it "should raise NotFound if no comment exists" do
+      executing do
+        Comment.get(mangle(@comment.id))
+      end.should raise_error(NotFound)
+    end
+  end
+
+  describe ".update" do
+    before do
+      DataCatalog.with_key(@user.primary_api_key) do
+        @comment = Comment.create(:source_id => @source.id, :text => "The first comment.")
+      end
+    end
+
+    it "should update an existing comment with valid params" do
+      DataCatalog.with_key(@user.primary_api_key) do
+        Comment.update(@comment.id, :text => "The first comment, updated.")
+      end
+
+      refreshed_source = Source.get(@source.id)
+      refreshed_source.comments.first.text.should == "The first comment, updated."
+      refreshed_source.comments.first.user.name.should == "Ted Smith"
     end
   end
 
