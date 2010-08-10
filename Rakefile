@@ -12,12 +12,12 @@ begin
     gem.email = "luigi@sunlightfoundation.com"
     gem.homepage = "http://github.com/sunlightlabs/datacatalog"
     gem.authors = ["Luigi Montanez", "David James"]
-    gem.add_dependency('activesupport', ">= 2.3.5")
-    gem.add_dependency('httparty', ">= 0.5.2")
-    gem.add_dependency('mash', ">= 0.0.3")
+    gem.add_dependency('activesupport', ">= 2.3.8")
+    gem.add_dependency('httparty', ">= 0.6.1")
+    gem.add_dependency('mash', ">= 0.1.1")
     gem.add_dependency('version_string', ">= 0.1.0")
-    gem.add_development_dependency("jeweler", ">= 1.2.1")
-    gem.add_development_dependency("rspec", ">= 1.2.8")
+    gem.add_development_dependency("jeweler", ">= 1.4.0")
+    gem.add_development_dependency("rspec", ">= 1.3.0")
     # gem is a Gem::Specification...
     # see http://www.rubygems.org/read/chapter/20 for additional settings
   end
