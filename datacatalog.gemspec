@@ -29,6 +29,7 @@ Gem::Specification.new do |s|
      "lib/main.rb",
      "lib/resources/about.rb",
      "lib/resources/api_key.rb",
+     "lib/resources/broken_link.rb",
      "lib/resources/comment.rb",
      "lib/resources/document.rb",
      "lib/resources/download.rb",
