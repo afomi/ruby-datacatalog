@@ -23,29 +23,6 @@ describe Document do
     end
   end
 
-  describe ".create" do
-    it "should create a document when valid params are passed in" do
-      DataCatalog.with_key(@user.primary_api_key) do
-        refreshed_source = Source.get(@source.id)
-        refreshed_source.documents.first.text.should == "This is community documentation."
-      end
-    end
-  end
-
-  describe ".get" do
-    it "should return a document" do
-      document = Document.get(@document.id)
-      document.should be_an_instance_of(Document)
-      document.source_id.should == @source.id
-    end
-
-    it "should raise NotFound if no document exists" do
-      executing do
-        Document.get(mangle(@document.id))
-      end.should raise_error(NotFound)
-    end
-  end
-
   describe ".all" do
     it "should return an enumeration of documents" do
       documents = Document.all(:source_id => @source.id)
@@ -55,16 +32,12 @@ describe Document do
     end
   end
 
-  describe ".update" do
-    it "should update an existing document with valid params" do
-      @document.previous_id.should be nil
+  describe ".create" do
+    it "should create a document when valid params are passed in" do
       DataCatalog.with_key(@user.primary_api_key) do
-        Document.update(@document.id, :text => "This is the updated document.")
+        refreshed_source = Source.get(@source.id)
+        refreshed_source.documents.first.text.should == "This is community documentation."
       end
-
-      refreshed_document = Document.get(@document.id)
-      refreshed_document.text.should == "This is the updated document."
-      refreshed_document.previous_id.should_not be nil
     end
   end
 
@@ -83,6 +56,33 @@ describe Document do
       executing do
         Document.destroy(mangle(@document.id))
       end.should raise_error(NotFound)
+    end
+  end
+
+  describe ".get" do
+    it "should return a document" do
+      document = Document.get(@document.id)
+      document.should be_an_instance_of(Document)
+      document.source_id.should == @source.id
+    end
+
+    it "should raise NotFound if no document exists" do
+      executing do
+        Document.get(mangle(@document.id))
+      end.should raise_error(NotFound)
+    end
+  end
+
+  describe ".update" do
+    it "should update an existing document with valid params" do
+      @document.previous_id.should be nil
+      DataCatalog.with_key(@user.primary_api_key) do
+        Document.update(@document.id, :text => "This is the updated document.")
+      end
+
+      refreshed_document = Document.get(@document.id)
+      refreshed_document.text.should == "This is the updated document."
+      refreshed_document.previous_id.should_not be nil
     end
   end
 
