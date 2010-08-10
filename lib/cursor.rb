@@ -28,6 +28,10 @@ module DataCatalog
       @document_count.times { |i| yield member_at(i) }
     end
     
+    def empty?
+      @document_count == 0
+    end
+    
     def first
       member_at(0)
     end
