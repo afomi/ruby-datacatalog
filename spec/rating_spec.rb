@@ -27,48 +27,6 @@ describe Rating do
     end
   end
 
-  describe ".create" do
-    it "should create a source rating when valid params are passed in" do
-      DataCatalog.with_key(@user.primary_api_key) do
-        @rating = Rating.create(:kind => "source", :source_id => @source.id, :value => 5)
-      end
-
-      refreshed_source = Source.get(@source.id)
-      refreshed_source.rating_stats.average.should == 5
-      refreshed_source.rating_stats.total.should == 5
-    end
-
-    it "should create a comment rating when valid params are passed in" do
-      DataCatalog.with_key(@user2.primary_api_key) do
-        @rating = Rating.create(:kind => "comment", :comment_id => @comment.id, :value => 1)
-      end
-
-      refreshed_comment = Comment.get(@comment.id)
-      refreshed_comment.rating_stats.average.should == 1
-      refreshed_comment.rating_stats.total.should == 1
-    end
-  end
-
-  describe ".get" do
-    before do
-      DataCatalog.with_key(@user.primary_api_key) do
-        @rating = Rating.create(:kind => "source", :source_id => @source.id, :value => 5)
-      end
-    end
-
-    it "should return a rating" do
-      rating = Rating.get(@rating.id)
-      rating.should be_an_instance_of(Rating)
-      rating.value.should == 5
-    end
-
-    it "should raise NotFound if no rating exists" do
-      executing do
-        Rating.get(mangle(@rating.id))
-      end.should raise_error(NotFound)
-    end
-  end
-
   describe ".all" do
     before do
       DataCatalog.with_key(@user.primary_api_key) do
@@ -89,21 +47,25 @@ describe Rating do
     end
   end
 
-  describe ".update" do
-    before do
+  describe ".create" do
+    it "should create a source rating when valid params are passed in" do
       DataCatalog.with_key(@user.primary_api_key) do
         @rating = Rating.create(:kind => "source", :source_id => @source.id, :value => 5)
       end
+
+      refreshed_source = Source.get(@source.id)
+      refreshed_source.rating_stats.average.should == 5
+      refreshed_source.rating_stats.total.should == 5
     end
 
-    it "should update an existing rating with valid params" do
-      DataCatalog.with_key(@user.primary_api_key) do
-        Rating.update(@rating.id, :value => 3)
+    it "should create a comment rating when valid params are passed in" do
+      DataCatalog.with_key(@user2.primary_api_key) do
+        @rating = Rating.create(:kind => "comment", :comment_id => @comment.id, :value => 1)
       end
 
-      refreshed_rating = Rating.get(@rating.id)
-      refreshed_rating.value.should == 3
-      refreshed_rating.previous_value.should == 5
+      refreshed_comment = Comment.get(@comment.id)
+      refreshed_comment.rating_stats.average.should == 1
+      refreshed_comment.rating_stats.total.should == 1
     end
   end
 
@@ -131,4 +93,41 @@ describe Rating do
     end
   end
 
+  describe ".get" do
+    before do
+      DataCatalog.with_key(@user.primary_api_key) do
+        @rating = Rating.create(:kind => "source", :source_id => @source.id, :value => 5)
+      end
+    end
+
+    it "should return a rating" do
+      rating = Rating.get(@rating.id)
+      rating.should be_an_instance_of(Rating)
+      rating.value.should == 5
+    end
+
+    it "should raise NotFound if no rating exists" do
+      executing do
+        Rating.get(mangle(@rating.id))
+      end.should raise_error(NotFound)
+    end
+  end
+
+  describe ".update" do
+    before do
+      DataCatalog.with_key(@user.primary_api_key) do
+        @rating = Rating.create(:kind => "source", :source_id => @source.id, :value => 5)
+      end
+    end
+
+    it "should update an existing rating with valid params" do
+      DataCatalog.with_key(@user.primary_api_key) do
+        Rating.update(@rating.id, :value => 3)
+      end
+
+      refreshed_rating = Rating.get(@rating.id)
+      refreshed_rating.value.should == 3
+      refreshed_rating.previous_value.should == 5
+    end
+  end
 end
