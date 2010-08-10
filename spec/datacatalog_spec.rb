@@ -25,13 +25,13 @@ describe DataCatalog do
       end
       DataCatalog.api_key.should == regular_key
     end
-    
+
     it "should return the last value in the block" do
       DataCatalog.with_key("0000444400004444") do
         42
       end.should == 42
     end
-    
+
     it "should still reset the API key when the block throws an exception" do
       regular_key = '4159179f32ff8fefd2c6d48b7e675e7736bf1357'
       DataCatalog.api_key = regular_key

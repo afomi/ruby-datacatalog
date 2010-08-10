@@ -1,7 +1,7 @@
 module DataCatalog
 
   class Organization < Base
-    
+
     def self.all(conditions={})
       cursor(uri, query_hash(conditions))
     end

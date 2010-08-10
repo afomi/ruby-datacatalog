@@ -1,7 +1,7 @@
 module DataCatalog
-  
+
   # == Exceptions
-  
+
   class Error < RuntimeError
     attr_accessor :response_body        # String
     attr_accessor :parsed_response_body # Hash
@@ -16,26 +16,26 @@ module DataCatalog
   class InternalServerError       < Error; end # 500
   class ApiKeyNotConfigured       < Error; end
   class CannotDeletePrimaryApiKey < Error; end
-  
+
   # == Accessors
-  
+
   def self.api_key
     Connection.default_params[:api_key]
   end
-  
+
   def self.api_key=(key)
     Connection.default_params[:api_key] = key
   end
-  
+
   def self.base_uri
     Connection.base_uri
   end
-  
+
   def self.base_uri=(uri)
     u = uri.blank? ? Connection::DEFAULT_BASE_URI : uri
     Connection.base_uri(u)
   end
-  
+
   def self.with_key(temp_key)
     original_key = DataCatalog.api_key
     DataCatalog.api_key = temp_key

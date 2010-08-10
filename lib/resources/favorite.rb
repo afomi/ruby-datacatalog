@@ -1,7 +1,7 @@
 module DataCatalog
 
   class Favorite < Base
-    
+
     def self.all(conditions={})
       cursor(uri, query_hash(conditions))
     end
@@ -13,13 +13,13 @@ module DataCatalog
     def self.destroy(id)
       one(http_delete(uri(id)))
     end
-    
+
     def self.get(id)
       one(http_get(uri(id)))
     end
 
     # == Helpers
-    
+
     def self.uri(id=nil)
       "/favorites/#{id}"
     end

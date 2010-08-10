@@ -18,7 +18,7 @@ module DataCatalog
     end
 
     # == protected
-    
+
     def self.check_status(response)
       case response.code
       when 400 then error(BadRequest,          response)
@@ -30,7 +30,7 @@ module DataCatalog
       end
       response
     end
-    
+
     def self.cursor(uri, query_hash)
       Cursor.new({
         :klass      => self,
@@ -39,7 +39,7 @@ module DataCatalog
         :uri        => uri,
       })
     end
-    
+
     def self.error(exception_class, response)
       e = exception_class.new
       e.response_body = response.body
@@ -56,7 +56,7 @@ module DataCatalog
       end
       raise e
     end
-    
+
     def self._first(response)
       item = response['members'][0]
       item.blank? ? nil : new(item)
@@ -69,11 +69,11 @@ module DataCatalog
       end
       response.blank? ? nil : new(response)
     end
-    
+
     def self.query_hash(conditions)
       conditions == {} ? {} : { :filter => filterize(conditions) }
     end
-    
+
     def self.filterize(arg)
       if arg.is_a?(Hash)
         filterize_hash(arg)
@@ -83,7 +83,7 @@ module DataCatalog
         raise ArgumentError
       end
     end
-    
+
     def self.filterize_hash(conditions)
       filtered_conditions = conditions.map do |k, v|
         "#{k}" + if v.is_a?(Regexp)
@@ -98,7 +98,7 @@ module DataCatalog
       end
       filtered_conditions.join(" and ")
     end
-    
+
     def method_missing(method_name, *args)
       if method_name.to_s.match(/.*_(on|at)\z/)
         return Time.parse(super)

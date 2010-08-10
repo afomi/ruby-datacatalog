@@ -2,7 +2,7 @@ require File.dirname(__FILE__) + '/spec_helper'
 include DataCatalog
 
 describe Import do
-  
+
   before do
     setup_api
     clean_slate
@@ -68,7 +68,7 @@ describe Import do
       end.should raise_error(BadRequest)
     end
   end
-  
+
   describe ".all" do
     it "should return an enumeration of 2 imports" do
       imports = Import.all
@@ -100,7 +100,7 @@ describe Import do
     it "should destroy an existing import as an admin" do
       Import.destroy(@imports[0].id).should be_true
     end
-    
+
     it "should not destroy an existing import as a basic user" do
       DataCatalog.with_key(@user.primary_api_key) do
         executing do
@@ -108,12 +108,12 @@ describe Import do
         end.should raise_error(Unauthorized)
       end
     end
-    
+
     it "should raise NotFound when attempting to destroy non-existing import" do
       executing do
         Import.destroy(mangle(@imports[0].id))
       end.should raise_error(NotFound)
     end
   end
-  
+
 end

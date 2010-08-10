@@ -1,7 +1,7 @@
 namespace :spec do
-  
+
   MIN_VERSION = '0.4.4'
-  
+
   desc "Test API connection"
   task :test_api => [:check_dependencies] do
     require File.dirname(__FILE__) + '/../spec/setup_api'

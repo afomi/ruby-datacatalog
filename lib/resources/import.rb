@@ -1,7 +1,7 @@
 module DataCatalog
 
   class Import < Base
-    
+
     def self.all(conditions={})
       cursor(uri, query_hash(conditions))
     end
@@ -27,7 +27,7 @@ module DataCatalog
     end
 
     # == Helpers
-    
+
     def self.uri(id=nil)
       "/imports/#{id}"
     end

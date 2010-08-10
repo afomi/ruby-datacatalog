@@ -13,7 +13,7 @@ describe Base do
       DataCatalog.base_uri = 'host.com'
       DataCatalog.base_uri.should == 'http://host.com'
     end
-    
+
     it "should set the base URI to the default if it's not explicitly defined" do
       DataCatalog.base_uri = ''
       DataCatalog.base_uri.should == 'http://api.nationaldatacatalog.com'
@@ -26,28 +26,28 @@ describe Base do
       response = HTTParty::Response.new(nil, '{"foo":"bar"}', 200, 'OK', {})
       Base.check_status(response).should be_nil
     end
-    
+
     it "should raise BadRequest on 400 Bad Request" do
       response = HTTParty::Response.new(nil, '[]', 400, 'Bad Request', {})
       executing do
         Base.check_status(response)
       end.should raise_error(BadRequest)
     end
-  
+
     it "should raise Unauthorized on 401 Unauthorized" do
       response = HTTParty::Response.new(nil, '', 401, 'Unauthorized', {})
       executing do
         Base.check_status(response)
       end.should raise_error(Unauthorized)
     end
-  
+
     it "should raise NotFound on 404 Not Found" do
       response = HTTParty::Response.new(nil, '[]', 404, 'Not Found', {})
       executing do
         Base.check_status(response)
       end.should raise_error(NotFound)
     end
-    
+
     it "should raise InternalServerError on 500 Internal Server Error" do
       response = HTTParty::Response.new(nil, '', 500, 'Internal Server Error', {})
       executing do
@@ -67,7 +67,7 @@ describe Base do
         e.errors.should == nil
       end
     end
-    
+
     it "should be correct when body is an empty hash" do
       response = HTTParty::Response.new(nil, '{}', 404, 'Not Found', {})
       begin
@@ -78,7 +78,7 @@ describe Base do
         e.errors.should == nil
       end
     end
-    
+
     it "should be correct when body is an empty array" do
       response = HTTParty::Response.new(nil, '[]', 404, 'Not Found', {})
       begin
@@ -89,7 +89,7 @@ describe Base do
         e.errors.should == nil
       end
     end
-    
+
     it "should be correct when body has errors hash" do
       errors = '{"errors":["bad_error"]}'
       response = HTTParty::Response.new(nil, errors, 400, 'Bad Request', {})
@@ -101,7 +101,7 @@ describe Base do
         e.errors.should == ["bad_error"]
       end
     end
-    
+
     it "should be correct when body has hash" do
       errors = '{"foo":["bar"]}'
       response = HTTParty::Response.new(nil, errors, 400, 'Bad Request', {})
@@ -125,18 +125,18 @@ describe Base do
       hash.name.should == "John Smith"
       hash.email.should == "john@email.com"
     end
-    
+
     it "should return nil from an empty hash" do
       hash = Base.one({})
       hash.should be_nil
     end
-    
+
     it "should return nil from nil" do
       hash = Base.one(nil)
       hash.should be_nil
     end
   end
-  
+
   describe ".filterize" do
     it "should work with 1 integer param" do
       Base.filterize(:count => 7).should == %(count=7)
@@ -156,7 +156,7 @@ describe Base do
         %(name="John Doe" and zip="20036")
       ].should include(Base.filterize(:name => "John Doe", :zip => "20036"))
     end
-    
+
     it "should work with periods" do
       Base.filterize('released.year' => 2008).should == %(released.year=2008)
     end
@@ -164,13 +164,13 @@ describe Base do
     it "should support 'or' by converting arrays to commas" do
       Base.filterize('id' => [800, 801, 802]).should == %(id=800,801,802)
     end
-    
+
     it "should pass through strings" do
       ["count > 0", "count >= 1"].each do |s|
         Base.filterize(s).should == s
       end
     end
-    
+
     it "should work with boolean true" do
       Base.filterize('is_awesome' => true).should == %(is_awesome=true)
     end
@@ -178,7 +178,7 @@ describe Base do
     it "should work with boolean false" do
       Base.filterize('is_suck' => false).should == %(is_suck=false)
     end
-    
+
     it "should raise ArgumentError when appropriate" do
       [nil, [1]].each do |arg|
         executing { Base.filterize(arg) }.should raise_error(ArgumentError)

@@ -2,7 +2,7 @@ require File.dirname(__FILE__) + '/spec_helper'
 include DataCatalog
 
 describe Report do
-  
+
   before do
     setup_api
     clean_slate
@@ -12,7 +12,7 @@ describe Report do
       :curator => true
     )
   end
-  
+
   describe ".create" do
     it "should create a new report when valid params are passed in" do
       DataCatalog.with_key(@john.primary_api_key) do
@@ -28,7 +28,7 @@ describe Report do
       refreshed_report.user_id.should == @john.id
     end
   end
-  
+
   describe ".get" do
     before do
       DataCatalog.with_key(@john.primary_api_key) do
@@ -38,20 +38,20 @@ describe Report do
         )
       end
     end
-  
+
     it "should return a report" do
       report = Report.get(@report.id)
       report.should be_an_instance_of(Report)
       report.text.should == "Report 1 by John"
     end
-    
+
     it "should raise NotFound if no report exists" do
       executing do
         Report.get(mangle(@report.id))
       end.should raise_error(NotFound)
     end
   end
-  
+
   describe ".all" do
     before do
       @jane = User.create(
@@ -64,7 +64,7 @@ describe Report do
         Report.create(:text => "Report 2 by Jane", :status => "new")
       end
     end
-  
+
     it "should return a set of all user's reports" do
       reports = Report.all(:user_id => @jane.id)
       reports.first.should be_an_instance_of(Report)
@@ -73,7 +73,7 @@ describe Report do
       end
     end
   end
-  
+
   describe ".update" do
     before do
       DataCatalog.with_key(@john.primary_api_key) do
@@ -83,7 +83,7 @@ describe Report do
         )
       end
     end
-  
+
     it "should update an existing report with valid params" do
       DataCatalog.with_key(@john.primary_api_key) do
         Report.update(@report.id, :status => "open")
@@ -103,11 +103,11 @@ describe Report do
         )
       end
     end
-  
+
     it "should destroy an existing report as an admin" do
       Report.destroy(@report.id).should be_true
     end
-    
+
     it "should destroy an existing report as the user" do
       DataCatalog.with_key(@john.primary_api_key) do
         Report.destroy(@report.id).should be_true

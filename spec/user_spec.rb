@@ -7,8 +7,8 @@ module UserHelpers
       :name  => "Ted Smith",
       :email => "ted@email.com"
     })
-  end  
-  
+  end
+
   def create_user_with_2_keys
     user = create_user
     result = user.generate_api_key!(
@@ -19,7 +19,7 @@ module UserHelpers
     raise "incorrect number of keys" unless user.api_keys.length == 2
     user
   end
-  
+
   def create_3_users
     3.times do |n|
       User.create(
@@ -32,7 +32,7 @@ end
 
 describe User do
   include UserHelpers
-  
+
   before do
     setup_api
     clean_slate
@@ -43,13 +43,13 @@ describe User do
       create_3_users
       @users = User.all
     end
-    
+
     it "should return an enumeration of users" do
       @users.each do |u|
         u.should be_an_instance_of(User)
       end
     end
-    
+
     it "should include four users" do
       names = @users.map(&:name)
       names.should include("User-0")
@@ -76,7 +76,7 @@ describe User do
       end.should raise_error(BadRequest)
     end
   end
-  
+
   describe ".first" do
     before do
       create_3_users
@@ -87,18 +87,18 @@ describe User do
       user.should be_an_instance_of(User)
       user.name.should == "User-1"
     end
-    
+
     it "should return nil if nothing found" do
       user = User.first(:name => "Elvis")
       user.should be_nil
     end
   end
-  
+
   describe ".get_by_api_key" do
     before do
       @user = create_user
     end
-    
+
     it "should return a user" do
       user = User.get_by_api_key(@user.primary_api_key)
       user.should be_an_instance_of(User)
@@ -110,7 +110,7 @@ describe User do
     before do
       @user = create_user_with_2_keys
     end
-    
+
     describe "user exists" do
       before do
         @u = User.get(@user.id)
@@ -130,7 +130,7 @@ describe User do
         end
       end
     end
-    
+
     it "should raise NotFound if no user exists" do
       executing do
         User.get(mangle(@user.id))
@@ -142,7 +142,7 @@ describe User do
     before do
       @user = create_user_with_2_keys
     end
-    
+
     describe "API key exists" do
       before do
         @u = User.get_by_api_key(@user.primary_api_key)
@@ -174,7 +174,7 @@ describe User do
     before do
       @user = create_user
     end
-    
+
     it "should update a user when valid params are passed in" do
       user = User.update(@user.id, { :name => "Jane Smith" })
       user.name.should == "Jane Smith"
@@ -186,7 +186,7 @@ describe User do
       end.should raise_error(BadRequest)
     end
   end
-  
+
   describe ".destroy" do
     before do
       @user = create_user
@@ -196,7 +196,7 @@ describe User do
       result = User.destroy(@user.id)
       result.should be_true
     end
-    
+
     it "should raise NotFound when non-existing user" do
       executing do
         User.destroy(mangle(@user.id))
@@ -219,7 +219,7 @@ describe User do
       @user.api_keys.last[:purpose].should == "Civic hacking with my awesome app"
       @user.application_api_keys.length.should == 1
     end
-    
+
     it "should raise BadRequest when attempting to create a primary key" do
       executing do
         @user.generate_api_key!({
@@ -229,12 +229,12 @@ describe User do
       end.should raise_error(BadRequest)
     end
   end
-  
+
   describe "#update_api_key!" do
     before do
       @user = create_user_with_2_keys
     end
-  
+
     it "should update a key for the user" do
       @user.update_api_key!(@user.api_keys[1].id, {
         :key_type => "valet",
@@ -242,7 +242,7 @@ describe User do
       }).should be_true
       @user.api_keys[1].purpose.should == "To be more awesome"
     end
-    
+
     it "should raise NotFound if updating a key that doesn't exist" do
       executing do
         @user.update_api_key!(mangle(@user.api_keys[1].id), {})
@@ -262,12 +262,12 @@ describe User do
     before do
       @user = create_user_with_2_keys
     end
-    
+
     it "should delete a key for the user" do
       @user.delete_api_key!(@user.api_keys[1].id).should be_true
       @user.api_keys.length.should == 1
     end
-    
+
     it "should raise Conflict if deleting the primary key" do
       executing do
         @user.delete_api_key!(@user.api_keys[0].id)
@@ -275,5 +275,5 @@ describe User do
       @user.api_keys.length.should == 2
     end
   end
-  
+
 end

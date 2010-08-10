@@ -1,7 +1,7 @@
 module DataCatalog
 
   class Note < Base
-    
+
     def self.all(conditions={})
       cursor(uri, query_hash(conditions))
     end
@@ -23,7 +23,7 @@ module DataCatalog
     end
 
     # == Helpers
-    
+
     def self.uri(id=nil)
       "/notes/#{id}"
     end

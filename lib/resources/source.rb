@@ -1,7 +1,7 @@
 module DataCatalog
 
   class Source < Base
-    
+
     def self.all(conditions={})
       cursor(uri, query_hash(conditions))
     end
@@ -37,5 +37,5 @@ module DataCatalog
     end
 
   end
-  
+
 end

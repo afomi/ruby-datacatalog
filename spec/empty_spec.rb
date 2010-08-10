@@ -7,16 +7,16 @@ describe "Test Emptiness" do
     setup_api
     clean_slate
   end
-  
+
   def expect_none_of(klass)
     klass.all.should be_empty
   end
-  
+
   describe ".all" do
     it "no comments" do
       expect_none_of Comment
     end
-    
+
     it "no documents" do
       expect_none_of Document
     end
@@ -24,7 +24,7 @@ describe "Test Emptiness" do
     it "no downloads" do
       expect_none_of Download
     end
-    
+
     it "no favorites" do
       expect_none_of Favorite
     end

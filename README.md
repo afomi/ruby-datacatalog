@@ -20,7 +20,7 @@ For now, the gem will not be packaged. Instead, install it manually:
     require 'datacatalog'
 
     DataCatalog.api_key = 'c40505247a5e308a24d70a0118f76534b543795b'
-    
+
 ## Running Specs
 
 We're not mocking out any of the web API calls in the specs. Instead, we expect developers who wish to run the specs to download and run a local sandbox instance of the [Data Catalog API](http://github.com/sunlightlabs/datacatalog-api), a Sinatra app:

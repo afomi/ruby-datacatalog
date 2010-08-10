@@ -1,13 +1,13 @@
 module DataCatalog
 
   class Cursor
-    
+
     attr_reader :document_count
     attr_reader :page_count
     attr_reader :page_size
-    
+
     include Enumerable
-    
+
     def initialize(options)
       @klass      = options[:klass]
       @query_hash = options[:query_hash]
@@ -19,7 +19,7 @@ module DataCatalog
       @members        = members(@response)
       @page_count     = @response['page_count']
     end
-    
+
     def [](i)
       member_at(i)
     end
@@ -27,15 +27,15 @@ module DataCatalog
     def each
       @document_count.times { |i| yield member_at(i) }
     end
-    
+
     def empty?
       @document_count == 0
     end
-    
+
     def first
       member_at(0)
     end
-    
+
     def last
       member_at(@document_count - 1)
     end
@@ -47,13 +47,13 @@ module DataCatalog
     def page(page_number)
       page_indices(page_number).map { |i| member_at(i) }
     end
-    
+
     def size
       @members.size
     end
-    
+
     protected
-    
+
     def fetch_members_near_index(index)
       page_number = page_for_index(index)
       response = response_for_page(page_number)
@@ -64,7 +64,7 @@ module DataCatalog
       end
       fetched.length
     end
-    
+
     def member_at(index)
       if index < 0
         raise "index (#{index}) must be >= 0"
@@ -81,7 +81,7 @@ module DataCatalog
     def members(response)
       response['members'].map { |x| @klass.new(x) }
     end
-    
+
     def page_for_index(index)
       (index / @page_size) + 1
     end
@@ -98,5 +98,5 @@ module DataCatalog
     end
 
   end
-  
+
 end

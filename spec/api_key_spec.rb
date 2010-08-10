@@ -8,7 +8,7 @@ module ApiKeyHelpers
       :email => "ted@email.com"
     })
   end
-  
+
   def create_user_with_2_keys
     user = create_user
     ApiKey.create(user.id, {
@@ -32,13 +32,13 @@ describe ApiKey do
       @user = create_user_with_2_keys
       @api_keys = ApiKey.all(@user.id)
     end
-  
+
     it "should return an enumeration of API keys" do
       @api_keys.each do |api_key|
         api_key.should be_an_instance_of(ApiKey)
       end
     end
-  
+
     it "should return correct titles" do
       @api_keys.map(&:key_type).should == %w(primary application)
     end
@@ -49,13 +49,13 @@ describe ApiKey do
       @user = create_user_with_2_keys
       @api_keys = ApiKey.all(@user.id, :key_type => "application")
     end
-    
+
     it "should return an enumeration of API keys" do
       @api_keys.each do |api_key|
         api_key.should be_an_instance_of(ApiKey)
       end
     end
-    
+
     it "should return correct titles" do
       @api_keys.map(&:key_type).should == %w(application)
     end
@@ -77,13 +77,13 @@ describe ApiKey do
     before do
       @user = create_user_with_2_keys
     end
-  
+
     it "should return an API key" do
       api_key = ApiKey.first(@user.id, :purpose => "Civic hacking")
       api_key.should be_an_instance_of(ApiKey)
       api_key.purpose.should == "Civic hacking"
     end
-    
+
     it "should return nil if nothing found" do
       api_key = ApiKey.first(@user.id, :purpose => "Evil")
       api_key.should be_nil
@@ -95,13 +95,13 @@ describe ApiKey do
       @user = create_user_with_2_keys
       @api_key = @user.api_keys[1]
     end
-  
+
     it "should return an API key" do
       api_key = ApiKey.get(@user.id, @api_key.id)
       api_key.should be_an_instance_of(ApiKey)
       api_key.purpose.should == "Civic hacking"
     end
-    
+
     it "should raise NotFound if no API key exists" do
       executing do
         ApiKey.get(@user.id, mangle(@api_key.id))
@@ -114,7 +114,7 @@ describe ApiKey do
       @user = create_user_with_2_keys
       @api_key = @user.api_keys[1]
     end
-  
+
     it "should update an existing source from valid params" do
       api_key = ApiKey.update(@user.id, @api_key.id, {
         :purpose => "Local Government Reporting"
@@ -129,12 +129,12 @@ describe ApiKey do
       @user = create_user_with_2_keys
       @api_key = @user.api_keys[1]
     end
-  
+
     it "should destroy an existing source" do
       result = ApiKey.destroy(@user.id, @api_key.id)
       result.should be_true
     end
-    
+
     it "should raise NotFound if API key does not exist" do
       executing do
         ApiKey.destroy(@user.id, mangle(@api_key.id))

@@ -1,7 +1,7 @@
 module DataCatalog
 
   class ApiKey < Base
-    
+
     def self.all(user_id, conditions={})
       cursor(uri(user_id), query_hash(conditions))
     end
@@ -21,18 +21,18 @@ module DataCatalog
     def self.get(user_id, id)
       one(http_get(uri(user_id, id)))
     end
-    
+
     def self.update(user_id, id, params={})
       one(http_put(uri(user_id, id), :body => params))
     end
-    
+
     # == Helpers
-    
+
     def self.uri(user_id, id=nil)
       raise Error, "user_id cannot be blank" if user_id.blank?
       "/users/#{user_id}/keys/#{id}"
     end
-    
+
   end
 
 end
