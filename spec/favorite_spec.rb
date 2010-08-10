@@ -27,6 +27,12 @@ describe Favorite do
     end
   end
 
+  describe ".first" do
+    it "should return the first Favorite" do
+      Favorite.first.id.should == @favorite.id
+    end
+  end
+
   describe ".get" do
     it "should return a favorite" do
       favorite = Favorite.get(@favorite.id)
