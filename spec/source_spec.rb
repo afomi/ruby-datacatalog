@@ -61,9 +61,7 @@ describe Source do
       @sources.map(&:title).sort.should == expected.sort
     end
 
-
     describe "with cursor" do
-
       it "should raise an error on bad index" do
         executing do
           @sources.page(0)
@@ -77,7 +75,6 @@ describe Source do
         sources.page(1).size.should == 20
         sources.page(2).size.should == 13
       end
-
     end
   end
 

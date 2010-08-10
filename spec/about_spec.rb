@@ -19,7 +19,6 @@ describe DataCatalog do
   end
 
   describe ".version_at_least?" do
-
     it "should return false if below the actual version" do
       version_mock = mock(Object.new).version { '1.0.0' }
       mock(About).get { version_mock }

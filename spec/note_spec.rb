@@ -24,18 +24,15 @@ describe Note do
   end
 
   describe ".create" do
-
     it "should create a note when valid params are passed in" do
       DataCatalog.with_key(@user.primary_api_key) do
         refreshed_source = Source.get(@source.id)
         refreshed_source.notes.first.text.should == "This is my note."
       end
     end
-
-  end # describe ".create"
+  end
 
   describe ".get" do
-
     it "should return a note" do
       note = Note.get(@note.id)
       note.should be_an_instance_of(Note)
@@ -47,22 +44,18 @@ describe Note do
         Note.get(mangle(@note.id))
       end.should raise_error(NotFound)
     end
-
-  end # describe ".get"
+  end
 
   describe ".all" do
-
     it "should return an enumeration of notes" do
       notes = Note.all(:user_id => @user.id)
       notes.each do |o|
         o.should be_an_instance_of(Note)
       end
     end
-
-  end # describe ".all"
+  end
 
   describe ".update" do
-
     it "should update an existing note with valid params" do
       DataCatalog.with_key(@user.primary_api_key) do
         Note.update(@note.id, :text => "This is my updated note.")
@@ -71,11 +64,9 @@ describe Note do
       refreshed_note = Note.get(@note.id)
       refreshed_note.text.should == "This is my updated note."
     end
-
-  end # describe ".update"
+  end
 
   describe ".destroy" do
-
     it "should destroy an existing note as an admin" do
       Note.destroy(@note.id).should be_true
     end
@@ -91,7 +82,6 @@ describe Note do
         Note.destroy(mangle(@note.id))
       end.should raise_error(NotFound)
     end
-
-  end # describe ".destroy"
+  end
 
 end

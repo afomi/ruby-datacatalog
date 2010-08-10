@@ -20,7 +20,6 @@ describe Organization do
   end
 
   describe ".all" do
-
     before do
       create_3_organizations
     end
@@ -39,8 +38,7 @@ describe Organization do
       orgs = Organization.all(:name => "Federal Communications Commission")
       orgs.map(&:name).should == ["Federal Communications Commission"]
     end
-
-  end # describe ".all"
+  end
 
   describe ".search" do
     before do
@@ -52,10 +50,9 @@ describe Organization do
       @organizations.size.should == 2
       @organizations.first.name.should == "Federal Communications Commission"
     end
-  end # describe organizations
+  end
 
   describe ".first" do
-
     before do
       create_3_organizations
     end
@@ -64,11 +61,9 @@ describe Organization do
       org = Organization.first(:name => "Federal Communications Commission")
       org.name.should == "Federal Communications Commission"
     end
-
-  end # describe ".first"
+  end
 
   describe ".get" do
-
     before do
       @organization = Organization.create(:name => "Federal Election Commission", :org_type => "governmental")
     end
@@ -84,11 +79,9 @@ describe Organization do
         Organization.get(mangle(@organization.id))
       end.should raise_error(NotFound)
     end
-
-  end # describe ".get"
+  end
 
   describe ".create" do
-
     it "should create a new organization when valid params are passed in" do
       org = Organization.create(:name => "Federal Communications Commission", :org_type => "governmental")
       org.should be_an_instance_of(Organization)
@@ -100,11 +93,9 @@ describe Organization do
         Organization.create(:name => "Bad Org", :url => "htt:p//jlkj!3", :org_type => "governmental")
       end.should raise_error(BadRequest)
     end
-
-  end # describe ".create"
+  end
 
   describe ".update" do
-
     before do
       @organization = Organization.create(:name => "Federal Election Commission", :org_type => "governmental")
     end
@@ -114,11 +105,9 @@ describe Organization do
       organization.should be_an_instance_of(Organization)
       organization.url.should == "http://fec.gov/"
     end
-
-  end # describe ".update" 
+  end
 
   describe ".destroy" do
-
     before do
       @organization = Organization.create(:name => "Federal Election Commission", :org_type => "governmental")
     end
@@ -132,7 +121,6 @@ describe Organization do
         Organization.destroy(mangle(@organization.id))
       end.should raise_error(NotFound)
     end
-
-  end # describe ".destroy"
+  end
 
 end

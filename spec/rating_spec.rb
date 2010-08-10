@@ -28,7 +28,6 @@ describe Rating do
   end
 
   describe ".create" do
-
     it "should create a source rating when valid params are passed in" do
       DataCatalog.with_key(@user.primary_api_key) do
         @rating = Rating.create(:kind => "source", :source_id => @source.id, :value => 5)
@@ -48,11 +47,9 @@ describe Rating do
       refreshed_comment.rating_stats.average.should == 1
       refreshed_comment.rating_stats.total.should == 1
     end
-
-  end # describe ".create"
+  end
 
   describe ".get" do
-
     before do
       DataCatalog.with_key(@user.primary_api_key) do
         @rating = Rating.create(:kind => "source", :source_id => @source.id, :value => 5)
@@ -70,11 +67,9 @@ describe Rating do
         Rating.get(mangle(@rating.id))
       end.should raise_error(NotFound)
     end
-
-  end # describe ".get"
+  end
 
   describe ".all" do
-
     before do
       DataCatalog.with_key(@user.primary_api_key) do
         @rating = Rating.create(:kind => "source", :source_id => @source.id, :value => 5)
@@ -83,7 +78,6 @@ describe Rating do
       DataCatalog.with_key(@user2.primary_api_key) do
         @rating = Rating.create(:kind => "source", :source_id => @source.id, :value => 3)
       end
-
     end
 
     it "should return a collection of all the source's ratings" do
@@ -93,11 +87,9 @@ describe Rating do
       ratings[0].value.should == 5
       ratings[1].value.should == 3
     end
-
-  end # describe ".all"
+  end
 
   describe ".update" do
-
     before do
       DataCatalog.with_key(@user.primary_api_key) do
         @rating = Rating.create(:kind => "source", :source_id => @source.id, :value => 5)
@@ -113,11 +105,9 @@ describe Rating do
       refreshed_rating.value.should == 3
       refreshed_rating.previous_value.should == 5
     end
-
-  end # describe ".update"
+  end
 
   describe ".destroy" do
-
     before do
       DataCatalog.with_key(@user.primary_api_key) do
         @rating = Rating.create(:kind => "source", :source_id => @source.id, :value => 5)
@@ -139,7 +129,6 @@ describe Rating do
         Rating.destroy(mangle(@rating.id))
       end.should raise_error(NotFound)
     end
-
-  end # describe ".destroy"
+  end
 
 end

@@ -24,18 +24,15 @@ describe Document do
   end
 
   describe ".create" do
-
     it "should create a document when valid params are passed in" do
       DataCatalog.with_key(@user.primary_api_key) do
         refreshed_source = Source.get(@source.id)
         refreshed_source.documents.first.text.should == "This is community documentation."
       end
     end
-
-  end # describe ".create"
+  end
 
   describe ".get" do
-
     it "should return a document" do
       document = Document.get(@document.id)
       document.should be_an_instance_of(Document)
@@ -47,22 +44,18 @@ describe Document do
         Document.get(mangle(@document.id))
       end.should raise_error(NotFound)
     end
-
-  end # describe ".get"
+  end
 
   describe ".all" do
-
     it "should return an enumeration of documents" do
       documents = Document.all(:source_id => @source.id)
       documents.each do |o|
         o.should be_an_instance_of(Document)
       end
     end
-
-  end # describe ".all"
+  end
 
   describe ".update" do
-
     it "should update an existing document with valid params" do
       @document.previous_id.should be nil
       DataCatalog.with_key(@user.primary_api_key) do
@@ -73,11 +66,9 @@ describe Document do
       refreshed_document.text.should == "This is the updated document."
       refreshed_document.previous_id.should_not be nil
     end
-
-  end # describe ".update"
+  end
 
   describe ".destroy" do
-
     it "should destroy an existing document as an admin" do
       Document.destroy(@document.id).should be_true
     end
@@ -93,7 +84,6 @@ describe Document do
         Document.destroy(mangle(@document.id))
       end.should raise_error(NotFound)
     end
-
-  end # describe ".destroy"
+  end
 
 end
