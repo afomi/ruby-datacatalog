@@ -16,13 +16,13 @@ describe Import do
     @imports = [
       Import.create({
         :importer_id => @importer.id,
-        :status      => 'success',
+        :status      => 'succeeded',
         :started_at  => timestamp - 3645,
         :finished_at => timestamp - 3600,
       }),
       Import.create({
         :importer_id => @importer.id,
-        :status      => 'success',
+        :status      => 'succeeded',
         :started_at  => timestamp - 45,
         :finished_at => timestamp,
       }),
@@ -109,10 +109,10 @@ describe Import do
     end
 
     it "should update an existing import with valid params" do
-      @imports[0].status.should == 'success'
-      Import.update(@imports[0].id, :status => 'failure')
+      @imports[0].status.should == 'succeeded'
+      Import.update(@imports[0].id, :status => 'failed')
       import = Import.get(@imports[0].id)
-      import.status.should == 'failure'
+      import.status.should == 'failed'
     end
   end
 
