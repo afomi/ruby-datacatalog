@@ -3,6 +3,13 @@ include DataCatalog
 
 describe Base do
 
+  def make_response(body, code)
+    response = Object.new
+    stub(response).code { code }
+    stub(response).body { body }
+    response
+  end
+
   before do
     setup_api
   end
@@ -22,43 +29,39 @@ describe Base do
   end
 
   describe ".check_status" do
-    it "should return nil on 200 OK" do
-      response = HTTParty::Response.new(nil, '{"foo":"bar"}', 200, 'OK', {})
-      Base.check_status(response).should be_nil
+    it "should return response on 200 OK" do
+      response = make_response("{}", 200)
+      Base.check_status(response).should == response
     end
 
     it "should raise BadRequest on 400 Bad Request" do
-      response = HTTParty::Response.new(nil, '[]', 400, 'Bad Request', {})
       executing do
-        Base.check_status(response)
+        Base.check_status(make_response("{}", 400))
       end.should raise_error(BadRequest)
     end
 
     it "should raise Unauthorized on 401 Unauthorized" do
-      response = HTTParty::Response.new(nil, '', 401, 'Unauthorized', {})
       executing do
-        Base.check_status(response)
+        Base.check_status(make_response("{}", 401))
       end.should raise_error(Unauthorized)
     end
 
     it "should raise NotFound on 404 Not Found" do
-      response = HTTParty::Response.new(nil, '[]', 404, 'Not Found', {})
       executing do
-        Base.check_status(response)
+        Base.check_status(make_response("{}", 404))
       end.should raise_error(NotFound)
     end
 
     it "should raise InternalServerError on 500 Internal Server Error" do
-      response = HTTParty::Response.new(nil, '', 500, 'Internal Server Error', {})
       executing do
-        Base.check_status(response)
+        Base.check_status(make_response("{}", 500))
       end.should raise_error(InternalServerError)
     end
   end
-
+  
   describe ".error" do
-    it "should ... when body is blank" do
-      response = HTTParty::Response.new(nil, '', 404, 'Not Found', {})
+    it "should be correct when body is blank and code is 404" do
+      response = make_response('', 404)
       begin
         e = Base.error(NotFound, response)
       rescue NotFound => e
@@ -69,7 +72,7 @@ describe Base do
     end
 
     it "should be correct when body is an empty hash" do
-      response = HTTParty::Response.new(nil, '{}', 404, 'Not Found', {})
+      response = make_response('{}', 404)
       begin
         e = Base.error(NotFound, response).should == "Response was empty"
       rescue NotFound => e
@@ -80,7 +83,7 @@ describe Base do
     end
 
     it "should be correct when body is an empty array" do
-      response = HTTParty::Response.new(nil, '[]', 404, 'Not Found', {})
+      response = make_response('[]', 404)
       begin
         e = Base.error(NotFound, response)
       rescue NotFound => e
@@ -91,8 +94,7 @@ describe Base do
     end
 
     it "should be correct when body has errors hash" do
-      errors = '{"errors":["bad_error"]}'
-      response = HTTParty::Response.new(nil, errors, 400, 'Bad Request', {})
+      response = make_response('{"errors":["bad_error"]}', 400)
       begin
         e = Base.error(BadRequest, response)
       rescue BadRequest => e
@@ -103,8 +105,7 @@ describe Base do
     end
 
     it "should be correct when body has hash" do
-      errors = '{"foo":["bar"]}'
-      response = HTTParty::Response.new(nil, errors, 400, 'Bad Request', {})
+      response = make_response('{"foo":["bar"]}', 400)
       begin
         e = Base.error(BadRequest, response)
       rescue BadRequest => e
