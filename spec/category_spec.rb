@@ -6,10 +6,6 @@ describe Category do
   before do
     setup_api
     clean_slate
-    @user = User.create(
-      :name    => "Ted Smith",
-      :email   => "ted@email.com")
-
     @categories = [
       Category.create(:name => "Category-1"),
       Category.create(:name => "Category-2")
@@ -60,12 +56,6 @@ describe Category do
     it "should destroy an existing category as an admin" do
       Category.destroy(@categories[0].id).should be_true
     end
-    
-#    it "should not destroy an existing category as the user" do
-#      DataCatalog.with_key(@user.primary_api_key) do
-#        Category.destroy(@categories[0].id).should be_false
-#      end
-#    end
     
     it "should raise NotFound when attempting to destroy non-existing category" do
       executing do
