@@ -6,10 +6,6 @@ describe Categorization do
   before do
     setup_api
     clean_slate
-    @user = User.create(
-      :name    => "Ted Smith",
-      :email   => "ted@email.com")
-      
     @sources = [
       Source.create(
         :title       => "Some FCC Data",
@@ -22,19 +18,15 @@ describe Categorization do
         :source_type => "dataset"
       )
     ]
-    
     @categories = [
       Category.create(:name => "Category-0"),
       Category.create(:name => "Category-1")
     ]
-
-    DataCatalog.with_key(@user.primary_api_key) do
-      @categorizations = [
-        Categorization.create(:source_id => @sources[0].id, :category_id => @categories[0].id),
-        Categorization.create(:source_id => @sources[0].id, :category_id => @categories[1].id),
-        Categorization.create(:source_id => @sources[1].id, :category_id => @categories[0].id),
-      ]
-    end
+    @categorizations = [
+      Categorization.create(:source_id => @sources[0].id, :category_id => @categories[0].id),
+      Categorization.create(:source_id => @sources[0].id, :category_id => @categories[1].id),
+      Categorization.create(:source_id => @sources[1].id, :category_id => @categories[0].id),
+    ]
   end
 
   describe ".create" do
@@ -76,15 +68,6 @@ describe Categorization do
       refreshed_Categorization = Categorization.get(@categorizations[0].id)
       refreshed_Categorization.category_id.should == @categories[1].id
     end
-    
-#    it "should update an exisiting categorization as user" do
-#      DataCatalog.with_key(@user.primary_api_key) do
-#        Categorization.update(@categorizations[0].id, :category_id => @categories[1].id)
-#      end
-
-#      refreshed_Categorization = Categorization.get(@categorizations[0].id)
-#      refreshed_Categorization.category_id.should == @categories[1].id
-#    end
 
   end
 
